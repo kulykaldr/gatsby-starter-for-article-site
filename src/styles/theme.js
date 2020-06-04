@@ -5,7 +5,7 @@ const Theme = {
     linkColor: `#20232a`,
     linkColorHover: `#5a80b1`,
     darkColor: `#20232a`,
-    lightGray: `grey`,
+    lightGrey: `grey`,
   },
   breakpoints: {
     xs: `425px`,

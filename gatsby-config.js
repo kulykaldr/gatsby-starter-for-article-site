@@ -150,7 +150,19 @@ module.exports = {
           {resolve: 'gatsby-remark-responsive-iframe'},
           {resolve: 'gatsby-remark-copy-linked-files'},
           {resolve: 'gatsby-remark-smartypants'},
-          {resolve: 'gatsby-remark-autolink-headers'},
+          {
+            resolve: "gatsby-remark-external-links",
+            options: {
+              target: "_blank",
+              rel: "nofollow"
+            }
+          },
+          {
+            resolve: 'gatsby-remark-autolink-headers',
+            options: {
+              icon: false
+            }
+          },
         ],
       },
     },
@@ -168,7 +180,7 @@ module.exports = {
       }
     },
     {
-      resolve: `gatsby-plugin-feed`,
+      resolve: `gatsby-plugin-feed-mdx`,
       options: {
         query: `
             {
@@ -191,7 +203,7 @@ module.exports = {
                   date: edge.node.frontmatter.created,
                   url: site.siteMetadata.siteUrl + edge.node.frontmatter.path,
                   guid: site.siteMetadata.siteUrl + edge.node.frontmatter.path,
-                  custom_elements: [{"content:encoded": edge.node.rawBody}],
+                  custom_elements: [{"content:encoded": edge.node.html}],
                 })
               })
             },
@@ -203,7 +215,7 @@ module.exports = {
                 ) {
                   edges {
                     node {
-                      rawBody
+                      html
                       frontmatter {
                         title
                         excerpt

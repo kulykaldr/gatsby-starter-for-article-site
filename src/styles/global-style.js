@@ -9,12 +9,13 @@ const GlobalStyle = createGlobalStyle`
 
   html {
     box-sizing: border-box;
+    scroll-behavior: smooth;
     background-color: ${Theme.layout.backgroundColor};
   }
 
   body {
     font-family: ${Theme.fonts.base};
-    line-height: 1.9em;
+    line-height: 1.5;
   }
 
   * {
@@ -22,12 +23,12 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6 {
-  font-family: ${Theme.fonts.heading};
+    font-family: ${Theme.fonts.heading};
     outline: none;
   }
 
   a {
-    color: #000;
+    color: ${Theme.layout.linkColor};
     text-decoration: none;
   }
 

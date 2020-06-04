@@ -1,14 +1,15 @@
-import React, { createRef } from "react"
+import React, {createRef} from "react"
 import Layout from "../components/layout"
 import styled from "styled-components"
 import Img from "gatsby-image"
 import ReadingProgress from "../components/reading-progress"
 import Theme from "../styles/theme"
-import { graphql, Link } from "gatsby"
+import {graphql, Link} from "gatsby"
 import slugify from "slugify"
 import Comments from "../components/comments"
 import SEO from "../components/seo"
-import { MDXRenderer } from "gatsby-plugin-mdx"
+import {MDXRenderer} from "gatsby-plugin-mdx"
+import Toc from "../components/toc"
 
 const PostContent = styled.div`
   border-right: 1px #e5eff5 solid;
@@ -16,8 +17,12 @@ const PostContent = styled.div`
   background-color: #fff;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.03), 0 3px 46px rgba(0, 0, 0, 0.1);
   z-index: 10;
-  /*width: 1035px;*/
   max-width: 100%;
+
+  p {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
 
   li > a,
   p > a {
@@ -37,22 +42,9 @@ const PostContent = styled.div`
     border-radius: 0.3em;
   }
 
-  h3::before,
-  h4::before,
-  h5::before,
-  h6::before {
-    display: block;
-    content: " ";
-    height: 90px;
-    margin-top: -90px;
-    visibility: hidden;
-  }
-
-  h2 {
-    border-top: 1px solid #ececec;
-    margin-top: 44px;
-    padding-top: 40px;
-    line-height: 1.2;
+  h2, h3, h4, h5, h6 {
+    margin: 1.5em 0 .5em;
+    line-height: 1.1;
   }
 
   code[class*="language-text"] {
@@ -100,10 +92,12 @@ const FeaturedImage = styled(Img)`
 `
 
 const StyledPost = styled.section`
-  padding: 40px;
+  padding-left: 40px;
+  padding-right: 40px;
 
   @media (max-width: ${Theme.breakpoints.sm}) {
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 
@@ -163,6 +157,8 @@ const PostTemplate = ({
             <PostHeader>
               <PostMeta>
                 {post.frontmatter.categories.length > 0 && (
+                  <>
+                    Рубрика:&nbsp;{" "}
                   <Link
                     to={`/${slugify(post.frontmatter.categories[0], {
                       lower: true,
@@ -170,6 +166,7 @@ const PostTemplate = ({
                   >
                     {post.frontmatter.categories[0]}
                   </Link>
+                  </>
                 )}
                 <time dateTime={post.frontmatter.created}>
                   {post.frontmatter.createdPretty}
@@ -183,6 +180,7 @@ const PostTemplate = ({
               />
             )}
             <StyledPost>
+              <Toc tableOfContents={post.tableOfContents}/>
               <MDXRenderer className={`post`}>{post.body}</MDXRenderer>
             </StyledPost>
             <PostFooter>
@@ -229,13 +227,18 @@ export const query = graphql`
         updatedPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
         featuredImage {
           childImageSharp {
-            sizes(maxWidth: 800, quality: 75) {
-              ...GatsbyImageSharpSizes
+            sizes(maxWidth: 500, quality: 100) {
+              base64
+              aspectRatio
+              src
+              srcSet
+              sizes
             }
           }
         }
       }
       body
+      tableOfContents
     }
   }
 `

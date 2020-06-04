@@ -46,7 +46,7 @@ const SiteTitle = styled.div`
 `
 
 const Subtitle = styled.p`
-  color: ${Theme.layout.lightGray};
+  color: ${Theme.layout.lightGrey};
   line-height: 1.2;
   margin: 0;
   font-size: 16px;
@@ -68,9 +68,12 @@ const Branding = ({ title, subtitle, location }) => {
     query {
       file(sourceInstanceName: { eq: "images" }, name: { eq: "logo" }) {
         childImageSharp {
-          fluid(maxWidth: 300, quality: 90) {
-            ...GatsbyImageSharpFluid
-            ...GatsbyImageSharpFluidLimitPresentationSize
+          sizes(maxWidth: 300, quality: 100) {
+            base64
+            aspectRatio
+            src
+            srcSet
+            sizes
           }
         }
       }
@@ -83,9 +86,9 @@ const Branding = ({ title, subtitle, location }) => {
     <BrandingWrapper>
       <LogoWrapper>
         {isHomepage
-          ? <LogoImage fluid={logo.file.childImageSharp.fluid} alt={title}/>
+          ? <LogoImage sizes={logo.file.childImageSharp.sizes} alt={title}/>
           : <HomeLink to={`/`}>
-            <LogoImage fluid={logo.file.childImageSharp.fluid} alt={title}/>
+            <LogoImage sizes={logo.file.childImageSharp.sizes} alt={title}/>
           </HomeLink>
         }
       </LogoWrapper>
