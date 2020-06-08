@@ -30,7 +30,7 @@ const LogoImage = styled(Img)`
   }
 `
 
-const SiteTitle = styled.div`
+const SiteTitle = styled.h1`
   font-size: 28px;
   margin: 0;
   line-height: 1.1;
@@ -46,7 +46,8 @@ const SiteTitle = styled.div`
 `
 
 const Subtitle = styled.p`
-  color: ${Theme.layout.lightGrey};
+  color: ${Theme.layout.darkColor};
+  opacity: .8;
   line-height: 1.2;
   margin: 0;
   font-size: 16px;
@@ -58,9 +59,17 @@ const Subtitle = styled.p`
 `
 
 const HomeLink = styled(Link)`
+  font-size: 28px;
+  margin: 0;
+  line-height: 1.1;
+  font-weight: 900;
   color: ${Theme.layout.primaryColor};
-  text-decoration: none;
-  align-self: center;
+  white-space: nowrap;
+
+  @media (max-width: ${Theme.breakpoints.lg}) {
+    font-size: 18px;
+    white-space: inherit;
+  }
 `
 
 const Branding = ({ title, subtitle, location }) => {
@@ -94,12 +103,11 @@ const Branding = ({ title, subtitle, location }) => {
       </LogoWrapper>
 
       <div>
-        <SiteTitle>
           {isHomepage
-            ? <span>{title}</span>
+            ? <SiteTitle>{title}</SiteTitle>
             : <HomeLink to={`/`}>{title}</HomeLink>
           }
-        </SiteTitle>
+
 
         <Subtitle>{subtitle}</Subtitle>
       </div>

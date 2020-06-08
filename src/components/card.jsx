@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import { Link } from "gatsby"
+import {Link} from "gatsby"
 import Theme from "../styles/theme"
 import Img from "gatsby-image"
 
@@ -13,19 +13,15 @@ export const StyledCard = styled(Link)`
   width: 100%;
   height: 100%;
   overflow: hidden;
+  color: ${Theme.layout.darkColor};
 
   &:hover {
     transform: translate3d(0, -5px, 0);
     box-shadow: 0 1px 1px #ccc, 0 4px 4px #ccc;
-
-    h2 {
-    transition: .5s all;
-      color: ${Theme.layout.linkColorHover};
-    }
   }
 `
 
-export const StyledArticle = styled.article`
+export const StyledArticle = styled.div`
   display: inline-block;
   width: 100%;
 
@@ -53,42 +49,37 @@ export const FeaturedImage = styled(Img)`
       height: 200px;
     }
   ` : `
-    ${props => props.compact ? `
-      height: 120px;
-      max-height: 120px;
-  ` : `
       height: 200px;
       max-height: 200px;
-    `};
   `};
-
 `
 
-export const CardContent = styled.section`
-  padding: ${props => props.compact ? "10px" : "40px"};
+export const CardHeader = styled.header`
+  padding: 20px;
+ `
 
-  p {
-    margin: 15px 0;
-  }
-
-  h2 {
-    font-size: 1.2em;
-  }
+export const CardContent = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  padding: 10px;
 `
 
-export const CardMeta = styled.section`
+export const CardMeta = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   font-size: .8em;
   opacity: .8;
   line-height: 1em;
 `
 
-export const CardTitle = styled.h2`
+export const CardTitle = styled.div`
+  font-size: ${({compact}) => compact ? '16px' : '18px'};
+  font-weight: 700;
   margin: 0;
   padding: 0;
-  color: ${Theme.layout.linkColor};
+  color: ${Theme.layout.darkColor};
 `
 
 export const Card = ({
@@ -98,11 +89,9 @@ export const Card = ({
                        featuredImage,
                        content,
                        halfImage = false,
-                       compact = false,
-                       style,
-                       children,
+                       compact = false
                      }) => (
-  <StyledArticle style={style}>
+  <StyledArticle>
     <StyledCard to={path}>
       {(featuredImage && featuredImage.fluid) &&
       <FeaturedImage fixed={featuredImage.fluid} halfImage={halfImage}/>
@@ -110,25 +99,24 @@ export const Card = ({
       {(featuredImage && featuredImage.sizes) &&
       <FeaturedImage sizes={featuredImage.sizes} halfImage={halfImage}/>
       }
-      <CardContent compact={compact}>
-        {children}
-        <header>
-          {meta &&
-          <CardMeta>
-            {meta.category && <>{meta.category}</>}
-            {meta.time &&
-            <time dateTime={meta.time}>{meta.timePretty}</time>
-            }
-          </CardMeta>
+
+      <CardHeader>
+        {meta &&
+        <CardMeta>
+          {meta.category && <>{meta.category}</>}
+          {meta.time &&
+          <time dateTime={meta.time}>{meta.timePretty}</time>
           }
-          {title &&
-          <CardTitle>{title}</CardTitle>
-          }
-        </header>
-        {content &&
-        <p dangerouslySetInnerHTML={{ __html: content }}/>
+        </CardMeta>
         }
-      </CardContent>
+        {title &&
+        <CardTitle compact={compact}>{title}</CardTitle>
+        }
+      </CardHeader>
+      {content &&
+      <CardContent dangerouslySetInnerHTML={{__html: content}}/>
+      }
+
     </StyledCard>
   </StyledArticle>
 )

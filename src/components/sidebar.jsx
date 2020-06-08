@@ -18,8 +18,12 @@ const FeaturedPosts = styled.div`
   }
 `
 
-const SidebarTitle = styled.h3`
+const SidebarTitle = styled.div`
+  font-size: 18px;
+  font-weight: 700;
   padding-left: 10px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid ${Theme.layout.primaryColor};
 `
 
 const StickyContent = styled.div`

@@ -32,19 +32,6 @@ module.exports = {
       }
     ],
     search: false,
-    author: { // TO DO: add to config
-      name: `Admin`,
-      description: ``,
-      social: {
-        facebook: ``,
-        twitter: ``,
-        linkedin: ``,
-        instagram: ``,
-        youtube: ``,
-        github: ``,
-        twitch: ``
-      }
-    }
   },
   plugins: [
     `gatsby-plugin-sharp`,
@@ -58,18 +45,18 @@ module.exports = {
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-styled-components`,
     `gatsby-plugin-sitemap`,
-    // {
-    //   resolve: `gatsby-plugin-manifest`,
-    //   options: {
-    //       name: `Kulyk Aleksandr Blog`,
-    //       short_name: `kulykaldr`,
-    //       start_url: `/`,
-    //       background_color: `#a4cbb8`,
-    //       theme_color: `#a4cbb8`,
-    //       display: `minimal-ui`,
-    //       icon: `${__dirname}/content/images/logo.png`
-    //     }
-    // },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+          name: `Обо всем на свете`,
+          short_name: `Интересные истории из жизни каждый день`,
+          start_url: `/`,
+          background_color: `#5a80b1`,
+          theme_color: `#5a80b1`,
+          display: `minimal-ui`,
+          icon: `${__dirname}/content/images/logo.png`
+        }
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {

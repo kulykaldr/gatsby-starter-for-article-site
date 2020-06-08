@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react"
 import { FaSearch } from "react-icons/fa"
 import { NavMenuItem, ToggleSearchButton } from "./navigation"
 import { navigate } from "gatsby"
-
 import styled from "styled-components"
 import { Link } from "gatsby"
 import Theme from "../styles/theme"

@@ -91,9 +91,9 @@ const Pagination = ({ humanPageNumber, numberOfPages, previousPagePath, nextPage
           <Spacer className="previous"/>
         )}
 
-        <PageInfo>
+        {numberOfPages > 1 && <PageInfo>
           Страница {humanPageNumber} из {numberOfPages}
-        </PageInfo>
+        </PageInfo>}
 
         {nextPagePath ? (
           <NextBtn to={nextPagePath}>Следующая ›</NextBtn>

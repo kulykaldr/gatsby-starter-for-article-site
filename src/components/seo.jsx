@@ -22,14 +22,6 @@ const SEO = ({
           title
           siteUrl
           description
-          author {
-            name
-            description
-            social {
-              twitter
-              facebook
-            }
-          }
         }
       }
     }
@@ -70,20 +62,8 @@ const SEO = ({
           content: `ru_RU`,
         },
         {
-          name: `twitter:label1`,
-          content: `Written by`,
-        },
-        {
-          name: `twitter:data1`,
-          content: metadata.author.name,
-        },
-        {
           name: `twitter:card`,
           content: `summary`,
-        },
-        {
-          name: `twitter:creator`,
-          content: metadata.author.name,
         },
         {
           name: `twitter:title`,
@@ -140,10 +120,6 @@ const SEO = ({
         {
           "@context": "https://schema.org/",
           "@type": "${type}",
-          "author": {
-            "@type": "Person",
-            "name": "${metadata.author.name}"
-          },
           "headline": "${siteTitle}",
           "url": "${canonical}",
           ${publishedAt ? `"datePublished": "${publishedAt}",` : ``}

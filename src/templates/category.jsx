@@ -2,7 +2,7 @@ import React from "react"
 import Layout from "../components/layout"
 import { graphql } from "gatsby"
 import SEO from "../components/seo"
-import PostGrid from "../components/post-grid"
+import CardGrid from "../components/card-grid"
 import Pagination from "../components/pagination"
 import styled from "styled-components"
 import Theme from "../styles/theme"
@@ -41,7 +41,7 @@ const categoryTemplate = ({
       <TitleCategory>{category.name}</TitleCategory>
       {pageContext.pageNumber === 0 && category.description ?
         <DescriptionCategory>{category.description}</DescriptionCategory> : null}
-      <PostGrid posts={posts}/>
+      <CardGrid posts={posts}/>
       <Pagination
         previousPagePath={pageContext.previousPagePath}
         nextPagePath={pageContext.nextPagePath}

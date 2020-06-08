@@ -26,6 +26,7 @@
   "dependencies": {
     "@mdx-js/mdx": "^1.0.27",
     "@mdx-js/react": "^1.0.27",
+    "font-awesome": "^4.7.0",
     "gatsby": "^2.22.10",
     "gatsby-awesome-pagination": "^0.3.6",
     "gatsby-image": "^2.2.6",

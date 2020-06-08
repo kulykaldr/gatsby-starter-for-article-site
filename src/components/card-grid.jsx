@@ -1,7 +1,7 @@
 import React from "react"
 import { Card } from "./card"
 
-const PostGrid = ({ posts }) => (
+const CardGrid = ({ posts }) => (
   posts.map((post, index) => (
     <Card
       title={post.frontmatter.title}
@@ -23,4 +23,4 @@ const PostGrid = ({ posts }) => (
   ))
 )
 
-export default PostGrid
+export default CardGrid

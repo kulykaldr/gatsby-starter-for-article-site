@@ -9,7 +9,10 @@ import slugify from "slugify"
 import Comments from "../components/comments"
 import SEO from "../components/seo"
 import {MDXRenderer} from "gatsby-plugin-mdx"
+import {MDXProvider} from "@mdx-js/react"
 import Toc from "../components/toc"
+import Spoiler from "../components/ui/spoiler"
+import Blockquote from "../components/ui/blockquote";
 
 const PostContent = styled.div`
   border-right: 1px #e5eff5 solid;
@@ -22,24 +25,69 @@ const PostContent = styled.div`
   p {
     font-size: 16px;
     margin-bottom: 20px;
+    word-wrap: break-word;
+  }
+
+  ol, ul {
+    margin: 1.7em 0 1.8em 1em;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: ${Theme.breakpoints.md}) {
+    margin: 1.5em 0 1.5em 0;
+  }
+
+  ol {
+    counter-reset: point;
+  }
+
+  ul li {
+    &:before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: ${Theme.layout.primaryColor};
+      margin: 0 22px 0 -30px;
+    }
+  }
+
+  ol li {
+    border-color: ${Theme.layout.primaryColor};
+
+    &:before {
+      content: counter(point);
+      counter-increment: point 1;
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin: 0 13px 0 -40px;
+      text-align: center;
+      border: 2px solid #425d9d;
+      border-color: ${Theme.layout.primaryColor};
+      border-radius: 50%;
+    }
+  }
+
+  li {
+    list-style: none;
+    padding-left: 40px;
+    margin: .7em 0;
   }
 
   li > a,
   p > a {
     color: ${Theme.layout.linkColor};
-    border-bottom: 2px ${Theme.layout.linkColor} solid;
+    transition: color 0.5s;
+
+    &:hover {
+      color: ${Theme.layout.linkColorHover};
+    }
   }
 
   pre {
     margin: 30px 0;
-  }
-
-  blockquote {
-    border-left: 4px ${Theme.layout.primaryColor} solid;
-    background-color: ${Theme.layout.backgroundColor};
-    margin: 30px 0;
-    padding: 5px 20px;
-    border-radius: 0.3em;
   }
 
   h2, h3, h4, h5, h6 {
@@ -62,15 +110,6 @@ const PostContent = styled.div`
     border-bottom: 0;
     margin-top: 44px;
     margin-bottom: 40px;
-  }
-
-  .gatsby-resp-image-link {
-    margin: 30px 0;
-    max-width: 100%;
-
-    .gatsby-resp-image-image {
-      border-radius: 0.3em;
-    }
   }
 `
 
@@ -125,6 +164,8 @@ const PostFooter = styled.footer`
   }
 `
 
+const shortcodes = { Spoiler, blockquote: Blockquote }
+
 const PostTemplate = ({
                         data,
                         location,
@@ -157,16 +198,16 @@ const PostTemplate = ({
             <PostHeader>
               <PostMeta>
                 {post.frontmatter.categories.length > 0 && (
-                  <>
+                  <div>
                     Рубрика:&nbsp;{" "}
-                  <Link
-                    to={`/${slugify(post.frontmatter.categories[0], {
-                      lower: true,
-                    })}`}
-                  >
-                    {post.frontmatter.categories[0]}
-                  </Link>
-                  </>
+                    <Link
+                      to={`/${slugify(post.frontmatter.categories[0], {
+                        lower: true,
+                      })}`}
+                    >
+                      {post.frontmatter.categories[0]}
+                    </Link>
+                  </div>
                 )}
                 <time dateTime={post.frontmatter.created}>
                   {post.frontmatter.createdPretty}
@@ -181,7 +222,9 @@ const PostTemplate = ({
             )}
             <StyledPost>
               <Toc tableOfContents={post.tableOfContents}/>
-              <MDXRenderer className={`post`}>{post.body}</MDXRenderer>
+              <MDXProvider components={shortcodes}>
+                <MDXRenderer className={`post`}>{post.body}</MDXRenderer>
+              </MDXProvider>
             </StyledPost>
             <PostFooter>
               <p>

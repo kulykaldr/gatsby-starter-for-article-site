@@ -2,10 +2,10 @@ const Theme = {
   layout: {
     backgroundColor: `#fafafa`,
     primaryColor: `#5a80b1`,
-    linkColor: `#20232a`,
-    linkColorHover: `#5a80b1`,
+    linkColor: `#5a80b1`,
+    linkColorHover: `#e66212`,
     darkColor: `#20232a`,
-    lightGrey: `grey`,
+    lightGrey: `#f3f3f3`,
   },
   breakpoints: {
     xs: `425px`,
