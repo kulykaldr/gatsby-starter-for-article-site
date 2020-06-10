@@ -1,6 +1,7 @@
 import React, {useState} from "react"
 import styled from "styled-components"
 import Theme from "../../styles/theme"
+import {FaChevronDown} from "react-icons/fa"
 
 const SpoilerBox = styled.div`
   background: ${Theme.layout.lightGrey};
@@ -13,7 +14,7 @@ const SpoilerTitle = styled.div`
   cursor: pointer;
   padding: 15px 30px 15px 20px;
 
-  &:after {
+  svg {
     transition: all .3s ease;
     position: absolute;
     top: 48%;
@@ -21,8 +22,6 @@ const SpoilerTitle = styled.div`
     font-size: 18px;
     margin-top: -5px;
     color: #5a80b1;
-    content: "\\f078";
-    font: normal normal normal 14px/1 FontAwesome;
     transform: ${props => props.open ? "rotate(180deg)" : "rotate(0deg)"};
   }
 `
@@ -44,6 +43,7 @@ const Spoiler = ({title, children}) => {
     <SpoilerBox>
       <SpoilerTitle onClick={toggleSpoiler} open={isOpen}>
         {title}
+        <FaChevronDown/>
       </SpoilerTitle>
       <SpoilerBody open={isOpen}>{children}</SpoilerBody>
     </SpoilerBox>

@@ -79,7 +79,7 @@ const PostContent = styled.div`
 
   li > a,
   p > a {
-    color: ${Theme.layout.linkColor};
+    color: ${Theme.layout.p};
     transition: color 0.5s;
 
     &:hover {

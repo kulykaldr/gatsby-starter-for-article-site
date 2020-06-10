@@ -2,7 +2,6 @@ const Theme = {
   layout: {
     backgroundColor: `#fafafa`,
     primaryColor: `#5a80b1`,
-    linkColor: `#5a80b1`,
     linkColorHover: `#e66212`,
     darkColor: `#20232a`,
     lightGrey: `#f3f3f3`,

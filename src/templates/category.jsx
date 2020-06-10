@@ -15,9 +15,9 @@ const DescriptionCategory = styled.p`
   margin-bottom: 25px;
   font-size: .95em;
   line-height: 1.4;
-  background: #f9f8f5;
-  padding: 3px 20px;
-  color: ${Theme.layout.lightGrey};
+  background: #f3f3f3;
+  padding: 10px 20px;
+  color: ${Theme.layout.darkColor};
 `
 
 const categoryTemplate = ({

@@ -1,6 +1,13 @@
 import React from "react"
 import styled from "styled-components"
 import Theme from "../../styles/theme"
+import {
+  FaQuoteLeft,
+  FaCheckCircle,
+  FaTimesCircle,
+  FaQuestionCircle,
+  FaExclamationCircle
+} from "react-icons/fa"
 
 const BlockquoteWrapper = styled.blockquote`
   position: relative;
@@ -15,8 +22,7 @@ const BlockquoteWrapper = styled.blockquote`
     padding: 20px 30px 20px 70px;
     text-rendering: auto;
 
-    &:before {
-      font: normal normal normal 14px/1 FontAwesome;
+    svg {
       font-size: 30px;
       position: absolute;
       left: 20px;
@@ -32,8 +38,7 @@ const BlockquoteWrapper = styled.blockquote`
   &.quote {
     background-color: #eff4f5;
 
-    &:before {
-      content: "\\f10d";
+    svg {
       color: #425d9d;
       top: 25px;
     }
@@ -42,8 +47,7 @@ const BlockquoteWrapper = styled.blockquote`
   &.check {
     background-color: #def9e5;
 
-    &:before {
-      content: "\\f058";
+    svg {
       color: #34bc58;
     }
   }
@@ -51,8 +55,7 @@ const BlockquoteWrapper = styled.blockquote`
   &.danger {
     background-color: #ffe3db;
 
-    &:before {
-      content: "\\f057";
+    svg {
       color: #ff6547;
     }
   }
@@ -60,8 +63,7 @@ const BlockquoteWrapper = styled.blockquote`
   &.info {
     background-color: #e3f1f4;
 
-    &:before {
-      content: "\\f059";
+    svg {
       color: #3da2e0;
     }
   }
@@ -69,17 +71,27 @@ const BlockquoteWrapper = styled.blockquote`
   &.warning {
     background-color: #fff4d4;
 
-    &:before {
-      content: "\\f06a";
+    svg {
       color: #f58128;
     }
   }
 `
 
-const Blockquote = ({children, className}) => (
-  <BlockquoteWrapper className={className}>
-    {children}
-  </BlockquoteWrapper>
-)
+const Blockquote = ({children, className}) => {
+  if (className === "quote") {
+
+  }
+
+  return (
+    <BlockquoteWrapper className={className}>
+      {className === "quote" && <FaQuoteLeft/>}
+      {className === "check" && <FaCheckCircle/>}
+      {className === "danger" && <FaTimesCircle/>}
+      {className === "info" && <FaQuestionCircle/>}
+      {className === "warning" && <FaExclamationCircle/>}
+      {children}
+    </BlockquoteWrapper>
+  )
+}
 
 export default Blockquote

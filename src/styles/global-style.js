@@ -2,12 +2,10 @@ import { createGlobalStyle } from "styled-components"
 import Theme from "./theme"
 import styledNormalize from "styled-normalize"
 import * as prismStyle from "prismjs/themes/prism-okaidia.css"
-import fontAwesome from "font-awesome/css/font-awesome.min.css"
 
 const GlobalStyle = createGlobalStyle`
   ${styledNormalize}
   ${prismStyle}
-  ${fontAwesome}
 
   html {
     box-sizing: border-box;
@@ -30,7 +28,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a {
-    color: ${Theme.layout.linkColor};
+    color: ${Theme.layout.primaryColor};
     text-decoration: none;
   }
 
