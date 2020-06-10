@@ -1,8 +1,11 @@
+const website = require('./config/website')
+
 module.exports = {
   siteMetadata: {
-    title: `Обо всем на свете`, // TO DO: add to config
-    description: `Интересные истории из жизни каждый день`, // TO DO: add to config
-    siteUrl: `https://kulykaldr.netlify.com`, // TO DO: add to config
+    title: website.title,
+    description: website.description, // TO DO: add to config
+    siteUrl: website.url, // TO DO: add to config
+    author: website.author,
     menu: [ // TO DO: add to config
       {
         name: 'Главная',
@@ -48,13 +51,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-          name: `Обо всем на свете`,
+          name: website.title,
           short_name: `Интересные истории из жизни каждый день`,
           start_url: `/`,
-          background_color: `#5a80b1`,
-          theme_color: `#5a80b1`,
+          background_color: website.primaryColor,
+          theme_color: website.primaryColor,
           display: `minimal-ui`,
-          icon: `${__dirname}/content/images/logo.png`
+          icon: `${__dirname}/content/images/favicon.png`
         }
     },
     {
@@ -141,7 +144,7 @@ module.exports = {
             resolve: "gatsby-remark-external-links",
             options: {
               target: "_blank",
-              rel: "nofollow"
+              rel: "nofollow noopener noreferrer"
             }
           },
           {
@@ -229,6 +232,14 @@ module.exports = {
             variants: [`400`, `700`, `900`]
           }
         ]
+      }
+    },
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host: website.url,
+        sitemap: `${website.url}/sitemap.xml`,
+        policy: [{ userAgent: '*', allow: '/' }]
       }
     },
   ].filter(Boolean)

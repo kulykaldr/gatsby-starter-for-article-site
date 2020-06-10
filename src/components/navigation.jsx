@@ -4,6 +4,7 @@ import styled from "styled-components"
 import {Container} from "./common"
 import Theme from "../styles/theme"
 import {Link} from "gatsby"
+import {useLocation} from "@reach/router";
 
 export const NavContainer = styled.div`
   z-index: 1000;
@@ -109,32 +110,36 @@ export const ToggleSearchButton = styled.button`
   }
 `
 
-const Navigation = ({menu, showSearch = true, location}) => (
-  <NavContainer>
-    <Nav>
-      <NavWrapper>
-        <NavMenu mobile={true}>
-          {menu.map((item, index) => (
-            <NavMenuItem key={index}>
-              {
-                item.path === location.pathname
-                  ? <span>{item.name}</span>
-                  : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
-              }
-            </NavMenuItem>
-          ))}
-        </NavMenu>
-        <SearchContainer>
-          {showSearch &&
-          <NavMenu>
-            <Search/>
+const Navigation = ({menu, showSearch = true}) => {
+  const {pathname} = useLocation()
+
+  return (
+    <NavContainer>
+      <Nav>
+        <NavWrapper>
+          <NavMenu mobile={true}>
+            {menu.map((item, index) => (
+              <NavMenuItem key={index}>
+                {
+                  item.path === pathname
+                    ? <span>{item.name}</span>
+                    : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
+                }
+              </NavMenuItem>
+            ))}
           </NavMenu>
-          }
-        </SearchContainer>
-      </NavWrapper>
-    </Nav>
-  </NavContainer>
-)
+          <SearchContainer>
+            {showSearch &&
+            <NavMenu>
+              <Search/>
+            </NavMenu>
+            }
+          </SearchContainer>
+        </NavWrapper>
+      </Nav>
+    </NavContainer>
+  )
+}
 
 
 export default Navigation

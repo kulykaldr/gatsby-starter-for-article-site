@@ -89,34 +89,52 @@ export const Card = ({
                        featuredImage,
                        content,
                        halfImage = false,
-                       compact = false
+                       compact = false,
                      }) => (
-  <StyledArticle>
-    <StyledCard to={path}>
+  <StyledArticle itemType="http://schema.org/BlogPosting">
+    <StyledCard to={path} itemProp="url">
       {(featuredImage && featuredImage.fluid) &&
-      <FeaturedImage fixed={featuredImage.fluid} halfImage={halfImage}/>
+      <FeaturedImage
+        fixed={featuredImage.fluid}
+        halfImage={halfImage}
+        alt={title}
+        itemProp="image"
+      />
       }
       {(featuredImage && featuredImage.sizes) &&
-      <FeaturedImage sizes={featuredImage.sizes} halfImage={halfImage}/>
+      <FeaturedImage
+        sizes={featuredImage.sizes}
+        halfImage={halfImage}
+        itemProp="image"
+        alt={title}
+      />
       }
 
       <CardHeader>
         {meta &&
         <CardMeta>
-          {meta.category && <>{meta.category}</>}
+          {meta.category && <span itemProp="articleSection">{meta.category}</span>}
           {meta.time &&
-          <time dateTime={meta.time}>{meta.timePretty}</time>
+          <time dateTime={meta.time} itemProp="datePublished">{meta.timePretty}</time>
           }
         </CardMeta>
         }
         {title &&
-        <CardTitle compact={compact}>{title}</CardTitle>
+        <CardTitle compact={compact} itemProp="headline">{title}</CardTitle>
         }
       </CardHeader>
       {content &&
-      <CardContent dangerouslySetInnerHTML={{__html: content}}/>
+      <CardContent dangerouslySetInnerHTML={{__html: content}} itemProp="articleBody"/>
       }
 
     </StyledCard>
+    <meta itemScope="" itemProp="mainEntityOfPage" itemType="https://schema.org/WebPage"
+          itemID={path} content={title}/>
+    <meta itemProp="dateModified" content={meta.time}/>
+    <div itemProp="publisher" itemType="https://schema.org/Organization">
+      <meta itemProp="name" content={meta.siteTitle}/>
+      <meta itemProp="telephone" content={meta.siteTitle}/>
+      <meta itemProp="address" content={meta.siteUrl}/>
+    </div>
   </StyledArticle>
 )

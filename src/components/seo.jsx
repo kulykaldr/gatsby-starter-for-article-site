@@ -2,12 +2,12 @@ import React from "react"
 import { Helmet } from "react-helmet"
 import { graphql, useStaticQuery } from "gatsby"
 import url from "url"
+import {useLocation} from "@reach/router";
 
 const SEO = ({
   title,
   description,
   lang = "ru-RU",
-  location,
   publishedAt,
   updatedAt,
   isArticle = false,
@@ -15,6 +15,7 @@ const SEO = ({
   type = `Article`,
   image,
 }) => {
+  const { pathname } = useLocation()
   const { site } = useStaticQuery(graphql`
     query {
       site {
@@ -22,6 +23,7 @@ const SEO = ({
           title
           siteUrl
           description
+          author
         }
       }
     }
@@ -29,8 +31,8 @@ const SEO = ({
   const metadata = site.siteMetadata
   const siteTitle = title ? `${title} | ${metadata.title}` : metadata.title
   const metaDescription = description ? description : metadata.description
-  const metaImage = image ? `${metadata.siteUrl}/${image}` : null
-  const canonical = url.resolve(metadata.siteUrl, location.pathname)
+  const metaImage = image ? `${metadata.siteUrl}${image}` : null
+  const canonical = url.resolve(metadata.siteUrl, pathname)
 
   return (
     <Helmet
@@ -120,6 +122,10 @@ const SEO = ({
         {
           "@context": "https://schema.org/",
           "@type": "${type}",
+          "author": {
+            "@type": "Person",
+            "name": "${metadata.author}"
+          },
           "headline": "${siteTitle}",
           "url": "${canonical}",
           ${publishedAt ? `"datePublished": "${publishedAt}",` : ``}

@@ -1,7 +1,7 @@
 import React from "react"
 import { Card } from "./card"
 
-const CardGrid = ({ posts }) => (
+const CardGrid = ({ posts, siteMeta }) => (
   posts.map((post, index) => (
     <Card
       title={post.frontmatter.title}
@@ -14,8 +14,11 @@ const CardGrid = ({ posts }) => (
           time: post.frontmatter.created,
           timePretty: post.frontmatter.createdPretty,
           category: post.frontmatter.categories.length > 0 ? post.frontmatter.categories[0] : null,
+          siteTitle: siteMeta.title,
+          siteUrl: siteMeta.siteUrl
         }
       }
+
       // style={{ gridArea: index === 0 ? "latest" : undefined }}
       // halfImage={index === 0}
       halfImage={true}

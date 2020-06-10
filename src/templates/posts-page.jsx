@@ -1,8 +1,8 @@
 import React from "react"
 import Layout from "../components/layout"
-import { Grid } from "../components/common"
+import {Grid} from "../components/common"
 import styled from "styled-components"
-import { graphql } from "gatsby"
+import {graphql} from "gatsby"
 import SEO from "../components/seo"
 import Theme from "../styles/theme"
 import Pagination from "../components/pagination"
@@ -27,22 +27,22 @@ const PostsContainer = styled(Grid)`
   }
 `
 
-const PostsPageTemplate = ({ data, pageContext, location }) => {
+const PostsPageTemplate = ({data, pageContext}) => {
   const posts = data.allPosts.edges.map((node) => node.node)
 
   return (
-    <Layout location={location}>
-      <SEO location={location} type={`WebSite`}/>
+    <Layout>
+      <SEO type={`WebSite`}/>
 
-        <PostsContainer>
-          <CardGrid posts={posts}/>
-          <Pagination
-            previousPagePath={pageContext.previousPagePath}
-            nextPagePath={pageContext.nextPagePath}
-            humanPageNumber={pageContext.humanPageNumber}
-            numberOfPages={pageContext.numberOfPages}
-          />
-        </PostsContainer>
+      <PostsContainer>
+        <CardGrid posts={posts} siteMeta={data.site.siteMetadata}/>
+        <Pagination
+          previousPagePath={pageContext.previousPagePath}
+          nextPagePath={pageContext.nextPagePath}
+          humanPageNumber={pageContext.humanPageNumber}
+          numberOfPages={pageContext.numberOfPages}
+        />
+      </PostsContainer>
     </Layout>
   )
 }
@@ -69,7 +69,7 @@ export const PostsPageQuery = graphql`
             createdPretty: created(formatString: "DD MMMM YYYY", locale: "ru")
             featuredImage {
               childImageSharp {
-                sizes(maxWidth: 500, quality: 100) {
+                sizes(maxWidth: 500, quality: 75) {
                   base64
                   aspectRatio
                   src
@@ -80,6 +80,12 @@ export const PostsPageQuery = graphql`
             }
           }
         }
+      }
+    }
+    site {
+      siteMetadata {
+        siteUrl
+        title
       }
     }
   }

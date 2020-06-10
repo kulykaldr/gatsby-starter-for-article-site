@@ -1,6 +1,6 @@
 import React from "react"
 import Layout from "../components/layout"
-import { graphql } from "gatsby"
+import {graphql} from "gatsby"
 import SEO from "../components/seo"
 import CardGrid from "../components/card-grid"
 import Pagination from "../components/pagination"
@@ -22,7 +22,6 @@ const DescriptionCategory = styled.p`
 
 const categoryTemplate = ({
                             data,
-                            location,
                             pageContext,
                           }) => {
   let category = data.category
@@ -36,12 +35,12 @@ const categoryTemplate = ({
   }
 
   return (
-    <Layout location={location}>
-      <SEO title={category.name} description={category.description} location={location} type={`Series`}/>
+    <Layout>
+      <SEO title={category.name} description={category.description} type={`Series`}/>
       <TitleCategory>{category.name}</TitleCategory>
       {pageContext.pageNumber === 0 && category.description ?
         <DescriptionCategory>{category.description}</DescriptionCategory> : null}
-      <CardGrid posts={posts}/>
+      <CardGrid posts={posts} siteMeta={data.site.siteMetadata}/>
       <Pagination
         previousPagePath={pageContext.previousPagePath}
         nextPagePath={pageContext.nextPagePath}
@@ -81,7 +80,7 @@ export const query = graphql`
             createdPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
             featuredImage {
               childImageSharp {
-                sizes(maxWidth: 800, quality: 100) {
+                sizes(maxWidth: 800, quality: 75) {
                   base64
                   aspectRatio
                   src
@@ -92,6 +91,12 @@ export const query = graphql`
             }
           }
         }
+      }
+    }
+    site {
+      siteMetadata {
+        siteUrl
+        title
       }
     }
   }

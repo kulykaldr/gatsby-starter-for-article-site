@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { graphql, Link, useStaticQuery, withPrefix } from "gatsby"
 import Theme from "../styles/theme"
 import Img from "gatsby-image"
+import {useLocation} from "@reach/router";
 
 const BrandingWrapper = styled.div`
   display: flex;
@@ -72,12 +73,12 @@ const HomeLink = styled(Link)`
   }
 `
 
-const Branding = ({ title, subtitle, location }) => {
+const Branding = ({ title, subtitle }) => {
   const logo = useStaticQuery(graphql`
     query {
       file(sourceInstanceName: { eq: "images" }, name: { eq: "logo" }) {
         childImageSharp {
-          sizes(maxWidth: 300, quality: 100) {
+          sizes(maxWidth: 300, quality: 75) {
             base64
             aspectRatio
             src
@@ -89,7 +90,8 @@ const Branding = ({ title, subtitle, location }) => {
     }
   `)
 
-  const isHomepage = location.pathname === withPrefix("/")
+  const { pathname } = useLocation()
+  const isHomepage = pathname === withPrefix("/")
 
   return (
     <BrandingWrapper>

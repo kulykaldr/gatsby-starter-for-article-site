@@ -53,7 +53,7 @@ const Sidebar = () => {
               excerpt
               featuredImage {
                 childImageSharp {
-                  sizes(maxWidth: 500, quality: 100) {
+                  sizes(maxWidth: 500, quality: 75) {
                     base64
                     aspectRatio
                     src
@@ -75,6 +75,10 @@ const Sidebar = () => {
 
   return (
     <>
+      <SidebarTitle>Рубрики</SidebarTitle>
+      <div>
+
+      </div>
       <SidebarTitle>Рекомендуем</SidebarTitle>
       <FeaturedPosts>
         {posts.map((post, index) => (

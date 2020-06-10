@@ -13,6 +13,7 @@ import {MDXProvider} from "@mdx-js/react"
 import Toc from "../components/toc"
 import Spoiler from "../components/ui/spoiler"
 import Blockquote from "../components/ui/blockquote";
+import {useLocation} from "@reach/router";
 
 const PostContent = styled.div`
   border-right: 1px #e5eff5 solid;
@@ -133,10 +134,12 @@ const FeaturedImage = styled(Img)`
 const StyledPost = styled.section`
   padding-left: 40px;
   padding-right: 40px;
+  padding-bottom: 40px;
 
   @media (max-width: ${Theme.breakpoints.sm}) {
     padding-left: 20px;
     padding-right: 20px;
+    padding-bottom: 20px;
   }
 `
 
@@ -152,26 +155,15 @@ const PostTitle = styled.h1`
   padding: 0;
 `
 
-const PostFooter = styled.footer`
-  background-color: #fafafa;
-  font-size: 0.8em;
-  color: #666;
-  padding: 40px;
-  line-height: 1em;
-
-  p {
-    margin: 5px 0;
-  }
-`
-
 const shortcodes = { Spoiler, blockquote: Blockquote }
 
 const PostTemplate = ({
                         data,
-                        location,
                       }) => {
   const post = data.post
+  const metadata = data.site.siteMetadata
   const readingProgressRef = createRef()
+  const { pathname } = useLocation()
 
   return (
     <>
@@ -179,9 +171,8 @@ const PostTemplate = ({
         target={readingProgressRef}
         color={Theme.layout.primaryColor}
       />
-      <Layout location={location}>
+      <Layout>
         <SEO
-          location={location}
           title={post.frontmatter.title}
           publishedAt={post.frontmatter.created}
           updatedAt={post.frontmatter.updated}
@@ -194,8 +185,8 @@ const PostTemplate = ({
           }
         />
         <PostContent>
-          <article className={`post`} ref={readingProgressRef}>
-            <PostHeader>
+          <article ref={readingProgressRef} itemType="http://schema.org/Article">
+            <PostHeader itemType="http://schema.org/WPHeader">
               <PostMeta>
                 {post.frontmatter.categories.length > 0 && (
                   <div>
@@ -204,47 +195,41 @@ const PostTemplate = ({
                       to={`/${slugify(post.frontmatter.categories[0], {
                         lower: true,
                       })}`}
+                      itemProp="articleSection"
                     >
                       {post.frontmatter.categories[0]}
                     </Link>
                   </div>
                 )}
-                <time dateTime={post.frontmatter.created}>
+                <time dateTime={post.frontmatter.created} itemProp="datePublished">
                   {post.frontmatter.createdPretty}
                 </time>
               </PostMeta>
-              <PostTitle>{post.frontmatter.title}</PostTitle>
+              <PostTitle itemProp="headline">{post.frontmatter.title}</PostTitle>
             </PostHeader>
             {post.frontmatter.featuredImage && (
               <FeaturedImage
                 sizes={post.frontmatter.featuredImage.childImageSharp.sizes}
+                itemProp="image"
               />
             )}
-            <StyledPost>
+            <StyledPost itemProp="articleBody">
               <Toc tableOfContents={post.tableOfContents}/>
               <MDXProvider components={shortcodes}>
-                <MDXRenderer className={`post`}>{post.body}</MDXRenderer>
+                <MDXRenderer>{post.body}</MDXRenderer>
               </MDXProvider>
             </StyledPost>
-            <PostFooter>
-              <p>
-                Опубликовано &nbsp;{" "}
-                <time dateTime={post.frontmatter.created}>
-                  {post.frontmatter.createdPretty}
-                </time>
-              </p>
-              {post.frontmatter.updated !== post.frontmatter.created && (
-                <p>
-                  Последний раз редактировалось {" "}
-                  <time dateTime={post.frontmatter.updated}>
-                    {post.frontmatter.updatedPretty}
-                  </time>
-                </p>
-              )}
-            </PostFooter>
           </article>
+          <meta itemProp="mainEntityOfPage" itemType="https://schema.org/WebPage"
+                itemID={pathname} content={post.frontmatter.title}/>
+          <meta itemProp="dateModified" content={post.frontmatter.updated}/>
+          <meta itemProp="datePublished" content={post.frontmatter.created}/>
+          <div itemProp="publisher" itemScope="" itemType="https://schema.org/Organization">
+            <meta itemProp="name" content={post.frontmatter.title}/>
+            <meta itemProp="telephone" content={post.frontmatter.title}/>
+            <meta itemProp="address" content={metadata.siteUrl}/>
+          </div>
         </PostContent>
-
         <Comments/>
       </Layout>
     </>
@@ -270,7 +255,7 @@ export const query = graphql`
         updatedPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
         featuredImage {
           childImageSharp {
-            sizes(maxWidth: 500, quality: 100) {
+            sizes(maxWidth: 500, quality: 75) {
               base64
               aspectRatio
               src
@@ -282,6 +267,11 @@ export const query = graphql`
       }
       body
       tableOfContents
+    }
+    site {
+      siteMetadata {
+        siteUrl
+      }
     }
   }
 `
