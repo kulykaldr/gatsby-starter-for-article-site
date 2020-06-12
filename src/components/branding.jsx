@@ -8,10 +8,11 @@ import {useLocation} from "@reach/router";
 const BrandingWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 20px 80px 20px 0;
+  padding: 20px;
+  border-bottom: 4px solid ${Theme.layout.lightGrey};
 
   @media (max-width: ${Theme.breakpoints.xl}) {
-    padding: 20px;
+    padding: 20px 80px 20px 0;
   }
 `
 

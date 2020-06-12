@@ -213,7 +213,7 @@ const PostTemplate = ({
                 itemProp="image"
               />
             )}
-            <StyledPost itemProp="articleBody">
+            <StyledPost className={`post`} itemProp="articleBody">
               <Toc tableOfContents={post.tableOfContents}/>
               <MDXProvider components={shortcodes}>
                 <MDXRenderer>{post.body}</MDXRenderer>

@@ -1,22 +1,29 @@
-import React from "react"
+import React, {useState} from "react"
 import {Search} from "./search"
 import styled from "styled-components"
 import {Container} from "./common"
 import Theme from "../styles/theme"
 import {Link} from "gatsby"
-import {useLocation} from "@reach/router";
+import {useLocation} from "@reach/router"
+import {SlideDown} from 'react-slidedown'
+import 'react-slidedown/lib/slidedown.css'
 
 export const NavContainer = styled.div`
-  z-index: 1000;
   background-color: ${Theme.layout.primaryColor};
-  /*position: sticky;
-  top: 0;*/
   box-shadow: 0 0 3px rgba(0,0,0,.03), 0 3px 46px rgba(0,0,0,.07);
+
+  @media (max-width: ${Theme.breakpoints.lg}) {
+    display: ${props => props.isActive ? "block" : "none"};
+  }
 `
 
 export const Nav = styled(Container)`
   display: flex;
   position: relative;
+
+  @media (max-width: ${Theme.breakpoints.lg}) {
+    padding: 0;
+  }
 `
 
 export const NavWrapper = styled.div`
@@ -25,8 +32,8 @@ export const NavWrapper = styled.div`
   width: 100%;
   white-space: nowrap;
 
-  @media (max-width: ${Theme.breakpoints.sm}) {
-    width: 90%;
+  @media (max-width: ${Theme.breakpoints.lg}) {
+    display: block;
   }
 `
 
@@ -35,15 +42,6 @@ export const NavMenu = styled.ul`
   list-style-type: none;
   margin: 0;
   padding: 0;
-
-  ${props => props.mobile && `
-    @media (max-width: ${Theme.breakpoints.sm}) {
-      width: 80%;
-      overflow-x: auto;
-      overflow-y: hidden;
-      mask-image: linear-gradient(to right, transparent, #000 25px, #000 90%, transparent);
-    }
-  `}
 `
 
 export const NavMenuItem = styled.li`
@@ -63,6 +61,11 @@ export const NavMenuItem = styled.li`
     display: block;
     opacity: 1;
     background: rgba(255,255,255,.1);
+  }
+
+  @media (max-width: ${Theme.breakpoints.lg}) {
+    display: block;
+    border-bottom: 1px solid rgba(255,255,255,.2);
   }
 `
 
@@ -85,6 +88,36 @@ export const NavLink = styled(Link)`
   }
 `
 
+const HamburgerButton = styled.div`
+  display: none;
+  position: absolute;
+  top: 26px;
+  right: 20px;
+  width: 38px;
+  height: 28px;
+  padding-top: 8px;
+  border-top: 4px solid ${Theme.layout.primaryColor};
+  border-bottom: 4px solid ${Theme.layout.primaryColor};
+  transition: all .3s ease;
+
+  &.active {
+    height: 20px;
+    padding-top: 4px;
+    opacity: .5;
+    filter: "alpha(opacity=50)";
+  }
+
+  span {
+    display: block;
+    height: 4px;
+    background: ${Theme.layout.primaryColor};
+  }
+
+  @media (max-width: ${Theme.breakpoints.lg}) {
+    display: block;
+  }
+`
+
 export const SearchContainer = styled.ul`
   align-self: center;
   position: relative;
@@ -92,6 +125,10 @@ export const SearchContainer = styled.ul`
 
   @media (max-width: ${Theme.breakpoints.xl}) {
     padding-right: 0px;
+  }
+
+  @media (max-width: ${Theme.breakpoints.lg}) {
+    display: none;
   }
 `
 
@@ -112,32 +149,43 @@ export const ToggleSearchButton = styled.button`
 
 const Navigation = ({menu, showSearch = true}) => {
   const {pathname} = useLocation()
+  const [isActive, setIsActive] = useState(false)
+
+  // Toggles the Menu
+  const toggleMobileMenu = () => setIsActive(!isActive)
 
   return (
-    <NavContainer>
-      <Nav>
-        <NavWrapper>
-          <NavMenu mobile={true}>
-            {menu.map((item, index) => (
-              <NavMenuItem key={index}>
-                {
-                  item.path === pathname
-                    ? <span>{item.name}</span>
-                    : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
-                }
-              </NavMenuItem>
-            ))}
-          </NavMenu>
-          <SearchContainer>
-            {showSearch &&
+    <>
+      <HamburgerButton onClick={toggleMobileMenu} className={isActive ? " active" : null}>
+        <span/>
+      </HamburgerButton>
+      <NavContainer isActive={isActive}>
+        <Nav>
+          <NavWrapper>
             <NavMenu>
-              <Search/>
+              <SlideDown>
+              {menu.map((item, index) => (
+                <NavMenuItem key={index}>
+                  {
+                    item.path === pathname
+                      ? <span>{item.name}</span>
+                      : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
+                  }
+                </NavMenuItem>
+              ))}
+              </SlideDown>
             </NavMenu>
-            }
-          </SearchContainer>
-        </NavWrapper>
-      </Nav>
-    </NavContainer>
+            <SearchContainer>
+              {showSearch &&
+              <NavMenu>
+                <Search/>
+              </NavMenu>
+              }
+            </SearchContainer>
+          </NavWrapper>
+        </Nav>
+      </NavContainer>
+    </>
   )
 }
 
