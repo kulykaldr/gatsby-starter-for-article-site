@@ -2,6 +2,8 @@ import React, {useState} from "react"
 import styled from "styled-components"
 import Theme from "../../styles/theme"
 import {FaChevronDown} from "react-icons/fa"
+import {SlideDown} from 'react-slidedown'
+import 'react-slidedown/lib/slidedown.css'
 
 const SpoilerBox = styled.div`
   background: ${Theme.layout.lightGrey};
@@ -45,7 +47,11 @@ const Spoiler = ({title, children}) => {
         {title}
         <FaChevronDown/>
       </SpoilerTitle>
-      <SpoilerBody open={isOpen}>{children}</SpoilerBody>
+      <SpoilerBody open={isOpen}>
+        <SlideDown>
+          {children}
+        </SlideDown>
+      </SpoilerBody>
     </SpoilerBox>
   )
 }
