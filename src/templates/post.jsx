@@ -155,7 +155,7 @@ const PostTitle = styled.h1`
   padding: 0;
 `
 
-const shortcodes = { Spoiler, blockquote: Blockquote }
+const shortcodes = { spoiler: Spoiler, blockquote: Blockquote }
 
 const PostTemplate = ({
                         data,

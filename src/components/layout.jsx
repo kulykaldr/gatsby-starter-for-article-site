@@ -49,7 +49,7 @@ const Layout = ({ children, showSidebar = true }) => {
         siteMetadata {
           title
           description
-          menu {
+          topMenu {
             name
             path
           }
@@ -68,7 +68,7 @@ const Layout = ({ children, showSidebar = true }) => {
       <GlobalStyle/>
 
       <Header
-        menu={data.site.siteMetadata.menu}
+        menu={data.site.siteMetadata.topMenu}
         search={data.site.siteMetadata.search}
         title={data.site.siteMetadata.title}
         subtitle={data.site.siteMetadata.description}

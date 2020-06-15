@@ -11,7 +11,7 @@ const StyledPage = styled.section`
   padding: 20px;
 `
 
-const shortcodes = {Spoiler, blockquote: Blockquote}
+const shortcodes = {spoiler: Spoiler, blockquote: Blockquote}
 
 const PageTemplate = ({
                         pathContext,

@@ -14,5 +14,38 @@ module.exports = {
 
   twitter: '', // Twitter Username
   facebook: '', // Facebook Site Name
-  googleAnalyticsID: ''
+  googleAnalyticsID: '',
+
+  // Toggle search on site
+  search: true,
+
+  // Menus
+  topMenu: [
+    {
+      name: 'Главная',
+      path: '/'
+    },
+    {
+      name: 'Контакты',
+      path: '/kontakty'
+    },
+    {
+      name: 'О нас',
+      path: '/o-nas'
+    },
+  ],
+  footerMenu: [ // TO DO: add to config
+    {
+      name: 'Политика конфиденциальности',
+      path: '/politika-konfidencialnosti'
+    },
+    {
+      name: 'RSS',
+      path: '/rss.xml'
+    },
+    {
+      name: 'Карта сайта',
+      path: '/sitemap.xml'
+    }
+  ],
 }
