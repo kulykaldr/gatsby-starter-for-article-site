@@ -6,35 +6,9 @@ module.exports = {
     description: website.description, // TO DO: add to config
     siteUrl: website.url, // TO DO: add to config
     author: website.author,
-    menu: [ // TO DO: add to config
-      {
-        name: 'Главная',
-        path: '/'
-      },
-      {
-        name: 'Контакты',
-        path: '/kontakty'
-      },
-      {
-        name: 'О нас',
-        path: '/o-nas'
-      },
-    ],
-    footerMenu: [ // TO DO: add to config
-      {
-        name: 'Политика конфиденциальности',
-        path: '/politika-konfidencialnosti'
-      },
-      {
-        name: 'RSS',
-        path: '/rss.xml'
-      },
-      {
-        name: 'Карта сайта',
-        path: '/sitemap.xml'
-      }
-    ],
-    search: false,
+    topMenu: website.topMenu,
+    footerMenu: website.footerMenu,
+    search: website.search,
   },
   plugins: [
     `gatsby-plugin-sharp`,
@@ -51,14 +25,14 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-          name: website.title,
-          short_name: `Интересные истории из жизни каждый день`,
-          start_url: `/`,
-          background_color: website.primaryColor,
-          theme_color: website.primaryColor,
-          display: `minimal-ui`,
-          icon: `${__dirname}/content/images/favicon.png`
-        }
+        name: website.title,
+        short_name: website.description,
+        start_url: `/`,
+        background_color: website.primaryColor,
+        theme_color: website.primaryColor,
+        display: `minimal-ui`,
+        icon: `${__dirname}/content/images/favicon.png`
+      }
     },
     {
       resolve: `gatsby-source-filesystem`,
@@ -94,35 +68,6 @@ module.exports = {
         typeName: `Categories`
       }
     },
-    // {
-    //   resolve: `gatsby-plugin-lunr`,
-    //   options: {
-    //     languages: [
-    //       {
-    //         name: 'en'
-    //       },
-    //       {
-    //         name: 'ru'
-    //       }
-    //     ],
-    //     fields: [
-    //       {name: 'title', store: true, attributes: {boost: 20}},
-    //       {name: 'content', store: true},
-    //       {name: 'categories', store: true},
-    //       {name: 'excerpt', store: true},
-    //       {name: 'path', store: true}
-    //     ],
-    //     resolvers: {
-    //       mdx: {
-    //         title: node => node.frontmatter.title,
-    //         content: node => node.rawBody,
-    //         categories: node => node.frontmatter.categories,
-    //         excerpt: node => node.frontmatter.excerpt,
-    //         path: node => node.frontmatter.path
-    //       }
-    //     }
-    //   }
-    // },
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
@@ -133,7 +78,7 @@ module.exports = {
             options: {
               maxWidth: 1200,
               linkImagesToOriginal: false,
-              withWebp: true,
+              withWebp: false,
             },
           },
           {resolve: 'gatsby-remark-prismjs'},
@@ -239,7 +184,7 @@ module.exports = {
       options: {
         host: website.url,
         sitemap: `${website.url}/sitemap.xml`,
-        policy: [{ userAgent: '*', allow: '/' }]
+        policy: [{userAgent: '*', allow: '/'}]
       }
     },
   ].filter(Boolean)

@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {Search} from "./search"
+import {Search} from "./search-js-search"
 import styled from "styled-components"
 import {Container} from "./common"
 import Theme from "../styles/theme"
@@ -45,12 +45,7 @@ export const NavMenu = styled.ul`
 `
 
 export const NavMenuItem = styled.li`
-  cursor: pointer;
   display: inline-block;
-  border: 0;
-  background: transparent;
-  outline: none;
-  text-decoration: none;
 
   span {
     cursor: default;
@@ -122,6 +117,7 @@ export const SearchContainer = styled.ul`
   align-self: center;
   position: relative;
   padding-right: 20px;
+  margin: 0;
 
   @media (max-width: ${Theme.breakpoints.xl}) {
     padding-right: 0px;
@@ -129,21 +125,6 @@ export const SearchContainer = styled.ul`
 
   @media (max-width: ${Theme.breakpoints.lg}) {
     display: none;
-  }
-`
-
-export const ToggleSearchButton = styled.button`
-  cursor: pointer;
-  color: #fff;
-  opacity: .8;
-  background: none;
-  outline: none;
-  border: 0;
-  transition: opacity .5s;
-
-  &:hover {
-    opacity: 1;
-    background: rgba(255,255,255,.1);
   }
 `
 
@@ -164,21 +145,23 @@ const Navigation = ({menu, showSearch = true}) => {
           <NavWrapper>
             <NavMenu>
               <SlideDown>
-              {menu.map((item, index) => (
-                <NavMenuItem key={index}>
-                  {
-                    item.path === pathname
-                      ? <span>{item.name}</span>
-                      : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
-                  }
-                </NavMenuItem>
-              ))}
+                {menu.map((item, index) => (
+                  <NavMenuItem key={index}>
+                    {
+                      item.path === pathname
+                        ? <span>{item.name}</span>
+                        : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
+                    }
+                  </NavMenuItem>
+                ))}
               </SlideDown>
             </NavMenu>
             <SearchContainer>
               {showSearch &&
               <NavMenu>
-                <Search/>
+                <NavMenuItem>
+                  <Search/>
+                </NavMenuItem>
               </NavMenu>
               }
             </SearchContainer>

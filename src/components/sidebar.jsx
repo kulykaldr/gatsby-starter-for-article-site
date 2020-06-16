@@ -117,7 +117,7 @@ const Sidebar = () => {
       <SidebarTitle>Рубрики</SidebarTitle>
       <CategoriesList>
         {categories.map(category =>
-          <li>
+          <li key={category}>
             <FaAngleRight/>
             <Link to={`/${slugify(category, { lower: true })}`}>{category}</Link>
           </li>)
