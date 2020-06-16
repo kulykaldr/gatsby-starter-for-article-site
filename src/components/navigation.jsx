@@ -117,6 +117,7 @@ export const SearchContainer = styled.ul`
   align-self: center;
   position: relative;
   padding-right: 20px;
+  margin: 0;
 
   @media (max-width: ${Theme.breakpoints.xl}) {
     padding-right: 0px;
@@ -144,21 +145,23 @@ const Navigation = ({menu, showSearch = true}) => {
           <NavWrapper>
             <NavMenu>
               <SlideDown>
-              {menu.map((item, index) => (
-                <NavMenuItem key={index}>
-                  {
-                    item.path === pathname
-                      ? <span>{item.name}</span>
-                      : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
-                  }
-                </NavMenuItem>
-              ))}
+                {menu.map((item, index) => (
+                  <NavMenuItem key={index}>
+                    {
+                      item.path === pathname
+                        ? <span>{item.name}</span>
+                        : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
+                    }
+                  </NavMenuItem>
+                ))}
               </SlideDown>
             </NavMenu>
             <SearchContainer>
               {showSearch &&
               <NavMenu>
-                <Search/>
+                <NavMenuItem>
+                  <Search/>
+                </NavMenuItem>
               </NavMenu>
               }
             </SearchContainer>

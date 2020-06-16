@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from "react"
 import {FaSearch} from "react-icons/fa"
-import {NavMenuItem} from "./navigation"
 import {navigate, Link, useStaticQuery, graphql} from "gatsby"
 import styled from "styled-components"
 import * as JsSearch from "js-search"
+import {useLocation} from "@reach/router"
 
 export const SearchContainer = styled.div`
   position: relative;
@@ -111,6 +111,7 @@ export const Search = () => {
   const [query, setQuery] = useState("")
   const [results, setResults] = useState([])
   const [selected, setSelected] = useState(0)
+  const {origin} = useLocation()
   const resultListRef = useRef(null)
   const searchWrapperRef = useRef(null)
   const resultRefs = []
@@ -258,7 +259,7 @@ export const Search = () => {
       case "Enter":
         event.preventDefault()
         setIsFocus(false)
-        navigate(`/${currentSelection.path}`)
+        navigate(`${origin}${currentSelection.path}`)
         return
       default:
         return
@@ -271,56 +272,52 @@ export const Search = () => {
   }
 
   return (
-    <>
-      <NavMenuItem>
-        <SearchContainer>
-          <SearchOverlay className={isFocus ? " focused" : null}/>
+    <SearchContainer>
+      <SearchOverlay className={isFocus ? " focused" : null}/>
 
-          <SearchContainer>
-            <SearchWrapper
-              className={isFocus ? " focused" : null}
-              ref={searchWrapperRef}
-            >
-              <FaSearch/>
-              <SearchInput
-                value={query}
-                type={"search"}
-                onChange={search}
-                onKeyDown={handleKey}
-                onClick={enableSearchInput}
-              />
+      <SearchContainer>
+        <SearchWrapper
+          className={isFocus ? " focused" : null}
+          ref={searchWrapperRef}
+        >
+          <FaSearch/>
+          <SearchInput
+            value={query}
+            type={"search"}
+            onChange={search}
+            onKeyDown={handleKey}
+            onClick={enableSearchInput}
+          />
 
-              {results.length > 0 &&
-              <ResultsContainer isFocus={isFocus}>
-                <ResultsList>
-                  {results.map((item, index) => (
-                    <ResultItem
-                      onMouseOver={() => setSelected(index)}
-                      onFocus={() => setSelected(index)}
-                      key={index}
-                      ref={ref => {
-                        if (ref) {
-                          resultRefs[index] = ref
-                        }
-                      }}
-                      selected={index === selected}
-                    >
-                      <ResultLink to={item.path}>
-                        {item.categories &&
-                        <small>{item.categories.join(", ")}</small>
-                        }
-                        <ResultTitle dangerouslySetInnerHTML={{__html: item.title}}/>
-                        <div dangerouslySetInnerHTML={{__html: item.excerpt}}/>
-                      </ResultLink>
-                    </ResultItem>
-                  ))}
-                </ResultsList>
-              </ResultsContainer>
-              }
-            </SearchWrapper>
-          </SearchContainer>
-        </SearchContainer>
-      </NavMenuItem>
-    </>
+          {results.length > 0 &&
+          <ResultsContainer isFocus={isFocus}>
+            <ResultsList ref={resultListRef}>
+              {results.map((item, index) => (
+                <ResultItem
+                  onMouseOver={() => setSelected(index)}
+                  onFocus={() => setSelected(index)}
+                  key={index}
+                  ref={ref => {
+                    if (ref) {
+                      resultRefs[index] = ref
+                    }
+                  }}
+                  selected={index === selected}
+                >
+                  <ResultLink to={item.path}>
+                    {item.categories &&
+                    <small>{item.categories.join(", ")}</small>
+                    }
+                    <ResultTitle dangerouslySetInnerHTML={{__html: item.title}}/>
+                    <div dangerouslySetInnerHTML={{__html: item.excerpt}}/>
+                  </ResultLink>
+                </ResultItem>
+              ))}
+            </ResultsList>
+          </ResultsContainer>
+          }
+        </SearchWrapper>
+      </SearchContainer>
+    </SearchContainer>
   )
 }

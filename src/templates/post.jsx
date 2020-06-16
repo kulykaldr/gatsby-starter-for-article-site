@@ -12,8 +12,8 @@ import {MDXRenderer} from "gatsby-plugin-mdx"
 import {MDXProvider} from "@mdx-js/react"
 import Toc from "../components/toc"
 import Spoiler from "../components/ui/spoiler"
-import Blockquote from "../components/ui/blockquote";
-import {useLocation} from "@reach/router";
+import Blockquote from "../components/ui/blockquote"
+import {useLocation} from "@reach/router"
 
 const PostContent = styled.div`
   border-right: 1px #e5eff5 solid;
