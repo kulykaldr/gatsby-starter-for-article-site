@@ -1,6 +1,7 @@
 const website = require('./config/website')
 
 module.exports = {
+  pathPrefix: website.pathPrefix,
   siteMetadata: {
     title: website.title,
     description: website.description, // TO DO: add to config
@@ -78,7 +79,8 @@ module.exports = {
             options: {
               maxWidth: 1200,
               linkImagesToOriginal: false,
-              withWebp: false,
+              withWebp: true,
+              quality: 75
             },
           },
           {resolve: 'gatsby-remark-prismjs'},
