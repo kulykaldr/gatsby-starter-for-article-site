@@ -83,7 +83,7 @@ export const CardTitle = styled.div`
 `
 
 export const Card = ({
-                       title,
+                       heading,
                        meta,
                        path,
                        featuredImage,
@@ -91,50 +91,40 @@ export const Card = ({
                        halfImage = false,
                        compact = false,
                      }) => (
-  <StyledArticle itemType="http://schema.org/BlogPosting">
-    <StyledCard to={path} itemProp="url">
+  <StyledArticle>
+    <StyledCard to={path}>
       {(featuredImage && featuredImage.fluid) &&
       <FeaturedImage
         fixed={featuredImage.fluid}
         halfImage={halfImage}
-        alt={title}
-        itemProp="image"
+        alt={heading}
       />
       }
       {(featuredImage && featuredImage.sizes) &&
       <FeaturedImage
         sizes={featuredImage.sizes}
         halfImage={halfImage}
-        itemProp="image"
-        alt={title}
+        alt={heading}
       />
       }
 
       <CardHeader>
         {meta &&
         <CardMeta>
-          {meta.category && <span itemProp="articleSection">{meta.category}</span>}
+          {meta.category && <span>{meta.category}</span>}
           {meta.time &&
-          <time dateTime={meta.time} itemProp="datePublished">{meta.timePretty}</time>
+          <time dateTime={meta.time}>{meta.timePretty}</time>
           }
         </CardMeta>
         }
-        {title &&
-        <CardTitle compact={compact} itemProp="headline">{title}</CardTitle>
+        {heading &&
+        <CardTitle compact={compact}>{heading}</CardTitle>
         }
       </CardHeader>
       {content &&
-      <CardContent dangerouslySetInnerHTML={{__html: content}} itemProp="articleBody"/>
+      <CardContent dangerouslySetInnerHTML={{__html: content}}/>
       }
 
     </StyledCard>
-    <meta itemScope="" itemProp="mainEntityOfPage" itemType="https://schema.org/WebPage"
-          itemID={path} content={title}/>
-    <meta itemProp="dateModified" content={meta.time}/>
-    <div itemProp="publisher" itemType="https://schema.org/Organization">
-      <meta itemProp="name" content={meta.siteTitle}/>
-      <meta itemProp="telephone" content={meta.siteTitle}/>
-      <meta itemProp="address" content={meta.siteUrl}/>
-    </div>
   </StyledArticle>
 )

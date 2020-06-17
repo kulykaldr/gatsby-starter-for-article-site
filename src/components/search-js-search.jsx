@@ -145,6 +145,8 @@ export const Search = () => {
             id
             frontmatter {
               title
+              heading
+              description
               path
               excerpt
               categories
@@ -217,13 +219,17 @@ export const Search = () => {
     dataToSearch.addIndex(["frontmatter", "title"]) // sets the index attribute for the data
     dataToSearch.addIndex(["frontmatter", "excerpt"]) // sets the index attribute for the data
     dataToSearch.addIndex(["frontmatter", "categories"]) // sets the index attribute for the data
+    dataToSearch.addIndex(["frontmatter", "heading"]) // sets the index attribute for the data
+    dataToSearch.addIndex(["frontmatter", "description"]) // sets the index attribute for the data
 
     dataToSearch.addDocuments(pages) // adds the data to be searched
 
     setResults(dataToSearch.search(input).map(page => ({
+      title: page.frontmatter.title,
       path: page.frontmatter.path,
       categories: page.frontmatter.categories,
-      title: highlight(page.frontmatter.title, input, `em`),
+      description: page.frontmatter.description,
+      heading: highlight(page.frontmatter.heading, input, `em`),
       excerpt: highlight(page.frontmatter.excerpt, input, `em`),
     })))
 
@@ -331,7 +337,7 @@ export const Search = () => {
                     {item.categories &&
                     <small>{item.categories.join(", ")}</small>
                     }
-                    <ResultTitle dangerouslySetInnerHTML={{__html: item.title}}/>
+                    <ResultTitle dangerouslySetInnerHTML={{__html: item.heading}}/>
                     <div dangerouslySetInnerHTML={{__html: item.excerpt}}/>
                   </ResultLink>
                 </ResultItem>

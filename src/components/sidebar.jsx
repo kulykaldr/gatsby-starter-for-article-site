@@ -71,7 +71,7 @@ const Sidebar = () => {
           node {
             id
             frontmatter {
-              title
+              heading
               path
               categories
               created
@@ -128,7 +128,7 @@ const Sidebar = () => {
       <FeaturedPosts>
         {posts.map((post, index) => (
           <Card
-            title={post.frontmatter.title}
+            heading={post.frontmatter.heading}
             featuredImage={post.frontmatter.featuredImage.childImageSharp}
             path={post.frontmatter.path}
             key={index}

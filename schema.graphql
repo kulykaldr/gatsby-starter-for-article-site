@@ -565,8 +565,10 @@ type MdxFrontmatter {
     "Configures the locale Moment.js will use to format the date."
     locale: String
   ): Date
+  description: String
   excerpt: String
   featuredImage: File
+  heading: String
   path: String
   title: String!
   updated(
@@ -775,6 +777,8 @@ type SitePageContextPage {
 }
 
 type SitePageContextPageFrontmatter {
+  description: String
+  heading: String
   path: String
   title: String
 }
@@ -915,6 +919,7 @@ type SitePluginPluginOptionsGatsbyRemarkPluginsOptions {
   markdownCaptions: Boolean
   maxWidth: Int
   pathPrefix: String
+  quality: Int
   rel: String
   showCaptions: Boolean
   target: String
@@ -1293,6 +1298,7 @@ enum FileFieldsEnum {
   childMdx___fileAbsolutePath
   childMdx___frontmatter___categories
   childMdx___frontmatter___created
+  childMdx___frontmatter___description
   childMdx___frontmatter___excerpt
   childMdx___frontmatter___featuredImage___absolutePath
   childMdx___frontmatter___featuredImage___accessTime
@@ -1331,6 +1337,7 @@ enum FileFieldsEnum {
   childMdx___frontmatter___featuredImage___size
   childMdx___frontmatter___featuredImage___sourceInstanceName
   childMdx___frontmatter___featuredImage___uid
+  childMdx___frontmatter___heading
   childMdx___frontmatter___path
   childMdx___frontmatter___title
   childMdx___frontmatter___updated
@@ -1862,6 +1869,7 @@ enum MdxFieldsEnum {
   fileAbsolutePath
   frontmatter___categories
   frontmatter___created
+  frontmatter___description
   frontmatter___excerpt
   frontmatter___featuredImage___absolutePath
   frontmatter___featuredImage___accessTime
@@ -1929,6 +1937,7 @@ enum MdxFieldsEnum {
   frontmatter___featuredImage___size
   frontmatter___featuredImage___sourceInstanceName
   frontmatter___featuredImage___uid
+  frontmatter___heading
   frontmatter___path
   frontmatter___title
   frontmatter___updated
@@ -2246,6 +2255,8 @@ enum SitePageFieldsEnum {
   context___numberOfPages
   context___pageNumber
   context___page___body
+  context___page___frontmatter___description
+  context___page___frontmatter___heading
   context___page___frontmatter___path
   context___page___frontmatter___title
   context___postId
@@ -2533,6 +2544,7 @@ enum SitePluginFieldsEnum {
   pluginOptions___gatsbyRemarkPlugins___options___markdownCaptions
   pluginOptions___gatsbyRemarkPlugins___options___maxWidth
   pluginOptions___gatsbyRemarkPlugins___options___pathPrefix
+  pluginOptions___gatsbyRemarkPlugins___options___quality
   pluginOptions___gatsbyRemarkPlugins___options___rel
   pluginOptions___gatsbyRemarkPlugins___options___showCaptions
   pluginOptions___gatsbyRemarkPlugins___options___target
@@ -2898,8 +2910,10 @@ input MdxFilterInput {
 input MdxFrontmatterFilterInput {
   categories: StringQueryOperatorInput
   created: DateQueryOperatorInput
+  description: StringQueryOperatorInput
   excerpt: StringQueryOperatorInput
   featuredImage: FileFilterInput
+  heading: StringQueryOperatorInput
   path: StringQueryOperatorInput
   title: StringQueryOperatorInput
   updated: DateQueryOperatorInput
@@ -2993,6 +3007,8 @@ input SitePageContextPageFilterInput {
 }
 
 input SitePageContextPageFrontmatterFilterInput {
+  description: StringQueryOperatorInput
+  heading: StringQueryOperatorInput
   path: StringQueryOperatorInput
   title: StringQueryOperatorInput
 }
@@ -3140,6 +3156,7 @@ input SitePluginPluginOptionsGatsbyRemarkPluginsOptionsFilterInput {
   markdownCaptions: BooleanQueryOperatorInput
   maxWidth: IntQueryOperatorInput
   pathPrefix: StringQueryOperatorInput
+  quality: IntQueryOperatorInput
   rel: StringQueryOperatorInput
   showCaptions: BooleanQueryOperatorInput
   target: StringQueryOperatorInput

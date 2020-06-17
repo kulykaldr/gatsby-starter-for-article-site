@@ -35,7 +35,7 @@ const PostsPageTemplate = ({data, pageContext}) => {
       <SEO type={`WebSite`}/>
 
       <PostsContainer>
-        <CardGrid posts={posts} siteMeta={data.site.siteMetadata}/>
+        <CardGrid posts={posts}/>
         <Pagination
           previousPagePath={pageContext.previousPagePath}
           nextPagePath={pageContext.nextPagePath}
@@ -61,7 +61,7 @@ export const PostsPageQuery = graphql`
         node {
           id
           frontmatter {
-            title
+            heading
             path
             categories
             excerpt
@@ -80,12 +80,6 @@ export const PostsPageQuery = graphql`
             }
           }
         }
-      }
-    }
-    site {
-      siteMetadata {
-        siteUrl
-        title
       }
     }
   }

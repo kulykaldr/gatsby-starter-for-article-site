@@ -77,7 +77,7 @@ const Layout = ({ children, showSidebar = true }) => {
       <HomeContainer showSidebar={showSidebar}>
         <main>{children}</main>
         {showSidebar &&
-        <SidebarContainer itemType="http://schema.org/WPSideBar">
+        <SidebarContainer>
           <Sidebar/>
         </SidebarContainer>
         }
@@ -86,7 +86,6 @@ const Layout = ({ children, showSidebar = true }) => {
       <Footer
         menu={data.site.siteMetadata.footerMenu}
         owner={data.site.siteMetadata.title}
-        itemType="http://schema.org/WPFooter"
       />
     </>
   )

@@ -13,6 +13,8 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
           node {
             frontmatter {
               title
+              heading
+              description
               path
             }
             body
@@ -31,6 +33,8 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
             }
             frontmatter {
               title
+              heading
+              description
               path
               categories
               excerpt

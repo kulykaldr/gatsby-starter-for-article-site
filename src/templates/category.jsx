@@ -40,7 +40,7 @@ const categoryTemplate = ({
       <TitleCategory>{category.name}</TitleCategory>
       {pageContext.pageNumber === 0 && category.description ?
         <DescriptionCategory>{category.description}</DescriptionCategory> : null}
-      <CardGrid posts={posts} siteMeta={data.site.siteMetadata}/>
+      <CardGrid posts={posts}/>
       <Pagination
         previousPagePath={pageContext.previousPagePath}
         nextPagePath={pageContext.nextPagePath}
@@ -72,7 +72,7 @@ export const query = graphql`
         node {
           id
           frontmatter {
-            title
+            heading
             path
             categories
             excerpt
@@ -91,12 +91,6 @@ export const query = graphql`
             }
           }
         }
-      }
-    }
-    site {
-      siteMetadata {
-        siteUrl
-        title
       }
     }
   }

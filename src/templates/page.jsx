@@ -22,11 +22,11 @@ const PageTemplate = ({
     <Layout>
       <SEO
         title={page.frontmatter.title}
-        description={page.frontmatter.excerpt}
+        description={page.frontmatter.description}
       />
       <StyledPage>
         <article>
-          <h1>{page.frontmatter.title}</h1>
+          <h1>{page.frontmatter.heading}</h1>
           <MDXProvider components={shortcodes}>
             <MDXRenderer className={`post`}>{page.body}</MDXRenderer>
           </MDXProvider>

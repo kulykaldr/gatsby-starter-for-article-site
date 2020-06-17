@@ -1,10 +1,10 @@
 import React from "react"
 import { Card } from "./card"
 
-const CardGrid = ({ posts, siteMeta }) => (
+const CardGrid = ({ posts }) => (
   posts.map((post, index) => (
     <Card
-      title={post.frontmatter.title}
+      heading={post.frontmatter.heading}
       path={post.frontmatter.path}
       featuredImage={post.frontmatter.featuredImage ? post.frontmatter.featuredImage.childImageSharp : null}
       content={post.frontmatter.excerpt}
@@ -14,8 +14,6 @@ const CardGrid = ({ posts, siteMeta }) => (
           time: post.frontmatter.created,
           timePretty: post.frontmatter.createdPretty,
           category: post.frontmatter.categories.length > 0 ? post.frontmatter.categories[0] : null,
-          siteTitle: siteMeta.title,
-          siteUrl: siteMeta.siteUrl
         }
       }
 

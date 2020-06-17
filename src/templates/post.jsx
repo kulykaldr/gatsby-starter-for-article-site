@@ -13,7 +13,6 @@ import {MDXProvider} from "@mdx-js/react"
 import Toc from "../components/toc"
 import Spoiler from "../components/ui/spoiler"
 import Blockquote from "../components/ui/blockquote"
-import {useLocation} from "@reach/router"
 
 const PostContent = styled.div`
   border-right: 1px #e5eff5 solid;
@@ -161,9 +160,7 @@ const PostTemplate = ({
                         data,
                       }) => {
   const post = data.post
-  const metadata = data.site.siteMetadata
   const readingProgressRef = createRef()
-  const { pathname } = useLocation()
 
   return (
     <>
@@ -177,7 +174,7 @@ const PostTemplate = ({
           publishedAt={post.frontmatter.created}
           updatedAt={post.frontmatter.updated}
           categories={post.frontmatter.categories}
-          description={post.frontmatter.excerpt}
+          description={post.frontmatter.description}
           image={
             post.frontmatter.featuredImage
               ? post.frontmatter.featuredImage.childImageSharp.sizes.src
@@ -185,8 +182,8 @@ const PostTemplate = ({
           }
         />
         <PostContent>
-          <article ref={readingProgressRef} itemType="http://schema.org/Article">
-            <PostHeader itemType="http://schema.org/WPHeader">
+          <article ref={readingProgressRef}>
+            <PostHeader>
               <PostMeta>
                 {post.frontmatter.categories.length > 0 && (
                   <div>
@@ -195,40 +192,29 @@ const PostTemplate = ({
                       to={`/${slugify(post.frontmatter.categories[0], {
                         lower: true,
                       })}`}
-                      itemProp="articleSection"
                     >
                       {post.frontmatter.categories[0]}
                     </Link>
                   </div>
                 )}
-                <time dateTime={post.frontmatter.created} itemProp="datePublished">
+                <time dateTime={post.frontmatter.created}>
                   {post.frontmatter.createdPretty}
                 </time>
               </PostMeta>
-              <PostTitle itemProp="headline">{post.frontmatter.title}</PostTitle>
+              <PostTitle>{post.frontmatter.heading}</PostTitle>
             </PostHeader>
             {post.frontmatter.featuredImage && (
               <FeaturedImage
                 sizes={post.frontmatter.featuredImage.childImageSharp.sizes}
-                itemProp="image"
               />
             )}
-            <StyledPost className={`post`} itemProp="articleBody">
+            <StyledPost className={`post`}>
               <Toc tableOfContents={post.tableOfContents}/>
               <MDXProvider components={shortcodes}>
                 <MDXRenderer>{post.body}</MDXRenderer>
               </MDXProvider>
             </StyledPost>
           </article>
-          <meta itemProp="mainEntityOfPage" itemType="https://schema.org/WebPage"
-                itemID={pathname} content={post.frontmatter.title}/>
-          <meta itemProp="dateModified" content={post.frontmatter.updated}/>
-          <meta itemProp="datePublished" content={post.frontmatter.created}/>
-          <div itemProp="publisher" itemScope="" itemType="https://schema.org/Organization">
-            <meta itemProp="name" content={post.frontmatter.title}/>
-            <meta itemProp="telephone" content={post.frontmatter.title}/>
-            <meta itemProp="address" content={metadata.siteUrl}/>
-          </div>
         </PostContent>
         <Comments/>
       </Layout>
@@ -248,7 +234,8 @@ export const query = graphql`
         title
         path
         categories
-        excerpt
+        heading
+        description
         created
         createdPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
         updated
