@@ -2,11 +2,11 @@ import React from "react"
 import Navigation from "./navigation"
 import Branding from "./branding"
 import {Container} from "./common"
-import Theme from "../styles/theme"
 import styled from "styled-components"
 
 const HeaderContainer = styled(Container)`
-  border-bottom: 4px solid ${Theme.layout.lightGrey};
+  position: relative;
+  z-index: 20;
 `
 
 const Header = ({title, subtitle, menu, search = true}) => {

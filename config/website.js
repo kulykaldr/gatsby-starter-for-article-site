@@ -1,4 +1,6 @@
 module.exports = {
+  pathPrefix: '/', // Note: it must *not* have a trailing slash.
+
   title: 'Обо всем на свете', // Navigation and Site Title
   titleAlt: 'Gatsby Prismic.io', // Title for JSONLD
   description: 'Интересные истории из жизни каждый день',

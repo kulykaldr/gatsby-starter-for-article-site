@@ -4,6 +4,7 @@ import {navigate, Link, useStaticQuery, graphql} from "gatsby"
 import styled from "styled-components"
 import * as JsSearch from "js-search"
 import {useLocation} from "@reach/router"
+import Theme from "../styles/theme";
 
 export const SearchContainer = styled.div`
   position: relative;
@@ -17,6 +18,17 @@ export const SearchInput = styled.input`
   outline: 0;
   padding-left: 8px;
   outline-offset: -2px;
+
+  &::placeholder {
+    color: hsla(0,0%,100%,.8);
+  }
+
+  &.focused {
+    &::placeholder {
+      color: #000;
+    }
+  }
+
 `
 
 export const ResultsList = styled.ul`
@@ -36,9 +48,10 @@ export const ResultsList = styled.ul`
 
 export const ResultItem = styled.li`
   line-height: 1.4em;
+  border-bottom: 1px solid ${Theme.layout.lightGrey};
 
   ${props => props.selected && `
-    background-color: #f2f2f2;
+    background-color: ${Theme.layout.lightGrey};
   `};
 `
 
@@ -86,24 +99,32 @@ export const SearchOverlay = styled.div`
 
 export const SearchWrapper = styled.div`
   display: flex;
-    background-color: hsla(0,0%,100%,.3);
-    padding: 8px;
-    border-radius: 3px;
-    transition: all .25s;
-    width: 180px;
-    color: hsla(0,0%,100%,.8);
+  background-color: hsla(0,0%,100%,.3);
+  padding: 8px;
+  border-radius: 3px;
+  transition: all .25s;
+  width: 180px;
+  color: hsla(0,0%,100%,.8);
 
-    svg {
-      align-self: center;
-      width: 16px;
-      min-width: 16px;
-    }
+  svg {
+    align-self: center;
+    width: 16px;
+    min-width: 16px;
+  }
 
-    &.focused {
-      width: 400px;
-      background-color: #fff;
-      color: #000;
+  &.focused {
+    width: 400px;
+    background-color: #fff;
+    color: #000;
+
+    @media (max-width: ${Theme.breakpoints.sm}) {
+      width: 75vw;
     }
+  }
+
+  @media (max-width: ${Theme.breakpoints.sm}) {
+      width: 75vw;
+  }
 `
 
 export const Search = () => {
@@ -287,6 +308,8 @@ export const Search = () => {
             onChange={search}
             onKeyDown={handleKey}
             onClick={enableSearchInput}
+            placeholder={"Поиск по сайту"}
+            className={isFocus ? " focused" : null}
           />
 
           {results.length > 0 &&

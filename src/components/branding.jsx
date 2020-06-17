@@ -9,6 +9,8 @@ const BrandingWrapper = styled.div`
   display: flex;
   flex-direction: row;
   padding: 20px;
+  background-color: ${Theme.layout.backgroundColor};
+  z-index: 20;
 
   @media (max-width: ${Theme.breakpoints.xl}) {
     padding: 20px 80px 20px 0;
