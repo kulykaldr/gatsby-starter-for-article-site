@@ -154,6 +154,25 @@ const PostTitle = styled.h1`
   padding: 0;
 `
 
+const CommentsWrapper = styled.div`
+  border-right: 1px #e5eff5 solid;
+  border-left: 1px #e5eff5 solid;
+  background-color: #fff;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.03), 0 3px 46px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  max-width: 100%;
+  padding: 41px;
+  margin: 1.5em 0 1.5em 0;
+
+  @media (max-width: ${Theme.breakpoints.md}) {
+    margin: 1.1em 0 1.1em 0;
+  }
+
+  @media (max-width: ${Theme.breakpoints.sm}) {
+    padding: 21px;
+  }
+`
+
 const shortcodes = { spoiler: Spoiler, blockquote: Blockquote }
 
 const PostTemplate = ({
@@ -216,7 +235,9 @@ const PostTemplate = ({
             </StyledPost>
           </article>
         </PostContent>
-        <Comments/>
+        <CommentsWrapper>
+          <Comments/>
+        </CommentsWrapper>
       </Layout>
     </>
   )
