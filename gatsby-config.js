@@ -116,6 +116,13 @@ module.exports = {
         path: `${__dirname}/src/pages`
       }
     },
+    `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: process.env.GOOGLE_ANALYTICS_ID
+      }
+    },
     {
       resolve: `gatsby-plugin-feed-mdx`,
       options: {
