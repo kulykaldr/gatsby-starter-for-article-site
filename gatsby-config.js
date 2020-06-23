@@ -1,3 +1,4 @@
+require("dotenv").config();
 const website = require('./config/website')
 
 module.exports = {
