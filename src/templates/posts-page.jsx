@@ -9,18 +9,11 @@ import Pagination from "../components/pagination"
 import CardGrid from "../components/card-grid"
 
 const PostsContainer = styled(Grid)`
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  /*grid-template-areas: "latest latest" ". .";*/
-  width: 100%;
   margin-left: 0;
   margin-right: 0;
   margin-top: 30px;
 
   @media (max-width: ${Theme.breakpoints.sm}) {
-    display: block;
-    padding: 0;
-
     article {
       margin-bottom: 30px;
     }
@@ -35,7 +28,7 @@ const PostsPageTemplate = ({data, pageContext}) => {
       <SEO type={`WebSite`}/>
 
       <PostsContainer>
-        <CardGrid posts={posts}/>
+        <CardGrid posts={posts} halfImage={true}/>
         <Pagination
           previousPagePath={pageContext.previousPagePath}
           nextPagePath={pageContext.nextPagePath}

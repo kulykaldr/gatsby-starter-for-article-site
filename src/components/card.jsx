@@ -37,7 +37,7 @@ export const FeaturedImage = styled(Img)`
   width: 100%;
   border-top-left-radius: 3px;
 
-  ${props => props.halfImage ? `
+  ${props => props.halfImage && !props.compact ? `
     width: 50%;
     float: left;
     margin-right: 30px;
@@ -103,6 +103,7 @@ export const Card = ({
       {(featuredImage && featuredImage.sizes) &&
       <FeaturedImage
         sizes={featuredImage.sizes}
+        compact={compact}
         halfImage={halfImage}
         alt={heading}
       />
@@ -121,7 +122,7 @@ export const Card = ({
         <CardTitle compact={compact}>{heading}</CardTitle>
         }
       </CardHeader>
-      {content &&
+      {content && !compact &&
       <CardContent dangerouslySetInnerHTML={{__html: content}}/>
       }
 

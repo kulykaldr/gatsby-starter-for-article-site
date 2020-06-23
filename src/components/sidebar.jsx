@@ -1,24 +1,10 @@
 import React from "react"
 import { graphql, useStaticQuery, Link } from "gatsby"
-import { Card } from "./card"
 import styled from "styled-components"
 import Theme from "../styles/theme"
 import slugify from "slugify"
 import {FaAngleRight} from "react-icons/fa"
-
-const FeaturedPosts = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 30px;
-
-  @media (max-width: ${Theme.breakpoints.lg}) {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  @media (max-width: ${Theme.breakpoints.sm}) {
-    grid-template-columns: 1fr;
-  }
-`
+import CardGrid from "./card-grid";
 
 const SidebarTitle = styled.div`
   font-size: 18px;
@@ -31,6 +17,11 @@ const SidebarTitle = styled.div`
 const StickyContent = styled.div`
   position: sticky;
   top: 30px;
+  display: initial;
+
+  @media (max-width: ${Theme.breakpoints.lg}) {
+    display: none;
+  }
 `
 
 const CategoriesList = styled.ul`
@@ -124,26 +115,8 @@ const Sidebar = () => {
         }
       </CategoriesList>
 
-      <SidebarTitle>Рекомендуем</SidebarTitle>
-      <FeaturedPosts>
-        {posts.map((post, index) => (
-          <Card
-            heading={post.frontmatter.heading}
-            featuredImage={post.frontmatter.featuredImage.childImageSharp}
-            path={post.frontmatter.path}
-            key={index}
-            compact={true}
-            meta={{
-              time: post.frontmatter.created,
-              timePretty: post.frontmatter.createdPretty,
-              category:
-                post.frontmatter.categories.length > 0
-                  ? post.frontmatter.categories[0]
-                  : null,
-            }}
-          />
-        ))}
-      </FeaturedPosts>
+      <SidebarTitle>Рекомендуем почитать</SidebarTitle>
+      <CardGrid posts={posts} count={3} compact={true}/>
       <StickyContent>
         Sticky SideBar Content
       </StickyContent>

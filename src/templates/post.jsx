@@ -13,6 +13,7 @@ import {MDXProvider} from "@mdx-js/react"
 import Toc from "../components/toc"
 import Spoiler from "../components/ui/spoiler"
 import Blockquote from "../components/ui/blockquote"
+import CardGrid from "../components/card-grid";
 
 const PostContent = styled.div`
   border-right: 1px #e5eff5 solid;
@@ -154,7 +155,7 @@ const PostTitle = styled.h1`
   padding: 0;
 `
 
-const CommentsWrapper = styled.div`
+const BlockWrapper = styled.div`
   border-right: 1px #e5eff5 solid;
   border-left: 1px #e5eff5 solid;
   background-color: #fff;
@@ -171,6 +172,13 @@ const CommentsWrapper = styled.div`
   @media (max-width: ${Theme.breakpoints.sm}) {
     padding: 21px;
   }
+`
+
+const RelatedPostsTitle = styled.div`
+  font-size: 1.5em;
+  font-weight: 700;
+  text-align: center;
+  margin: 15px 0 20px;
 `
 
 const shortcodes = { spoiler: Spoiler, blockquote: Blockquote }
@@ -235,9 +243,15 @@ const PostTemplate = ({
             </StyledPost>
           </article>
         </PostContent>
-        <CommentsWrapper>
+        <BlockWrapper>
+          <RelatedPostsTitle>
+            Еще материалы по этой теме
+          </RelatedPostsTitle>
+          <CardGrid posts={post.related} columns={2} halfImage={false} count={6}/>
+        </BlockWrapper>
+        <BlockWrapper>
           <Comments/>
-        </CommentsWrapper>
+        </BlockWrapper>
       </Layout>
     </>
   )
@@ -275,6 +289,29 @@ export const query = graphql`
       }
       body
       tableOfContents
+      related {
+        frontmatter {
+          title
+          path
+          categories
+          heading
+          created
+          createdPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
+          updated
+          updatedPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
+          featuredImage {
+            childImageSharp {
+              sizes(maxWidth: 500, quality: 75) {
+                base64
+                aspectRatio
+                src
+                srcSet
+                sizes
+              }
+            }
+          }
+        }
+      }
     }
     site {
       siteMetadata {

@@ -45,7 +45,7 @@ const Toc = () => {
   });
 
   return (
-    <Spoiler title={`Содержание`}>
+    <Spoiler title={`Содержание статьи`}>
       <StyledNav className={`toc`}/>
     </Spoiler>
   )

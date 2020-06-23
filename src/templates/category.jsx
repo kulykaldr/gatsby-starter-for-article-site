@@ -40,7 +40,7 @@ const categoryTemplate = ({
       <TitleCategory>{category.name}</TitleCategory>
       {pageContext.pageNumber === 0 && category.description ?
         <DescriptionCategory>{category.description}</DescriptionCategory> : null}
-      <CardGrid posts={posts}/>
+      <CardGrid posts={posts} halfImage={true}/>
       <Pagination
         previousPagePath={pageContext.previousPagePath}
         nextPagePath={pageContext.nextPagePath}
