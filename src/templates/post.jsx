@@ -243,12 +243,13 @@ const PostTemplate = ({
             </StyledPost>
           </article>
         </PostContent>
+        {post.related && post.related.length > 0 &&
         <BlockWrapper>
           <RelatedPostsTitle>
             Еще материалы по этой теме
           </RelatedPostsTitle>
-          <CardGrid posts={post.related} columns={2} halfImage={false} count={6}/>
-        </BlockWrapper>
+          <CardGrid posts={post.related} columns={2} halfImage={false} count={6} random={true}/>
+        </BlockWrapper>}
         <BlockWrapper>
           <Comments/>
         </BlockWrapper>
