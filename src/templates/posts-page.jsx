@@ -7,6 +7,7 @@ import SEO from "../components/seo"
 import Theme from "../styles/theme"
 import Pagination from "../components/pagination"
 import CardGrid from "../components/card-grid"
+import useSiteMetadata from "../hooks/use-site-metadata"
 
 const PostsContainer = styled(Grid)`
   margin-left: 0;
@@ -22,18 +23,24 @@ const PostsContainer = styled(Grid)`
 
 const PostsPageTemplate = ({data, pageContext}) => {
   const posts = data.allPosts.edges.map((node) => node.node)
+  const {title, description} = useSiteMetadata()
+  const {previousPagePath, nextPagePath, humanPageNumber, numberOfPages} = pageContext
 
   return (
     <Layout>
-      <SEO type={`WebSite`}/>
+      <SEO
+        type={`WebSite`}
+        title={humanPageNumber > 1 ? `${title} - Страница ${humanPageNumber} из ${numberOfPages}` : null}
+        description={humanPageNumber > 1 ? `${description} | Страница ${humanPageNumber} из ${numberOfPages}` : null}
+      />
 
       <PostsContainer>
         <CardGrid posts={posts} halfImage={true}/>
         <Pagination
-          previousPagePath={pageContext.previousPagePath}
-          nextPagePath={pageContext.nextPagePath}
-          humanPageNumber={pageContext.humanPageNumber}
-          numberOfPages={pageContext.numberOfPages}
+          previousPagePath={previousPagePath}
+          nextPagePath={nextPagePath}
+          humanPageNumber={humanPageNumber}
+          numberOfPages={numberOfPages}
         />
       </PostsContainer>
     </Layout>

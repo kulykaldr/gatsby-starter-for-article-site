@@ -5,12 +5,15 @@ module.exports = {
   pathPrefix: website.pathPrefix,
   siteMetadata: {
     title: website.title,
-    description: website.description, // TO DO: add to config
-    siteUrl: website.url, // TO DO: add to config
+    description: website.description,
+    siteUrl: website.url,
     author: website.author,
     topMenu: website.topMenu,
     footerMenu: website.footerMenu,
     search: website.search,
+    siteLanguage: website.siteLanguage,
+    ogLanguage: website.ogLanguage,
+    social: website.social,
   },
   plugins: [
     `gatsby-plugin-sharp`,

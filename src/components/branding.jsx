@@ -1,9 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import { graphql, Link, useStaticQuery, withPrefix } from "gatsby"
+import {Link, withPrefix} from "gatsby"
 import Theme from "../styles/theme"
 import Img from "gatsby-image"
-import {useLocation} from "@reach/router";
+import {useLocation} from "@reach/router"
+import useLogo from "../hooks/use-logo"
 
 const BrandingWrapper = styled.div`
   display: flex;
@@ -76,21 +77,7 @@ const HomeLink = styled(Link)`
 `
 
 const Branding = ({ title, subtitle }) => {
-  const logo = useStaticQuery(graphql`
-    query {
-      file(sourceInstanceName: { eq: "images" }, name: { eq: "logo" }) {
-        childImageSharp {
-          sizes(maxWidth: 300, quality: 75) {
-            base64
-            aspectRatio
-            src
-            srcSet
-            sizes
-          }
-        }
-      }
-    }
-  `)
+  const logo = useLogo()
 
   const { pathname } = useLocation()
   const isHomepage = pathname === withPrefix("/")
@@ -99,9 +86,9 @@ const Branding = ({ title, subtitle }) => {
     <BrandingWrapper>
       <LogoWrapper>
         {isHomepage
-          ? <LogoImage sizes={logo.file.childImageSharp.sizes} alt={title}/>
+          ? <LogoImage sizes={logo} alt={title}/>
           : <HomeLink to={`/`}>
-            <LogoImage sizes={logo.file.childImageSharp.sizes} alt={title}/>
+            <LogoImage sizes={logo} alt={title}/>
           </HomeLink>
         }
       </LogoWrapper>

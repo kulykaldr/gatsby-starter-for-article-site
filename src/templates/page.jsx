@@ -23,6 +23,7 @@ const PageTemplate = ({
       <SEO
         title={page.frontmatter.title}
         description={page.frontmatter.description}
+        type={"Article"}
       />
       <StyledPage>
         <article>

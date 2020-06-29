@@ -947,8 +947,11 @@ type SiteSiteMetadata {
   author: String
   description: String
   footerMenu: [SiteSiteMetadataFooterMenu]
+  ogLanguage: String
   search: Boolean
+  siteLanguage: String
   siteUrl: String
+  social: SiteSiteMetadataSocial
   title: String
   topMenu: [SiteSiteMetadataTopMenu]
 }
@@ -956,6 +959,18 @@ type SiteSiteMetadata {
 type SiteSiteMetadataFooterMenu {
   name: String
   path: String
+}
+
+type SiteSiteMetadataSocial {
+  facebook: String
+  github: String
+  instagram: String
+  ok: String
+  reddit: String
+  telegram: String
+  twitter: String
+  vk: String
+  youtube: String
 }
 
 type SiteSiteMetadataTopMenu {
@@ -2397,8 +2412,19 @@ enum SiteFieldsEnum {
   siteMetadata___footerMenu
   siteMetadata___footerMenu___name
   siteMetadata___footerMenu___path
+  siteMetadata___ogLanguage
   siteMetadata___search
+  siteMetadata___siteLanguage
   siteMetadata___siteUrl
+  siteMetadata___social___facebook
+  siteMetadata___social___github
+  siteMetadata___social___instagram
+  siteMetadata___social___ok
+  siteMetadata___social___reddit
+  siteMetadata___social___telegram
+  siteMetadata___social___twitter
+  siteMetadata___social___vk
+  siteMetadata___social___youtube
   siteMetadata___title
   siteMetadata___topMenu
   siteMetadata___topMenu___name
@@ -3401,8 +3427,11 @@ input SiteSiteMetadataFilterInput {
   author: StringQueryOperatorInput
   description: StringQueryOperatorInput
   footerMenu: SiteSiteMetadataFooterMenuFilterListInput
+  ogLanguage: StringQueryOperatorInput
   search: BooleanQueryOperatorInput
+  siteLanguage: StringQueryOperatorInput
   siteUrl: StringQueryOperatorInput
+  social: SiteSiteMetadataSocialFilterInput
   title: StringQueryOperatorInput
   topMenu: SiteSiteMetadataTopMenuFilterListInput
 }
@@ -3414,6 +3443,18 @@ input SiteSiteMetadataFooterMenuFilterInput {
 
 input SiteSiteMetadataFooterMenuFilterListInput {
   elemMatch: SiteSiteMetadataFooterMenuFilterInput
+}
+
+input SiteSiteMetadataSocialFilterInput {
+  facebook: StringQueryOperatorInput
+  github: StringQueryOperatorInput
+  instagram: StringQueryOperatorInput
+  ok: StringQueryOperatorInput
+  reddit: StringQueryOperatorInput
+  telegram: StringQueryOperatorInput
+  twitter: StringQueryOperatorInput
+  vk: StringQueryOperatorInput
+  youtube: StringQueryOperatorInput
 }
 
 input SiteSiteMetadataTopMenuFilterInput {

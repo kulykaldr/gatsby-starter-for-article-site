@@ -9,7 +9,7 @@ const GlobalStyle = createGlobalStyle`
 
   html {
     box-sizing: border-box;
-    scroll-behavior: smooth;
+    /*scroll-behavior: smooth;*/
     background-color: ${Theme.layout.backgroundColor};
   }
 

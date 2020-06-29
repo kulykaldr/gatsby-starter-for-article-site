@@ -181,7 +181,7 @@ const RelatedPostsTitle = styled.div`
   margin: 15px 0 20px;
 `
 
-const shortcodes = { spoiler: Spoiler, blockquote: Blockquote }
+const shortcodes = {spoiler: Spoiler, blockquote: Blockquote}
 
 const PostTemplate = ({
                         data,
@@ -200,13 +200,14 @@ const PostTemplate = ({
           title={post.frontmatter.title}
           publishedAt={post.frontmatter.created}
           updatedAt={post.frontmatter.updated}
-          categories={post.frontmatter.categories}
           description={post.frontmatter.description}
           image={
             post.frontmatter.featuredImage
               ? post.frontmatter.featuredImage.childImageSharp.sizes.src
               : null
           }
+          type={"Article"}
+          categories={post.frontmatter.categories.join(",")}
         />
         <PostContent>
           <article ref={readingProgressRef}>

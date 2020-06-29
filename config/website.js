@@ -2,20 +2,27 @@ module.exports = {
   pathPrefix: '/', // Note: it must *not* have a trailing slash.
 
   title: 'Обо всем на свете', // Navigation and Site Title
-  titleAlt: 'Gatsby Prismic.io', // Title for JSONLD
   description: 'Интересные истории из жизни каждый день',
-  headline: 'Writing and publishing content for LekoArts', // Headline for schema.org JSONLD
-  url: `https://testio.netlify.com`, // Site url
-  siteLanguage: 'ru', // Language Tag on <html> element
+  url: `https://modest-neumann-85ce65.netlify.app`, // Site url
+  siteLanguage: 'ru-RU', // Language Tag on <html> element
   ogLanguage: 'ru_RU', // Facebook Language
 
   // JSONLD / Manifest
   shortName: 'Обо всем на свете', // shortname for manifest. MUST be shorter than 12 characters
   author: 'KulykAldr', // Author for schemaORGJSONLD
   primaryColor: `#5a80b1`,
+  social: {
+    twitter: 'https://twitter.com',
+    facebook: 'https://facebook.com',
+    instagram: '',
+    vk: '',
+    ok: '',
+    github: '',
+    reddit: '',
+    youtube: '',
+    telegram: '',
+  },
 
-  twitter: '', // Twitter Username
-  facebook: '', // Facebook Site Name
   googleAnalyticsID: '',
 
   // Toggle search on site
