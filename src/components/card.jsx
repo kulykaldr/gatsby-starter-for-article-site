@@ -3,9 +3,12 @@ import styled from "styled-components"
 import {Link} from "gatsby"
 import Theme from "../styles/theme"
 import Img from "gatsby-image"
+import useSiteMetadata from "../hooks/use-site-metadata"
+import useLogo from "../hooks/use-logo"
 
-export const StyledCard = styled(Link)`
-  display: block;
+export const StyledCard = styled.div`
+  display: inline-block;
+  width: 100%;
   background-color: #fff;
   border-radius: 3px;
   box-shadow: 0 1px 1px #e6e6e6, 0 2px 4px #e6e6e6;
@@ -19,11 +22,6 @@ export const StyledCard = styled(Link)`
     transform: translate3d(0, -5px, 0);
     box-shadow: 0 1px 1px #ccc, 0 4px 4px #ccc;
   }
-`
-
-export const StyledArticle = styled.div`
-  display: inline-block;
-  width: 100%;
 
   @media (max-width: ${Theme.breakpoints.sm}) {
     grid-area: unset !important;
@@ -79,7 +77,15 @@ export const CardTitle = styled.div`
   font-weight: 700;
   margin: 0;
   padding: 0;
-  color: ${Theme.layout.darkColor};
+
+  a {
+    color: ${Theme.layout.primaryColor};
+    transition: color .5s;
+
+    &:hover {
+      color: ${Theme.layout.linkColorHover};
+    }
+  }
 `
 
 export const Card = ({
@@ -90,42 +96,70 @@ export const Card = ({
                        content,
                        halfImage = false,
                        compact = false,
-                     }) => (
-  <StyledArticle>
-    <StyledCard to={path}>
+                     }) => {
+  const metadata = useSiteMetadata()
+  const logo = useLogo()
+
+  return (
+    <StyledCard itemScope itemType="http://schema.org/BlogPosting">
       {(featuredImage && featuredImage.fluid) &&
-      <FeaturedImage
-        fixed={featuredImage.fluid}
-        halfImage={halfImage}
-        alt={heading}
-      />
+      <Link to={path}>
+        <FeaturedImage
+          fixed={featuredImage.fluid}
+          halfImage={halfImage}
+          alt={heading}
+          itemProp="image"
+        />
+      </Link>
       }
       {(featuredImage && featuredImage.sizes) &&
-      <FeaturedImage
-        sizes={featuredImage.sizes}
-        compact={compact}
-        halfImage={halfImage}
-        alt={heading}
-      />
+      <Link to={path}>
+        <FeaturedImage
+          sizes={featuredImage.sizes}
+          compact={compact}
+          halfImage={halfImage}
+          alt={heading}
+          itemProp="image"
+        />
+      </Link>
       }
 
       <CardHeader>
         {meta &&
         <CardMeta>
-          {meta.category && <span>{meta.category}</span>}
-          {meta.time &&
-          <time dateTime={meta.time}>{meta.timePretty}</time>
+          {meta.category &&
+            <span itemProp="isPartOf">{meta.category}</span>
+          }
+          {meta.timeCreated &&
+            <time dateTime={meta.timeCreated} itemProp="datePublished">{meta.timePretty}</time>
           }
         </CardMeta>
         }
         {heading &&
-        <CardTitle compact={compact}>{heading}</CardTitle>
+        <CardTitle compact={compact} itemProp="name">
+          <Link to={path} rel="bookmark" itemProp="url">
+            <span itemProp="headline">{heading}</span>
+          </Link>
+        </CardTitle>
         }
       </CardHeader>
       {content && !compact &&
-      <CardContent dangerouslySetInnerHTML={{__html: content}}/>
+      <CardContent dangerouslySetInnerHTML={{__html: content}} itemProp="articleBody"/>
       }
 
+      <meta itemProp="author" content={metadata.author}/>
+      <meta itemScope itemProp="mainEntityOfPage" itemType="https://schema.org/WebPage"
+            itemID={`${metadata.siteUrl}${path}`} content={heading}/>
+      <meta itemProp="datePublished" content={meta.timeCreated}/>
+      <meta itemProp="dateModified" content={meta.timeUpdated}/>
+      <div itemProp="publisher" itemScope itemType="https://schema.org/Organization">
+        <div itemProp="logo" itemScope itemType="https://schema.org/ImageObject" style={{display: "none"}}>
+          <img itemProp="url image" src={logo.src} alt={metadata.title}/>
+        </div>
+        <meta itemProp="name" content={metadata.title}/>
+        <meta itemProp="telephone" content={metadata.title}/>
+        <meta itemProp="address" content={metadata.siteUrl}/>
+      </div>
     </StyledCard>
-  </StyledArticle>
-)
+  )
+}

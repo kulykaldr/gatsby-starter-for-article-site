@@ -77,7 +77,7 @@ const Layout = ({ children, showSidebar = true }) => {
       <HomeContainer showSidebar={showSidebar}>
         <main>{children}</main>
         {showSidebar &&
-        <SidebarContainer>
+        <SidebarContainer itemScope itemType="http://schema.org/WPSideBar">
           <Sidebar/>
         </SidebarContainer>
         }

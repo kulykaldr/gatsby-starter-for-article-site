@@ -65,7 +65,7 @@ const Footer = ({ menu, owner }) => {
   const { pathname } = useLocation()
 
   return (
-    <StyledFooter>
+    <StyledFooter itemScope itemType="http://schema.org/WPFooter">
       <FooterContainer>
         <StyledNav>
           <ul>

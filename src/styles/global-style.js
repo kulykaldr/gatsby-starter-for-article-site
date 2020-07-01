@@ -22,6 +22,11 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 
+  *::selection {
+    background-color: ${Theme.layout.primaryColor};
+    color: #fff;
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-family: ${Theme.fonts.heading};
     outline: none;

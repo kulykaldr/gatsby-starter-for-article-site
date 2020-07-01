@@ -13,7 +13,10 @@ import {MDXProvider} from "@mdx-js/react"
 import Toc from "../components/toc"
 import Spoiler from "../components/ui/spoiler"
 import Blockquote from "../components/ui/blockquote"
-import CardGrid from "../components/card-grid";
+import CardGrid from "../components/card-grid"
+import Breadcrumb from "../components/breadcrumb"
+import {useLocation} from "@reach/router"
+import useSiteMetadata from "../hooks/use-site-metadata"
 
 const PostContent = styled.div`
   border-right: 1px #e5eff5 solid;
@@ -120,6 +123,15 @@ const PostHeader = styled.header`
   @media (max-width: ${Theme.breakpoints.sm}) {
     padding: 20px;
   }
+
+  a {
+    color: ${Theme.layout.primaryColor};
+    transition: color 0.5s;
+
+    &:hover {
+      color: ${Theme.layout.linkColorHover};
+    }
+  }
 `
 
 const FeaturedImage = styled(Img)`
@@ -188,6 +200,9 @@ const PostTemplate = ({
                       }) => {
   const post = data.post
   const readingProgressRef = createRef()
+  const categoryPath = `/${slugify(post.frontmatter.categories[0], {lower: true})}`
+  const {pathname} = useLocation()
+  const metadata = useSiteMetadata()
 
   return (
     <>
@@ -209,34 +224,32 @@ const PostTemplate = ({
           type={"Article"}
           categories={post.frontmatter.categories.join(",")}
         />
-        <PostContent>
+        <PostContent itemScope itemType="http://schema.org/Article">
+          <Breadcrumb categoryName={post.frontmatter.categories[0]} categoryPath={categoryPath}/>
           <article ref={readingProgressRef}>
             <PostHeader>
               <PostMeta>
                 {post.frontmatter.categories.length > 0 && (
                   <div>
                     Рубрика:&nbsp;{" "}
-                    <Link
-                      to={`/${slugify(post.frontmatter.categories[0], {
-                        lower: true,
-                      })}`}
-                    >
+                    <Link to={categoryPath}>
                       {post.frontmatter.categories[0]}
                     </Link>
                   </div>
                 )}
-                <time dateTime={post.frontmatter.created}>
+                <time dateTime={post.frontmatter.created} itemProp="datePublished">
                   {post.frontmatter.createdPretty}
                 </time>
               </PostMeta>
-              <PostTitle>{post.frontmatter.heading}</PostTitle>
+              <PostTitle itemProp="headline">{post.frontmatter.heading}</PostTitle>
             </PostHeader>
             {post.frontmatter.featuredImage && (
               <FeaturedImage
                 sizes={post.frontmatter.featuredImage.childImageSharp.sizes}
+                itemProp="image"
               />
             )}
-            <StyledPost className={`post`}>
+            <StyledPost className={`post`} itemProp="articleBody">
               <Toc tableOfContents={post.tableOfContents}/>
               <MDXProvider components={shortcodes}>
                 <MDXRenderer>{post.body}</MDXRenderer>
@@ -251,6 +264,10 @@ const PostTemplate = ({
           </RelatedPostsTitle>
           <CardGrid posts={post.related} columns={2} halfImage={false} count={6} random={true}/>
         </BlockWrapper>}
+        <meta itemScope itemProp="mainEntityOfPage" itemType="https://schema.org/WebPage"
+              itemID={`${metadata.siteUrl}${pathname}`} content={post.frontmatter.heading}/>
+        <meta itemProp="dateModified" content={post.frontmatter.updated}/>
+        <meta itemProp="datePublished" content={post.frontmatter.created}/>
         <BlockWrapper>
           <Comments/>
         </BlockWrapper>
@@ -313,11 +330,6 @@ export const query = graphql`
             }
           }
         }
-      }
-    }
-    site {
-      siteMetadata {
-        siteUrl
       }
     }
   }

@@ -86,6 +86,7 @@ export const query = graphql`
             excerpt
             created
             createdPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
+            updated
             featuredImage {
               childImageSharp {
                 sizes(maxWidth: 800, quality: 75) {

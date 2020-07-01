@@ -34,7 +34,8 @@ const CardGrid = ({posts, halfImage = false, compact = false, random = false, co
           key={index}
           meta={
             {
-              time: post.frontmatter.created,
+              timeCreated: post.frontmatter.created,
+              timeUpdated: post.frontmatter.updated,
               timePretty: post.frontmatter.createdPretty,
               category: post.frontmatter.categories.length > 0 ? post.frontmatter.categories[0] : null,
             }

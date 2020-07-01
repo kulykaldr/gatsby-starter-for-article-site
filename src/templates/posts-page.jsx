@@ -67,6 +67,7 @@ export const PostsPageQuery = graphql`
             excerpt
             created
             createdPretty: created(formatString: "DD MMMM YYYY", locale: "ru")
+            updated
             featuredImage {
               childImageSharp {
                 sizes(maxWidth: 500, quality: 75) {
