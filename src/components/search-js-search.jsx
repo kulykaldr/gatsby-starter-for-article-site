@@ -20,7 +20,7 @@ export const SearchInput = styled.input`
   outline-offset: -2px;
 
   &::placeholder {
-    color: hsla(0,0%,100%,.8);
+    color: hsla(0,0%,100%,.6);
   }
 
   &.focused {
@@ -28,7 +28,6 @@ export const SearchInput = styled.input`
       color: #000;
     }
   }
-
 `
 
 export const ResultsList = styled.ul`
@@ -82,8 +81,8 @@ export const ResultsContainer = styled.div`
 
 export const SearchOverlay = styled.div`
   opacity: 0;
-  height: 0px;
-  background-color: rgba(0,0,0,.4);
+  height: 0;
+  background-color: rgba(0,0,0,.2);
   width: 100%;
   position: fixed;
   left: 0;
@@ -99,12 +98,12 @@ export const SearchOverlay = styled.div`
 
 export const SearchWrapper = styled.div`
   display: flex;
-  background-color: hsla(0,0%,100%,.3);
+  background-color: hsla(0,0%,100%,.2);
   padding: 8px;
   border-radius: 3px;
   transition: all .25s;
   width: 180px;
-  color: hsla(0,0%,100%,.8);
+  color: hsla(0,0%,100%,.6);
 
   svg {
     align-self: center;
@@ -117,12 +116,12 @@ export const SearchWrapper = styled.div`
     background-color: #fff;
     color: #000;
 
-    @media (max-width: ${Theme.breakpoints.sm}) {
+    @media (max-width: ${Theme.breakpoints.lg}) {
       width: 75vw;
     }
   }
 
-  @media (max-width: ${Theme.breakpoints.sm}) {
+  @media (max-width: ${Theme.breakpoints.lg}) {
       width: 75vw;
   }
 `
