@@ -525,6 +525,7 @@ type Mdx implements Node {
   children: [Node!]!
   excerpt(pruneLength: Int = 140, truncate: Boolean = false): String!
   fileAbsolutePath: String!
+  fileRelativePath: String
   frontmatter: MdxFrontmatter
   headings(depth: HeadingsMdx): [MdxHeadingMdx]
   html: String
@@ -533,6 +534,8 @@ type Mdx implements Node {
   mdxAST: JSON
   parent: Node
   rawBody: String!
+  rawFrontmatter: String
+  rawMdxBody: String
   related: [Mdx]
   tableOfContents(maxDepth: Int): JSON
   timeToRead: Int
@@ -630,7 +633,7 @@ type Query {
   file(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, changeTime: DateQueryOperatorInput, childImageSharp: ImageSharpFilterInput, childMdx: MdxFilterInput, children: NodeFilterListInput, childrenCategories: CategoriesFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, publicURL: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput): File
   imageSharp(children: NodeFilterListInput, fixed: ImageSharpFixedFilterInput, fluid: ImageSharpFluidFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, original: ImageSharpOriginalFilterInput, parent: NodeFilterInput, resize: ImageSharpResizeFilterInput, resolutions: ImageSharpResolutionsFilterInput, sizes: ImageSharpSizesFilterInput): ImageSharp
   markdownRemark(children: NodeFilterListInput, excerpt: StringQueryOperatorInput, excerptAst: JSONQueryOperatorInput, headings: MarkdownHeadingFilterListInput, html: StringQueryOperatorInput, htmlAst: JSONQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput, tableOfContents: StringQueryOperatorInput, timeToRead: IntQueryOperatorInput, wordCount: MarkdownWordCountFilterInput): MarkdownRemark
-  mdx(body: StringQueryOperatorInput, children: NodeFilterListInput, excerpt: StringQueryOperatorInput, fileAbsolutePath: StringQueryOperatorInput, frontmatter: MdxFrontmatterFilterInput, headings: MdxHeadingMdxFilterListInput, html: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, mdxAST: JSONQueryOperatorInput, parent: NodeFilterInput, rawBody: StringQueryOperatorInput, related: MdxFilterListInput, tableOfContents: JSONQueryOperatorInput, timeToRead: IntQueryOperatorInput, wordCount: MdxWordCountFilterInput): Mdx
+  mdx(body: StringQueryOperatorInput, children: NodeFilterListInput, excerpt: StringQueryOperatorInput, fileAbsolutePath: StringQueryOperatorInput, fileRelativePath: StringQueryOperatorInput, frontmatter: MdxFrontmatterFilterInput, headings: MdxHeadingMdxFilterListInput, html: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, mdxAST: JSONQueryOperatorInput, parent: NodeFilterInput, rawBody: StringQueryOperatorInput, rawFrontmatter: StringQueryOperatorInput, rawMdxBody: StringQueryOperatorInput, related: MdxFilterListInput, tableOfContents: JSONQueryOperatorInput, timeToRead: IntQueryOperatorInput, wordCount: MdxWordCountFilterInput): Mdx
   site(buildTime: DateQueryOperatorInput, children: NodeFilterListInput, host: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput, pathPrefix: StringQueryOperatorInput, polyfill: BooleanQueryOperatorInput, port: DateQueryOperatorInput, siteMetadata: SiteSiteMetadataFilterInput): Site
   siteBuildMetadata(buildTime: DateQueryOperatorInput, children: NodeFilterListInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput): SiteBuildMetadata
   sitePage(children: NodeFilterListInput, component: StringQueryOperatorInput, componentChunkName: StringQueryOperatorInput, componentPath: StringQueryOperatorInput, context: SitePageContextFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, internalComponentName: StringQueryOperatorInput, isCreatedByStatefulCreatePages: BooleanQueryOperatorInput, matchPath: StringQueryOperatorInput, parent: NodeFilterInput, path: StringQueryOperatorInput, pluginCreator: SitePluginFilterInput, pluginCreatorId: StringQueryOperatorInput): SitePage
@@ -887,6 +890,7 @@ type SitePluginPluginOptions {
   policy: [SitePluginPluginOptionsPolicy]
   query: String
   short_name: String
+  sidebar: SitePluginPluginOptionsSidebar
   sitemap: String
   start_url: String
   theme_color: String
@@ -911,28 +915,20 @@ type SitePluginPluginOptionsGatsbyRemarkPlugins {
 }
 
 type SitePluginPluginOptionsGatsbyRemarkPluginsOptions {
-  backgroundColor: String
-  disableBgImage: Boolean
-  disableBgImageOnAlpha: Boolean
   icon: Boolean
   linkImagesToOriginal: Boolean
-  loading: String
-  markdownCaptions: Boolean
   maxWidth: Int
-  pathPrefix: String
   quality: Int
   rel: String
-  showCaptions: Boolean
   target: String
-  tracedSVG: Boolean
   withWebp: Boolean
-  wrapperStyle: String
 }
 
 type SitePluginPluginOptionsPlugins {
   browserAPIs: [String]
   id: String
   name: String
+  nodeAPIs: [String]
   pluginFilepath: String
   resolve: String
   version: String
@@ -941,6 +937,11 @@ type SitePluginPluginOptionsPlugins {
 type SitePluginPluginOptionsPolicy {
   allow: String
   userAgent: String
+}
+
+type SitePluginPluginOptionsSidebar {
+  hidden: Boolean
+  position: String
 }
 
 type SiteSiteMetadata {
@@ -1312,6 +1313,7 @@ enum FileFieldsEnum {
   childMdx___children___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___excerpt @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___fileAbsolutePath
+  childMdx___fileRelativePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___frontmatter___categories
   childMdx___frontmatter___created
   childMdx___frontmatter___description
@@ -1386,6 +1388,8 @@ enum FileFieldsEnum {
   childMdx___parent___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___parent___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___rawBody
+  childMdx___rawFrontmatter @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  childMdx___rawMdxBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___body @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -1393,6 +1397,7 @@ enum FileFieldsEnum {
   childMdx___related___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___excerpt @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___fileAbsolutePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  childMdx___related___fileRelativePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___frontmatter___categories @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___frontmatter___created @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___frontmatter___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -1418,16 +1423,21 @@ enum FileFieldsEnum {
   childMdx___related___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___rawBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  childMdx___related___rawFrontmatter @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  childMdx___related___rawMdxBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___body @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___excerpt @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___fileAbsolutePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  childMdx___related___related___fileRelativePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___headings @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___html @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___mdxAST @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___rawBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  childMdx___related___related___rawFrontmatter @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  childMdx___related___related___rawMdxBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___related @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___tableOfContents @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___related___timeToRead @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -1933,6 +1943,7 @@ enum MdxFieldsEnum {
   children___parent___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   excerpt @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   fileAbsolutePath
+  fileRelativePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___categories
   frontmatter___created
   frontmatter___description
@@ -1954,11 +1965,14 @@ enum MdxFieldsEnum {
   frontmatter___featuredImage___childMdx___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___excerpt @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___fileAbsolutePath
+  frontmatter___featuredImage___childMdx___fileRelativePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___headings @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___html @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___mdxAST @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___rawBody
+  frontmatter___featuredImage___childMdx___rawFrontmatter @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  frontmatter___featuredImage___childMdx___rawMdxBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___related @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___tableOfContents @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___timeToRead @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -2061,6 +2075,8 @@ enum MdxFieldsEnum {
   parent___parent___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   parent___parent___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   rawBody
+  rawFrontmatter @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  rawMdxBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___body @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -2080,6 +2096,7 @@ enum MdxFieldsEnum {
   related___children___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___excerpt @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___fileAbsolutePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  related___fileRelativePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___categories @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___created @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -2154,6 +2171,8 @@ enum MdxFieldsEnum {
   related___parent___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___parent___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___rawBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  related___rawFrontmatter @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  related___rawMdxBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___body @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -2161,6 +2180,7 @@ enum MdxFieldsEnum {
   related___related___children___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___excerpt @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___fileAbsolutePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  related___related___fileRelativePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___frontmatter___categories @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___frontmatter___created @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___frontmatter___description @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -2186,16 +2206,21 @@ enum MdxFieldsEnum {
   related___related___parent___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___parent___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___rawBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  related___related___rawFrontmatter @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  related___related___rawMdxBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___body @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___excerpt @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___fileAbsolutePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  related___related___related___fileRelativePath @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___headings @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___html @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___mdxAST @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___rawBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  related___related___related___rawFrontmatter @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  related___related___related___rawMdxBody @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___related @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___tableOfContents @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___related___timeToRead @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -2623,6 +2648,7 @@ enum SitePageFieldsEnum {
   pluginCreator___pluginOptions___plugins___browserAPIs
   pluginCreator___pluginOptions___plugins___id
   pluginCreator___pluginOptions___plugins___name
+  pluginCreator___pluginOptions___plugins___nodeAPIs
   pluginCreator___pluginOptions___plugins___pluginFilepath
   pluginCreator___pluginOptions___plugins___resolve
   pluginCreator___pluginOptions___plugins___version
@@ -2631,6 +2657,8 @@ enum SitePageFieldsEnum {
   pluginCreator___pluginOptions___policy___userAgent
   pluginCreator___pluginOptions___query
   pluginCreator___pluginOptions___short_name
+  pluginCreator___pluginOptions___sidebar___hidden
+  pluginCreator___pluginOptions___sidebar___position
   pluginCreator___pluginOptions___sitemap
   pluginCreator___pluginOptions___start_url
   pluginCreator___pluginOptions___theme_color
@@ -2761,22 +2789,13 @@ enum SitePluginFieldsEnum {
   pluginOptions___fonts___family
   pluginOptions___fonts___variants
   pluginOptions___gatsbyRemarkPlugins
-  pluginOptions___gatsbyRemarkPlugins___options___backgroundColor
-  pluginOptions___gatsbyRemarkPlugins___options___disableBgImage
-  pluginOptions___gatsbyRemarkPlugins___options___disableBgImageOnAlpha
   pluginOptions___gatsbyRemarkPlugins___options___icon
   pluginOptions___gatsbyRemarkPlugins___options___linkImagesToOriginal
-  pluginOptions___gatsbyRemarkPlugins___options___loading
-  pluginOptions___gatsbyRemarkPlugins___options___markdownCaptions
   pluginOptions___gatsbyRemarkPlugins___options___maxWidth
-  pluginOptions___gatsbyRemarkPlugins___options___pathPrefix
   pluginOptions___gatsbyRemarkPlugins___options___quality
   pluginOptions___gatsbyRemarkPlugins___options___rel
-  pluginOptions___gatsbyRemarkPlugins___options___showCaptions
   pluginOptions___gatsbyRemarkPlugins___options___target
-  pluginOptions___gatsbyRemarkPlugins___options___tracedSVG
   pluginOptions___gatsbyRemarkPlugins___options___withWebp
-  pluginOptions___gatsbyRemarkPlugins___options___wrapperStyle
   pluginOptions___gatsbyRemarkPlugins___resolve
   pluginOptions___host
   pluginOptions___icon
@@ -2789,6 +2808,7 @@ enum SitePluginFieldsEnum {
   pluginOptions___plugins___browserAPIs
   pluginOptions___plugins___id
   pluginOptions___plugins___name
+  pluginOptions___plugins___nodeAPIs
   pluginOptions___plugins___pluginFilepath
   pluginOptions___plugins___resolve
   pluginOptions___plugins___version
@@ -2797,6 +2817,8 @@ enum SitePluginFieldsEnum {
   pluginOptions___policy___userAgent
   pluginOptions___query
   pluginOptions___short_name
+  pluginOptions___sidebar___hidden
+  pluginOptions___sidebar___position
   pluginOptions___sitemap
   pluginOptions___start_url
   pluginOptions___theme_color
@@ -3120,6 +3142,7 @@ input MdxFilterInput {
   children: NodeFilterListInput
   excerpt: StringQueryOperatorInput
   fileAbsolutePath: StringQueryOperatorInput
+  fileRelativePath: StringQueryOperatorInput
   frontmatter: MdxFrontmatterFilterInput
   headings: MdxHeadingMdxFilterListInput
   html: StringQueryOperatorInput
@@ -3128,6 +3151,8 @@ input MdxFilterInput {
   mdxAST: JSONQueryOperatorInput
   parent: NodeFilterInput
   rawBody: StringQueryOperatorInput
+  rawFrontmatter: StringQueryOperatorInput
+  rawMdxBody: StringQueryOperatorInput
   related: MdxFilterListInput
   tableOfContents: JSONQueryOperatorInput
   timeToRead: IntQueryOperatorInput
@@ -3352,6 +3377,7 @@ input SitePluginPluginOptionsFilterInput {
   policy: SitePluginPluginOptionsPolicyFilterListInput
   query: StringQueryOperatorInput
   short_name: StringQueryOperatorInput
+  sidebar: SitePluginPluginOptionsSidebarFilterInput
   sitemap: StringQueryOperatorInput
   start_url: StringQueryOperatorInput
   theme_color: StringQueryOperatorInput
@@ -3378,28 +3404,20 @@ input SitePluginPluginOptionsGatsbyRemarkPluginsFilterListInput {
 }
 
 input SitePluginPluginOptionsGatsbyRemarkPluginsOptionsFilterInput {
-  backgroundColor: StringQueryOperatorInput
-  disableBgImage: BooleanQueryOperatorInput
-  disableBgImageOnAlpha: BooleanQueryOperatorInput
   icon: BooleanQueryOperatorInput
   linkImagesToOriginal: BooleanQueryOperatorInput
-  loading: StringQueryOperatorInput
-  markdownCaptions: BooleanQueryOperatorInput
   maxWidth: IntQueryOperatorInput
-  pathPrefix: StringQueryOperatorInput
   quality: IntQueryOperatorInput
   rel: StringQueryOperatorInput
-  showCaptions: BooleanQueryOperatorInput
   target: StringQueryOperatorInput
-  tracedSVG: BooleanQueryOperatorInput
   withWebp: BooleanQueryOperatorInput
-  wrapperStyle: StringQueryOperatorInput
 }
 
 input SitePluginPluginOptionsPluginsFilterInput {
   browserAPIs: StringQueryOperatorInput
   id: StringQueryOperatorInput
   name: StringQueryOperatorInput
+  nodeAPIs: StringQueryOperatorInput
   pluginFilepath: StringQueryOperatorInput
   resolve: StringQueryOperatorInput
   version: StringQueryOperatorInput
@@ -3416,6 +3434,11 @@ input SitePluginPluginOptionsPolicyFilterInput {
 
 input SitePluginPluginOptionsPolicyFilterListInput {
   elemMatch: SitePluginPluginOptionsPolicyFilterInput
+}
+
+input SitePluginPluginOptionsSidebarFilterInput {
+  hidden: BooleanQueryOperatorInput
+  position: StringQueryOperatorInput
 }
 
 input SitePluginSortInput {

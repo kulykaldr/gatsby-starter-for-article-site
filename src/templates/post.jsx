@@ -17,6 +17,7 @@ import CardGrid from "../components/card-grid"
 import Breadcrumb from "../components/breadcrumb"
 import {useLocation} from "@reach/router"
 import useSiteMetadata from "../hooks/use-site-metadata"
+import {mdxForm} from "gatsby-tinacms-mdx"
 
 const PostContent = styled.div`
   border-right: 1px #e5eff5 solid;
@@ -68,8 +69,7 @@ const PostContent = styled.div`
       height: 24px;
       margin: 0 13px 0 -40px;
       text-align: center;
-      border: 2px solid #425d9d;
-      border-color: ${Theme.layout.primaryColor};
+      border: 2px solid ${Theme.layout.primaryColor};
       border-radius: 50%;
     }
   }
@@ -276,7 +276,7 @@ const PostTemplate = ({
   )
 }
 
-export default PostTemplate
+export default mdxForm(PostTemplate, { queryName: 'post' })
 
 export const query = graphql`
   query ($postId: String!) {
@@ -331,6 +331,7 @@ export const query = graphql`
           }
         }
       }
+      ...TinaMdx
     }
   }
 `
