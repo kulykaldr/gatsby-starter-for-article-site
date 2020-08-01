@@ -14,8 +14,12 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
         edges {
           node {
             frontmatter {
+              title
+              heading
+              description
               path
             }
+            body
           }
         }
       }
@@ -109,6 +113,20 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
   })
 }
 
+exports.onCreateNode = ({ node, actions, getNode }) => {
+  const { createNodeField } = actions
+  fmImagesToRelative(node) // convert image paths for gatsby assets
+
+  if (node.internal.type === `Mdx`) {
+    const value = createFilePath({ node, getNode })
+    createNodeField({
+      name: `slug`,
+      node,
+      value,
+    })
+  }
+}
+
 //Hook into the createSchemaCustomization API
 //This hook runs after all our nodes have been created
 exports.createSchemaCustomization = ({ actions, schema }) => {
@@ -174,18 +192,4 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
   ]
 
   createTypes(typeDefs)
-}
-
-exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
-  fmImagesToRelative(node) // convert image paths for gatsby assets
-
-  if (node.internal.type === `Mdx`) {
-    const value = createFilePath({ node, getNode })
-    createNodeField({
-      name: `slug`,
-      node,
-      value,
-    })
-  }
 }
