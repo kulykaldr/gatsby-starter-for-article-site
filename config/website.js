@@ -3,7 +3,7 @@ module.exports = {
 
   title: 'Обо всем на свете', // Navigation and Site Title
   description: 'Интересные истории из жизни каждый день',
-  url: `https://modest-neumann-85ce65.netlify.app`, // Site url
+  url: `https://gatsby-starter-kulykaldr.netlify.app`, // Site url
   siteLanguage: 'ru-RU', // Language Tag on <html> element
   ogLanguage: 'ru_RU', // Facebook Language
 
