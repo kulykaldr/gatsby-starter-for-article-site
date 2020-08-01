@@ -1,5 +1,7 @@
 const slugify = require("slugify")
 const { paginate } = require("gatsby-awesome-pagination")
+const { createFilePath } = require("gatsby-source-filesystem")
+const { fmImagesToRelative } = require('gatsby-remark-relative-images')
 
 exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => {
   const postsPerPage = 5 // TO DO: add to config
@@ -12,12 +14,8 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
         edges {
           node {
             frontmatter {
-              title
-              heading
-              description
               path
             }
-            body
           }
         }
       }
@@ -28,33 +26,13 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
         edges {
           node {
             id
-            headings {
-              depth
+            fields {
+              slug
             }
             frontmatter {
-              title
-              heading
-              description
               path
               categories
-              excerpt
-              created
-              createdPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
-              updated
-              updatedPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
-              featuredImage {
-                childImageSharp {
-                  sizes(maxWidth: 500, quality: 70) {
-                    base64
-                    aspectRatio
-                    src
-                    srcSet
-                    sizes
-                  }
-                }
-              }
             }
-            body
           }
         }
       }
@@ -93,7 +71,8 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
     }
 
     createPage({
-      path: post.frontmatter.path,
+      // path: post.frontmatter.path,
+      path: post.fields.slug,
       component: require.resolve(`./src/templates/post.jsx`),
       context: {
         postId: post.id,
@@ -173,7 +152,7 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
                   fileAbsolutePath: { regex: "/(posts)/.*\\.(md|mdx)$/" },
                   //We're filtering for categories that are sharedby our source node
                   frontmatter: {
-                     categories: {in: categories}
+                    categories: { in: categories }
                   },
                   //Dont forget to exclude the current post node!
                   id: { ne: source.id },
@@ -195,4 +174,18 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
   ]
 
   createTypes(typeDefs)
+}
+
+exports.onCreateNode = ({ node, actions, getNode }) => {
+  const { createNodeField } = actions
+  fmImagesToRelative(node) // convert image paths for gatsby assets
+
+  if (node.internal.type === `Mdx`) {
+    const value = createFilePath({ node, getNode })
+    createNodeField({
+      name: `slug`,
+      node,
+      value,
+    })
+  }
 }

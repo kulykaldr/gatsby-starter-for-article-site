@@ -36,7 +36,7 @@ module.exports = {
         background_color: website.primaryColor,
         theme_color: website.primaryColor,
         display: `minimal-ui`,
-        icon: `${__dirname}/content/images/favicon.png`
+        icon: `${__dirname}/src/assets/favicon.png`
       }
     },
     {
@@ -56,8 +56,16 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: 'images',
-        path: `${__dirname}/content/images`,
+        path: `${__dirname}/src/assets`,
+        name: 'assets',
+      },
+    },
+    {
+      // keep as first gatsby-source-filesystem plugin for gatsby image support
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: `${__dirname}/static/images`,
+        name: 'uploads',
       },
     },
     {
@@ -78,6 +86,13 @@ module.exports = {
       options: {
         extensions: [`.mdx`, `.md`],
         gatsbyRemarkPlugins: [
+          // gatsby-remark-relative-assets must go before gatsby-remark-assets
+          {
+            resolve: 'gatsby-remark-relative-images',
+            options: {
+              name: 'uploads',
+            },
+          },
           {
             resolve: 'gatsby-remark-images',
             options: {
@@ -200,5 +215,16 @@ module.exports = {
         policy: [{userAgent: '*', allow: '/'}]
       }
     },
+    {
+      resolve: 'gatsby-plugin-netlify-cms',
+      options: {
+        modulePath: `${__dirname}/src/cms/cms.js`,
+        enableIdentityWidget: false,
+        publicPath: "admin",
+        htmlTitle: "Admin",
+        manualInit: true,
+      },
+    },
+    'gatsby-plugin-netlify', // make sure to keep it last in the array
   ].filter(Boolean)
 };

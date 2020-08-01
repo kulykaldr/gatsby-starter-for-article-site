@@ -3,7 +3,7 @@ import { graphql, useStaticQuery } from "gatsby"
 const useAvatar = () => {
   const data = useStaticQuery(graphql`
     query {
-      file(sourceInstanceName: { eq: "images" }, name: { eq: "avatar" }) {
+      file(sourceInstanceName: { eq: "assets" }, name: { eq: "avatar" }) {
         childImageSharp {
           sizes(maxWidth: 500, quality: 75) {
             base64
