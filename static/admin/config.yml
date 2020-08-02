@@ -19,7 +19,7 @@ collections:
     extension: mdx
     widget: mdx
     format: frontmatter
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    slug: "{{slug}}"
     fields:
       - {label: "Template Key", name: "templateKey", widget: "hidden", default: "post"}
       - {label: "Title", name: "title", widget: "string"}
