@@ -79,9 +79,11 @@ export const query = graphql`
       edges {
         node {
           id
+          fields {
+            slug
+          }
           frontmatter {
             heading
-            path
             categories
             excerpt
             created
@@ -89,7 +91,7 @@ export const query = graphql`
             updated
             featuredImage {
               childImageSharp {
-                sizes(maxWidth: 800, quality: 75) {
+                fluid(maxWidth: 800, quality: 75) {
                   base64
                   aspectRatio
                   src

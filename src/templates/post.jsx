@@ -1,21 +1,21 @@
-import React, {createRef} from "react"
+import React, { createRef } from "react"
 import Layout from "../components/layout"
 import styled from "styled-components"
 import Img from "gatsby-image"
 import ReadingProgress from "../components/reading-progress"
 import Theme from "../styles/theme"
-import {graphql, Link} from "gatsby"
+import { graphql, Link } from "gatsby"
 import slugify from "slugify"
 import Comments from "../components/comments"
 import SEO from "../components/seo"
-import {MDXRenderer} from "gatsby-plugin-mdx"
-import {MDXProvider} from "@mdx-js/react"
+import { MDXRenderer } from "gatsby-plugin-mdx"
+import { MDXProvider } from "@mdx-js/react"
 import Toc from "../components/toc"
 import Spoiler from "../components/ui/spoiler"
 import Blockquote from "../components/ui/blockquote"
 import CardGrid from "../components/card-grid"
 import Breadcrumb from "../components/breadcrumb"
-import {useLocation} from "@reach/router"
+import { useLocation } from "@reach/router"
 import useSiteMetadata from "../hooks/use-site-metadata"
 
 const PostContent = styled.div`
@@ -68,8 +68,7 @@ const PostContent = styled.div`
       height: 24px;
       margin: 0 13px 0 -40px;
       text-align: center;
-      border: 2px solid #425d9d;
-      border-color: ${Theme.layout.primaryColor};
+      border: 2px solid ${Theme.layout.primaryColor};
       border-radius: 50%;
     }
   }
@@ -193,15 +192,15 @@ const RelatedPostsTitle = styled.div`
   margin: 15px 0 20px;
 `
 
-const shortcodes = {spoiler: Spoiler, blockquote: Blockquote}
+const shortcodes = { spoiler: Spoiler, blockquote: Blockquote }
 
 const PostTemplate = ({
                         data,
                       }) => {
   const post = data.post
   const readingProgressRef = createRef()
-  const categoryPath = `/${slugify(post.frontmatter.categories[0], {lower: true})}`
-  const {pathname} = useLocation()
+  const categoryPath = `/${slugify(post.frontmatter.categories[0], { lower: true })}`
+  const { pathname } = useLocation()
   const metadata = useSiteMetadata()
 
   return (
@@ -218,7 +217,7 @@ const PostTemplate = ({
           description={post.frontmatter.description}
           image={
             post.frontmatter.featuredImage
-              ? post.frontmatter.featuredImage.childImageSharp.sizes.src
+              ? post.frontmatter.featuredImage.childImageSharp.fluid.src
               : null
           }
           type={"Article"}
@@ -245,7 +244,7 @@ const PostTemplate = ({
             </PostHeader>
             {post.frontmatter.featuredImage && (
               <FeaturedImage
-                sizes={post.frontmatter.featuredImage.childImageSharp.sizes}
+                fluid={post.frontmatter.featuredImage.childImageSharp.fluid}
                 itemProp="image"
               />
             )}
@@ -284,9 +283,11 @@ export const query = graphql`
       headings {
         depth
       }
+      fields {
+        slug
+      }
       frontmatter {
         title
-        path
         categories
         heading
         description
@@ -296,7 +297,7 @@ export const query = graphql`
         updatedPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
         featuredImage {
           childImageSharp {
-            sizes(maxWidth: 500, quality: 75) {
+            fluid(maxWidth: 500, quality: 75) {
               base64
               aspectRatio
               src
@@ -309,9 +310,11 @@ export const query = graphql`
       body
       tableOfContents
       related {
+        fields {
+          slug
+        }
         frontmatter {
           title
-          path
           categories
           heading
           created
@@ -320,7 +323,7 @@ export const query = graphql`
           updatedPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
           featuredImage {
             childImageSharp {
-              sizes(maxWidth: 500, quality: 75) {
+              fluid(maxWidth: 500, quality: 75) {
                 base64
                 aspectRatio
                 src

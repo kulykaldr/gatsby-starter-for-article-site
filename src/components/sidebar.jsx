@@ -61,9 +61,11 @@ const Sidebar = () => {
         edges {
           node {
             id
+            fields {
+              slug
+            }
             frontmatter {
               heading
-              path
               categories
               created
               createdPretty: created(
@@ -73,7 +75,7 @@ const Sidebar = () => {
               excerpt
               featuredImage {
                 childImageSharp {
-                  sizes(maxWidth: 500, quality: 75) {
+                  fluid(maxWidth: 500, quality: 75) {
                     base64
                     aspectRatio
                     src

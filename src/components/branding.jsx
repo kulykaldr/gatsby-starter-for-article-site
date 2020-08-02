@@ -86,9 +86,9 @@ const Branding = ({ title, subtitle }) => {
     <BrandingWrapper>
       <LogoWrapper>
         {isHomepage
-          ? <LogoImage sizes={logo} alt={title}/>
+          ? <LogoImage fluid={logo} alt={title}/>
           : <HomeLink to={`/`}>
-            <LogoImage sizes={logo} alt={title}/>
+            <LogoImage fluid={logo} alt={title}/>
           </HomeLink>
         }
       </LogoWrapper>

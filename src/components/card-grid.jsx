@@ -27,7 +27,7 @@ const CardGrid = ({posts, halfImage = false, compact = false, random = false, co
       {posts.map((post, index) => (
         <Card
           heading={post.frontmatter.heading}
-          path={post.frontmatter.path}
+          slug={post.fields.slug}
           featuredImage={post.frontmatter.featuredImage ? post.frontmatter.featuredImage.childImageSharp : null}
           content={post.frontmatter.excerpt}
           compact={compact}

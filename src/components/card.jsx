@@ -13,7 +13,6 @@ export const StyledCard = styled.div`
   border-radius: 3px;
   box-shadow: 0 1px 1px #e6e6e6, 0 2px 4px #e6e6e6;
   transition: .5s all;
-  width: 100%;
   height: 100%;
   overflow: hidden;
   color: ${Theme.layout.darkColor};
@@ -91,7 +90,7 @@ export const CardTitle = styled.div`
 export const Card = ({
                        heading,
                        meta,
-                       path,
+                       slug,
                        featuredImage,
                        content,
                        halfImage = false,
@@ -103,19 +102,9 @@ export const Card = ({
   return (
     <StyledCard itemScope itemType="http://schema.org/BlogPosting">
       {(featuredImage && featuredImage.fluid) &&
-      <Link to={path}>
+      <Link to={slug}>
         <FeaturedImage
-          fixed={featuredImage.fluid}
-          halfImage={halfImage}
-          alt={heading}
-          itemProp="image"
-        />
-      </Link>
-      }
-      {(featuredImage && featuredImage.sizes) &&
-      <Link to={path}>
-        <FeaturedImage
-          sizes={featuredImage.sizes}
+          fluid={featuredImage.fluid}
           compact={compact}
           halfImage={halfImage}
           alt={heading}
@@ -137,7 +126,7 @@ export const Card = ({
         }
         {heading &&
         <CardTitle compact={compact} itemProp="name">
-          <Link to={path} rel="bookmark" itemProp="url">
+          <Link to={slug} rel="bookmark" itemProp="url">
             <span itemProp="headline">{heading}</span>
           </Link>
         </CardTitle>
@@ -149,7 +138,7 @@ export const Card = ({
 
       <meta itemProp="author" content={metadata.author}/>
       <meta itemScope itemProp="mainEntityOfPage" itemType="https://schema.org/WebPage"
-            itemID={`${metadata.siteUrl}${path}`} content={heading}/>
+            itemID={`${metadata.siteUrl}${slug}`} content={heading}/>
       <meta itemProp="datePublished" content={meta.timeCreated}/>
       <meta itemProp="dateModified" content={meta.timeUpdated}/>
       <div itemProp="publisher" itemScope itemType="https://schema.org/Organization">

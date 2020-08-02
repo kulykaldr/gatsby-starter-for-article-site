@@ -225,7 +225,7 @@ export const Search = () => {
 
     setResults(dataToSearch.search(input).map(page => ({
       title: page.frontmatter.title,
-      path: page.frontmatter.path,
+      slug: page.fields.slug,
       categories: page.frontmatter.categories,
       description: page.frontmatter.description,
       heading: highlight(page.frontmatter.heading, input, `em`),

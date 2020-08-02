@@ -5,7 +5,7 @@ const useAvatar = () => {
     query {
       file(sourceInstanceName: { eq: "assets" }, name: { eq: "avatar" }) {
         childImageSharp {
-          sizes(maxWidth: 500, quality: 75) {
+          fluid(maxWidth: 500, quality: 75) {
             base64
             aspectRatio
             src
@@ -17,7 +17,7 @@ const useAvatar = () => {
     }
   `)
 
-  return data.file ? data.file.childImageSharp.sizes : ''
+  return data.file ? data.file.childImageSharp.fluid : ''
 }
 
 export default useAvatar

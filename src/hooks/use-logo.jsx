@@ -5,7 +5,7 @@ const useLogo = () => {
     query {
       file(sourceInstanceName: { eq: "assets" }, name: { eq: "logo" }) {
         childImageSharp {
-          sizes(maxWidth: 300, quality: 75) {
+          fluid(maxWidth: 300, quality: 75) {
             base64
             aspectRatio
             src
@@ -17,7 +17,7 @@ const useLogo = () => {
     }
   `)
 
-  return data.file ? data.file.childImageSharp.sizes : ''
+  return data.file ? data.file.childImageSharp.fluid : ''
 }
 
 export default useLogo
