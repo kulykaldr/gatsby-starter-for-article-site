@@ -87,7 +87,7 @@ module.exports = {
         extensions: [`.mdx`, `.md`],
         gatsbyRemarkPlugins: [
           // gatsby-remark-relative-assets must go before gatsby-remark-assets
-            'gatsby-remark-relative-images',
+          'gatsby-remark-relative-images',
           {
             resolve: 'gatsby-remark-images',
             options: {
@@ -97,10 +97,9 @@ module.exports = {
               quality: 75
             },
           },
-          {resolve: 'gatsby-remark-prismjs'},
-          {resolve: 'gatsby-remark-responsive-iframe'},
-          {resolve: 'gatsby-remark-copy-linked-files'},
-          {resolve: 'gatsby-remark-smartypants'},
+          'gatsby-remark-prismjs',
+          'gatsby-remark-responsive-iframe',
+          'gatsby-remark-copy-linked-files',
           {
             resolve: "gatsby-remark-external-links",
             options: {
@@ -123,12 +122,6 @@ module.exports = {
       options: {
         plugins: [`gatsby-remark-images`],
       },
-    },
-    {
-      resolve: `gatsby-plugin-page-creator`,
-      options: {
-        path: `${__dirname}/src/pages`
-      }
     },
     `gatsby-plugin-offline`,
     {
@@ -153,14 +146,14 @@ module.exports = {
           `,
         feeds: [
           {
-            serialize: ({query: {site, allMdx}}) => {
+            serialize: ({ query: { site, allMdx } }) => {
               return allMdx.edges.map(edge => {
                 return Object.assign({}, edge.node.frontmatter, {
                   description: edge.node.frontmatter.excerpt,
                   date: edge.node.frontmatter.created,
                   url: site.siteMetadata.siteUrl + edge.node.fields.slug,
                   guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
-                  custom_elements: [{"content:encoded": edge.node.html}],
+                  custom_elements: [{ "content:encoded": edge.node.html }],
                 })
               })
             },
@@ -208,13 +201,13 @@ module.exports = {
       options: {
         host: website.url,
         sitemap: `${website.url}/sitemap.xml`,
-        policy: [{userAgent: '*', allow: '/'}]
+        policy: [{ userAgent: '*', allow: '/' }]
       }
     },
     {
       resolve: 'gatsby-plugin-netlify-cms',
       options: {
-        modulePath: `${__dirname}/src/cms/cms.js`,
+        modulePath: `${__dirname}/src/cms/cms.jsx`,
       },
     },
     'gatsby-plugin-netlify', // make sure to keep it last in the array

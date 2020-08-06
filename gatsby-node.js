@@ -192,3 +192,15 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
 
   createTypes(typeDefs)
 }
+//
+// exports.onCreateWebpackConfig = ({ actions }) => {
+//   actions.setWebpackConfig({
+//     // While fs is never used in MDX, Babel brings it along anyway.
+//     // So in this case, you can add code to your gatsby-node.js file
+//     // that prevents fs from getting bundled up for the client.
+//     // https://github.com/gatsbyjs/gatsby/issues/24815
+//     node: {
+//       fs: 'empty'
+//     }
+//   })
+// }

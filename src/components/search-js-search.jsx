@@ -142,12 +142,12 @@ export const Search = () => {
         edges {
           node {
             id
+            excerpt
             frontmatter {
               title
               heading
               description
               path
-              excerpt
               categories
             }
           }
@@ -216,10 +216,11 @@ export const Search = () => {
     dataToSearch.searchIndex = new JsSearch.TfIdfSearchIndex("id")
 
     dataToSearch.addIndex(["frontmatter", "title"]) // sets the index attribute for the data
-    dataToSearch.addIndex(["frontmatter", "excerpt"]) // sets the index attribute for the data
     dataToSearch.addIndex(["frontmatter", "categories"]) // sets the index attribute for the data
     dataToSearch.addIndex(["frontmatter", "heading"]) // sets the index attribute for the data
     dataToSearch.addIndex(["frontmatter", "description"]) // sets the index attribute for the data
+    dataToSearch.addIndex(["fields", "slug"]) // sets the index attribute for the data
+    dataToSearch.addIndex(["excerpt"]) // sets the index attribute for the data
 
     dataToSearch.addDocuments(pages) // adds the data to be searched
 
@@ -229,7 +230,7 @@ export const Search = () => {
       categories: page.frontmatter.categories,
       description: page.frontmatter.description,
       heading: highlight(page.frontmatter.heading, input, `em`),
-      excerpt: highlight(page.frontmatter.excerpt, input, `em`),
+      excerpt: highlight(page.excerpt, input, `em`),
     })))
 
     if (results.length > 0) {
@@ -285,7 +286,7 @@ export const Search = () => {
       case "Enter":
         event.preventDefault()
         setIsFocus(false)
-        navigate(`${origin}${currentSelection.path}`)
+        navigate(`${origin}${currentSelection.slug}`)
         return
       default:
         return
@@ -332,7 +333,7 @@ export const Search = () => {
                   }}
                   selected={index === selected}
                 >
-                  <ResultLink to={item.path}>
+                  <ResultLink to={item.slug}>
                     {item.categories &&
                     <small>{item.categories.join(", ")}</small>
                     }

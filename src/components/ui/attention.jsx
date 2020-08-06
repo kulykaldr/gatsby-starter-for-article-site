@@ -9,12 +9,16 @@ import {
   FaExclamationCircle
 } from "react-icons/fa"
 
-const BlockquoteWrapper = styled.blockquote`
+const AttentionWrapper = styled.blockquote`
   position: relative;
   margin: 35px -40px 35px -40px;
   padding: 10px 20px;
   border-left: 2px solid ${Theme.layout.primaryColor}!important;
   background: #f5f4f1;
+
+  @media (max-width: ${Theme.breakpoints.md}) {
+    margin: 20px -20px 20px -20px;
+  }
 
   &.quote, &.check, &.danger, &.info, &.warning {
     border-left: none!important;
@@ -29,10 +33,6 @@ const BlockquoteWrapper = styled.blockquote`
       margin-top: -15px;
       top: 50%;
     }
-  }
-
-  @media (max-width: ${Theme.breakpoints.md}) {
-    margin: 20px -20px 20px -20px;
   }
 
   &.quote {
@@ -77,21 +77,17 @@ const BlockquoteWrapper = styled.blockquote`
   }
 `
 
-const Blockquote = ({children, className}) => {
-  if (className === "quote") {
-
-  }
-
+const Attention = ({children, type = ""}) => {
   return (
-    <BlockquoteWrapper className={className}>
-      {className === "quote" && <FaQuoteLeft/>}
-      {className === "check" && <FaCheckCircle/>}
-      {className === "danger" && <FaTimesCircle/>}
-      {className === "info" && <FaQuestionCircle/>}
-      {className === "warning" && <FaExclamationCircle/>}
+    <AttentionWrapper className={type}>
+      {type === "quote" && <FaQuoteLeft/>}
+      {type === "check" && <FaCheckCircle/>}
+      {type === "danger" && <FaTimesCircle/>}
+      {type === "info" && <FaQuestionCircle/>}
+      {type === "warning" && <FaExclamationCircle/>}
       {children}
-    </BlockquoteWrapper>
+    </AttentionWrapper>
   )
 }
 
-export default Blockquote
+export default Attention

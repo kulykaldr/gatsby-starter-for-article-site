@@ -63,10 +63,10 @@ export const PostsPageQuery = graphql`
           fields {
             slug
           }
+          excerpt
           frontmatter {
             heading
             categories
-            excerpt
             created
             createdPretty: created(formatString: "DD MMMM YYYY", locale: "ru")
             updated

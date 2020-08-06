@@ -29,7 +29,7 @@ const CardGrid = ({posts, halfImage = false, compact = false, random = false, co
           heading={post.frontmatter.heading}
           slug={post.fields.slug}
           featuredImage={post.frontmatter.featuredImage ? post.frontmatter.featuredImage.childImageSharp : null}
-          content={post.frontmatter.excerpt}
+          content={post.excerpt}
           compact={compact}
           key={index}
           meta={

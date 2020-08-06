@@ -6,8 +6,6 @@ import Theme from "../styles/theme"
 const BreadcrumbStyled = styled.div`
   font-size: 80%;
   color: #999;
-  padding-left: 40px;
-  padding-right: 40px;
   padding-top: 20px;
 
   @media (max-width: ${Theme.breakpoints.sm}) {
