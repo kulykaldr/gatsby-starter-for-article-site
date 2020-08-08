@@ -28,3 +28,5 @@ CMS.registerPreviewTemplate('post', withStyled(PostPreview))
 // Extend editor
 CMS.registerEditorComponent(attentionEditorConfig)
 CMS.registerEditorComponent(spoilerEditorConfig)
+
+CMS.init()
