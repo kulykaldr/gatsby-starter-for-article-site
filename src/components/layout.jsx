@@ -42,14 +42,14 @@ const SidebarContainer = styled.aside`
   }
 `
 
-const Layout = ({ children, showSidebar = true, location }) => {
+const Layout = ({ children, showSidebar = true }) => {
   const data = useStaticQuery(graphql`
     query {
       site {
         siteMetadata {
           title
           description
-          menu {
+          topMenu {
             name
             path
           }
@@ -68,17 +68,16 @@ const Layout = ({ children, showSidebar = true, location }) => {
       <GlobalStyle/>
 
       <Header
-        menu={data.site.siteMetadata.menu}
+        menu={data.site.siteMetadata.topMenu}
         search={data.site.siteMetadata.search}
         title={data.site.siteMetadata.title}
         subtitle={data.site.siteMetadata.description}
-        location={location}
       />
 
       <HomeContainer showSidebar={showSidebar}>
         <main>{children}</main>
         {showSidebar &&
-        <SidebarContainer>
+        <SidebarContainer itemScope itemType="http://schema.org/WPSideBar">
           <Sidebar/>
         </SidebarContainer>
         }
@@ -87,7 +86,6 @@ const Layout = ({ children, showSidebar = true, location }) => {
       <Footer
         menu={data.site.siteMetadata.footerMenu}
         owner={data.site.siteMetadata.title}
-        location={location}
       />
     </>
   )

@@ -1,11 +1,12 @@
 import React from "react"
 import Layout from "../components/layout"
-import { graphql } from "gatsby"
+import {graphql} from "gatsby"
 import SEO from "../components/seo"
-import PostGrid from "../components/post-grid"
+import CardGrid from "../components/card-grid"
 import Pagination from "../components/pagination"
 import styled from "styled-components"
 import Theme from "../styles/theme"
+import useSiteMetadata from "../hooks/use-site-metadata"
 
 const TitleCategory = styled.h1`
   padding-left: 20px;
@@ -15,18 +16,16 @@ const DescriptionCategory = styled.p`
   margin-bottom: 25px;
   font-size: .95em;
   line-height: 1.4;
-  background: #f9f8f5;
-  padding: 3px 20px;
-  color: ${Theme.layout.lightGray};
+  background: #f3f3f3;
+  padding: 10px 20px;
+  color: ${Theme.layout.darkColor};
 `
 
-const categoryTemplate = ({
-                            data,
-                            location,
-                            pageContext,
-                          }) => {
+const CategoryTemplate = ({data, pageContext}) => {
   let category = data.category
   const posts = data.posts.edges.map((node) => node.node)
+  const {title, description} = useSiteMetadata()
+  const {previousPagePath, nextPagePath, humanPageNumber, numberOfPages} = pageContext
 
   if (!category && posts.length > 0) {
     category = {
@@ -36,23 +35,31 @@ const categoryTemplate = ({
   }
 
   return (
-    <Layout location={location}>
-      <SEO title={category.name} description={category.description} location={location} type={`Series`}/>
+    <Layout>
+      <SEO
+        title={humanPageNumber > 1
+          ? `${category.name} - Страница ${humanPageNumber} из ${numberOfPages} | ${title}`
+          : `${category.name} | ${title}`}
+        description={humanPageNumber > 1
+          ? `${category.description} - Страница ${humanPageNumber} из ${numberOfPages} | ${description}`
+          : `${category.description} | ${description}`}
+        type={`CollectionPage`}
+      />
       <TitleCategory>{category.name}</TitleCategory>
-      {pageContext.pageNumber === 0 && category.description ?
+      {humanPageNumber === 1 && category.description ?
         <DescriptionCategory>{category.description}</DescriptionCategory> : null}
-      <PostGrid posts={posts}/>
+      <CardGrid posts={posts} halfImage={true}/>
       <Pagination
-        previousPagePath={pageContext.previousPagePath}
-        nextPagePath={pageContext.nextPagePath}
-        humanPageNumber={pageContext.humanPageNumber}
-        numberOfPages={pageContext.numberOfPages}
+        previousPagePath={previousPagePath}
+        nextPagePath={nextPagePath}
+        humanPageNumber={humanPageNumber}
+        numberOfPages={numberOfPages}
       />
     </Layout>
   )
 }
 
-export default categoryTemplate
+export default CategoryTemplate
 
 export const query = graphql`
   query ($category: String!, $skip: Int!, $limit: Int!) {
@@ -72,16 +79,19 @@ export const query = graphql`
       edges {
         node {
           id
+          fields {
+            slug
+          }
+          excerpt
           frontmatter {
-            title
-            path
+            heading
             categories
-            excerpt
             created
             createdPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
+            updated
             featuredImage {
               childImageSharp {
-                sizes(maxWidth: 800, quality: 100) {
+                fluid(maxWidth: 800, quality: 75) {
                   base64
                   aspectRatio
                   src

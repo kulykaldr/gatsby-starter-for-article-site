@@ -3,7 +3,7 @@ import styled from "styled-components"
 import Theme from "../styles/theme"
 
 const ReadingProgressBar = styled.div`
-  position: sticky;
+  position: fixed;
   height: 5px;
   /*top: 70px;*/
   top: -1px;

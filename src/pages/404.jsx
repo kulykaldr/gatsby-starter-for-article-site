@@ -38,9 +38,9 @@ const BackLink = styled(Link)`
   }
 `
 
-const NotFoundPage = ({ location }) => (
+const NotFoundPage = () => (
   <Layout>
-    <SEO location={location} title={`Страница не найдена`}/>
+    <SEO title={`Страница не найдена`}/>
     <Error>
       <ErrorTitle>404</ErrorTitle>
       <ErrorDescription>Страница не найдена</ErrorDescription>

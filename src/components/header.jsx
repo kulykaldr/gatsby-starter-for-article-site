@@ -1,45 +1,28 @@
 import React from "react"
 import Navigation from "./navigation"
 import Branding from "./branding"
-import { Container } from "./common"
 import styled from "styled-components"
-import Theme from "../styles/theme"
+import Theme from "../styles/theme";
 
-const MobHamburger = styled.div`
-  position: absolute;
-  top: 26px;
-  right: 20px;
-  width: 38px;
-  height: 28px;
-  padding-top: 8px;
-  border-top: 4px solid ${Theme.layout.primaryColor};
-  border-bottom: 4px solid ${Theme.layout.primaryColor};
-  transition: all .3s ease;
+const HeaderContainer = styled.header`
+  position: relative;
+  z-index: 20;
+  width: ${Theme.components.container.width};
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
 
-  .active {
-    height: 20px;
-    padding-top: 4px;
-    opacity: .5;
-    filter: "alpha(opacity=50)"
-  }
-
-  span {
-    display: block;
-    height: 4px;
-    background: ${Theme.layout.primaryColor}
-  }
-
-  @media (max-width: ${Theme.breakpoints.md}) {
-    display:none
+  @media (max-width: ${Theme.breakpoints.xl}) {
+    padding: 0 20px;
   }
 `
 
-const Header = ({ title, subtitle, menu, search = true, location }) => {
+const Header = ({title, subtitle, menu, search = true}) => {
   return (
-    <Container>
-      <Branding title={title} subtitle={subtitle} location={location}/>
-      <Navigation title={title} menu={menu} showSearch={search} location={location}/>
-    </Container>
+    <HeaderContainer itemScope itemType="http://schema.org/WPHeader">
+      <Branding title={title} subtitle={subtitle}/>
+      <Navigation title={title} menu={menu} showSearch={search}/>
+    </HeaderContainer>
   )
 }
 

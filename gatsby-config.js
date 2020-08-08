@@ -1,75 +1,36 @@
+require("dotenv").config();
+const website = require('./config/website')
+
 module.exports = {
+  pathPrefix: website.pathPrefix,
   siteMetadata: {
-    title: `Обо всем на свете`, // TO DO: add to config
-    description: `Интересные истории из жизни каждый день`, // TO DO: add to config
-    siteUrl: `https://kulykaldr.netlify.com`, // TO DO: add to config
-    menu: [ // TO DO: add to config
-      {
-        name: 'Главная',
-        path: '/'
-      },
-      {
-        name: 'Контакты',
-        path: '/kontakty'
-      },
-      {
-        name: 'О нас',
-        path: '/o-nas'
-      },
-    ],
-    footerMenu: [ // TO DO: add to config
-      {
-        name: 'Политика конфиденциальности',
-        path: '/politika-konfidencialnosti'
-      },
-      {
-        name: 'RSS',
-        path: '/rss.xml'
-      },
-      {
-        name: 'Карта сайта',
-        path: '/sitemap.xml'
-      }
-    ],
-    search: false,
-    author: { // TO DO: add to config
-      name: `Admin`,
-      description: ``,
-      social: {
-        facebook: ``,
-        twitter: ``,
-        linkedin: ``,
-        instagram: ``,
-        youtube: ``,
-        github: ``,
-        twitch: ``
-      }
-    }
+    title: website.title,
+    description: website.description,
+    siteUrl: website.url,
+    author: website.author,
+    topMenu: website.topMenu,
+    footerMenu: website.footerMenu,
+    search: website.search,
+    siteLanguage: website.siteLanguage,
+    ogLanguage: website.ogLanguage,
+    social: website.social,
   },
   plugins: [
-    `gatsby-plugin-sharp`,
     {
-      resolve: `gatsby-transformer-sharp`,
+      // keep as first gatsby-source-filesystem plugin for gatsby image support
+      resolve: 'gatsby-source-filesystem',
       options: {
-        // The option defaults to true
-        checkSupportedExtensions: false,
-      }
+        path: `${__dirname}/static/images`,
+        name: 'uploads',
+      },
     },
-    `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-styled-components`,
-    `gatsby-plugin-sitemap`,
-    // {
-    //   resolve: `gatsby-plugin-manifest`,
-    //   options: {
-    //       name: `Kulyk Aleksandr Blog`,
-    //       short_name: `kulykaldr`,
-    //       start_url: `/`,
-    //       background_color: `#a4cbb8`,
-    //       theme_color: `#a4cbb8`,
-    //       display: `minimal-ui`,
-    //       icon: `${__dirname}/content/images/logo.png`
-    //     }
-    // },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/src/assets`,
+        name: 'assets',
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -87,16 +48,32 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: 'images',
-        path: `${__dirname}/content/images`,
-      },
-    },
-    {
-      resolve: `gatsby-source-filesystem`,
-      options: {
         name: 'content',
         path: `${__dirname}/content`,
       },
+    },
+    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-transformer-sharp`,
+      options: {
+        // The option defaults to true
+        checkSupportedExtensions: false,
+      }
+    },
+    `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-styled-components`,
+    `gatsby-plugin-sitemap`,
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: website.title,
+        short_name: website.description,
+        start_url: `/`,
+        background_color: website.primaryColor,
+        theme_color: website.primaryColor,
+        display: `minimal-ui`,
+        icon: `${__dirname}/src/assets/favicon.png`
+      }
     },
     {
       resolve: `gatsby-transformer-yaml`,
@@ -104,53 +81,38 @@ module.exports = {
         typeName: `Categories`
       }
     },
-    // {
-    //   resolve: `gatsby-plugin-lunr`,
-    //   options: {
-    //     languages: [
-    //       {
-    //         name: 'en'
-    //       },
-    //       {
-    //         name: 'ru'
-    //       }
-    //     ],
-    //     fields: [
-    //       {name: 'title', store: true, attributes: {boost: 20}},
-    //       {name: 'content', store: true},
-    //       {name: 'categories', store: true},
-    //       {name: 'excerpt', store: true},
-    //       {name: 'path', store: true}
-    //     ],
-    //     resolvers: {
-    //       mdx: {
-    //         title: node => node.frontmatter.title,
-    //         content: node => node.rawBody,
-    //         categories: node => node.frontmatter.categories,
-    //         excerpt: node => node.frontmatter.excerpt,
-    //         path: node => node.frontmatter.path
-    //       }
-    //     }
-    //   }
-    // },
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.mdx`, `.md`],
         gatsbyRemarkPlugins: [
+          // gatsby-remark-relative-assets must go before gatsby-remark-assets
+          'gatsby-remark-relative-images',
           {
             resolve: 'gatsby-remark-images',
             options: {
               maxWidth: 1200,
               linkImagesToOriginal: false,
               withWebp: true,
+              quality: 75
             },
           },
-          {resolve: 'gatsby-remark-prismjs'},
-          {resolve: 'gatsby-remark-responsive-iframe'},
-          {resolve: 'gatsby-remark-copy-linked-files'},
-          {resolve: 'gatsby-remark-smartypants'},
-          {resolve: 'gatsby-remark-autolink-headers'},
+          'gatsby-remark-prismjs',
+          'gatsby-remark-responsive-iframe',
+          'gatsby-remark-copy-linked-files',
+          {
+            resolve: "gatsby-remark-external-links",
+            options: {
+              target: "_blank",
+              rel: "nofollow noopener noreferrer"
+            }
+          },
+          {
+            resolve: 'gatsby-remark-autolink-headers',
+            options: {
+              icon: false
+            }
+          },
         ],
       },
     },
@@ -161,14 +123,15 @@ module.exports = {
         plugins: [`gatsby-remark-images`],
       },
     },
+    `gatsby-plugin-offline`,
     {
-      resolve: `gatsby-plugin-page-creator`,
+      resolve: `gatsby-plugin-google-analytics`,
       options: {
-        path: `${__dirname}/src/pages`
+        trackingId: process.env.GOOGLE_ANALYTICS_ID
       }
     },
     {
-      resolve: `gatsby-plugin-feed`,
+      resolve: `gatsby-plugin-feed-mdx`,
       options: {
         query: `
             {
@@ -177,21 +140,24 @@ module.exports = {
                   title
                   description
                   siteUrl
-                  site_url: siteUrl
                 }
               }
             }
           `,
         feeds: [
           {
-            serialize: ({query: {site, allMdx}}) => {
+            serialize: ({ query: { site, allMdx } }) => {
               return allMdx.edges.map(edge => {
+                const siteUrl = site.siteMetadata.siteUrl
+                const slug = siteUrl + edge.node.fields.slug
+                const frontmatter = edge.node.frontmatter
+
                 return Object.assign({}, edge.node.frontmatter, {
-                  description: edge.node.frontmatter.excerpt,
-                  date: edge.node.frontmatter.created,
-                  url: site.siteMetadata.siteUrl + edge.node.frontmatter.path,
-                  guid: site.siteMetadata.siteUrl + edge.node.frontmatter.path,
-                  custom_elements: [{"content:encoded": edge.node.rawBody}],
+                  description: edge.node.excerpt,
+                  date: frontmatter.created,
+                  url: slug,
+                  guid: slug,
+                  custom_elements: [{ "content:encoded": edge.node.html }],
                 })
               })
             },
@@ -203,11 +169,13 @@ module.exports = {
                 ) {
                   edges {
                     node {
-                      rawBody
+                      html
+                      excerpt
+                      fields {
+                        slug
+                      }
                       frontmatter {
                         title
-                        excerpt
-                        path
                         created
                       }
                     }
@@ -232,5 +200,20 @@ module.exports = {
         ]
       }
     },
+    {
+      resolve: 'gatsby-plugin-robots-txt',
+      options: {
+        host: website.url,
+        sitemap: `${website.url}/sitemap.xml`,
+        policy: [{ userAgent: '*', allow: '/' }]
+      }
+    },
+    {
+      resolve: 'gatsby-plugin-netlify-cms',
+      options: {
+        modulePath: `${__dirname}/src/cms/cms.jsx`,
+      },
+    },
+    'gatsby-plugin-netlify', // make sure to keep it last in the array
   ].filter(Boolean)
 };

@@ -1,48 +1,34 @@
 import React from "react"
-import { Helmet } from "react-helmet"
-import { graphql, useStaticQuery } from "gatsby"
+import {Helmet} from "react-helmet"
 import url from "url"
+import {useLocation} from "@reach/router"
+import useSiteMetadata from "../hooks/use-site-metadata"
+import useLogo from "../hooks/use-logo"
 
 const SEO = ({
-  title,
-  description,
-  lang = "ru-RU",
-  location,
-  publishedAt,
-  updatedAt,
-  isArticle = false,
-  categories = [],
-  type = `Article`,
-  image,
-}) => {
-  const { site } = useStaticQuery(graphql`
-    query {
-      site {
-        siteMetadata {
-          title
-          siteUrl
-          description
-          author {
-            name
-            description
-            social {
-              twitter
-              facebook
-            }
-          }
-        }
-      }
-    }
-  `)
-  const metadata = site.siteMetadata
-  const siteTitle = title ? `${title} | ${metadata.title}` : metadata.title
+               title,
+               description,
+               siteLanguage = "ru-RU",
+               ogLanguage = "ru_RU",
+               publishedAt,
+               updatedAt,
+               isArticle = false,
+               type = `Article`,
+               image,
+               categories = ''
+             }) => {
+  const {pathname} = useLocation()
+  const metadata = useSiteMetadata()
+  const logo = useLogo()
+  const siteTitle = title ? title : metadata.title
   const metaDescription = description ? description : metadata.description
-  const metaImage = image ? `${metadata.siteUrl}/${image}` : null
-  const canonical = url.resolve(metadata.siteUrl, location.pathname)
+  const metaImage = image ? `${metadata.siteUrl}${image}` : null
+  const canonical = url.resolve(metadata.siteUrl, pathname)
+  const social = Object.values(metadata.social).filter(item => item.length > 0).map(item => `"${item}"`).join(', ')
 
   return (
     <Helmet
-      htmlAttributes={{ lang }}
+      htmlAttributes={{siteLanguage}}
       title={siteTitle}
       meta={[
         {
@@ -67,23 +53,11 @@ const SEO = ({
         },
         {
           name: `og:locale`,
-          content: `ru_RU`,
-        },
-        {
-          name: `twitter:label1`,
-          content: `Written by`,
-        },
-        {
-          name: `twitter:data1`,
-          content: metadata.author.name,
+          content: ogLanguage,
         },
         {
           name: `twitter:card`,
           content: `summary`,
-        },
-        {
-          name: `twitter:creator`,
-          content: metadata.author.name,
         },
         {
           name: `twitter:title`,
@@ -96,79 +70,172 @@ const SEO = ({
       ].concat(
         publishedAt
           ? [
-              {
-                name: `article:published_time`,
-                content: publishedAt,
-              },
-            ]
+            {
+              name: `article:published_time`,
+              content: publishedAt,
+            },
+          ]
           : [],
         updatedAt
           ? [
-              {
-                name: `article:modified_time`,
-                content: updatedAt,
-              },
-            ]
-          : [],
-        categories.length > 0
-          ? [
-              {
-                name: `twitter:label2`,
-                content: `Filed under`,
-              },
-              {
-                name: `twitter:data2`,
-                content: categories[0],
-              },
-            ]
+            {
+              name: `article:modified_time`,
+              content: updatedAt,
+            },
+          ]
           : [],
         metaImage
           ? [
-              {
-                name: `og:image`,
-                content: metaImage,
-              },
-              {
-                name: `twitter:image`,
-                content: metaImage,
-              },
-            ]
+            {
+              name: `og:image`,
+              content: metaImage,
+            },
+            {
+              name: `og:image:alt`,
+              content: metaDescription,
+            },
+            {
+              name: `twitter:image`,
+              content: metaImage,
+            },
+            {
+              name: `twitter:image:alt`,
+              content: metaDescription,
+            },
+          ]
           : []
       )}
     >
       <script type={`application/ld+json`}>{`
         {
           "@context": "https://schema.org/",
-          "@type": "${type}",
-          "author": {
-            "@type": "Person",
-            "name": "${metadata.author.name}"
-          },
-          "headline": "${siteTitle}",
-          "url": "${canonical}",
-          ${publishedAt ? `"datePublished": "${publishedAt}",` : ``}
-          ${updatedAt ? `"datePublished": "${updatedAt}",` : ``}
-          ${
-            metaImage
-              ? `"image": {
-            "@type": "ImageObject",
-            "url": "${metaImage}",
-            "width": "1000",
-            "height": "520"
-          },`
-              : ``
-          }
-          "publisher": {
-            "@type": "Organization",
-            "name": "${metadata.title}"
-          },
-          "description": "${metaDescription}",
-          "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "${metadata.siteUrl}"
-          }
+          "@graph": [
+            {
+              "@type": ["Person", "Organization"],
+              "@id": "${metadata.siteUrl}/#personid",
+              "name": "${metadata.author}",
+              ${logo.src ? `"image": {
+                "@type": "ImageObject",
+                "@id": "${metadata.siteUrl}/#personlogo",
+                "inLanguage": "${metadata.siteLanguage}",
+                "url": "${metadata.siteUrl}${logo.src}",
+                "caption": "${metadata.author}"
+              },` : ``}
+              ${logo.src ? `"logo": {"@id": "${metadata.siteUrl}/#personlogo"},` : ``}
+              "description": "${metaDescription}",
+              ${social.length > 0 ? `"sameAs": [${social}]` : ``}
+            }, {
+              "@type": "WebSite",
+              "@id": "${metadata.siteUrl}/#website",
+              "url": "${metadata.siteUrl}/",
+              "name": "${metadata.title}",
+              "description": "${metadata.description}",
+              "publisher": {"@id": "${metadata.siteUrl}/#personid"},
+              "inLanguage": "${metadata.siteLanguage}"
+            }, {
+              "@type": "WebPage",
+              "@id": "${metadata.siteUrl}/#webpage",
+              "url": "${metadata.siteUrl}${pathname}/",
+              "name": "${title}",
+              "isPartOf": {"@id": "${metadata.siteUrl}/#website"},
+              ${image ? `"primaryImageOfPage": {"@id": "${metadata.siteUrl}/#primaryimage"},` : ``}
+              ${type === "CollectionPage" || type === "Article"
+                ? `"breadcrumb": {"@id": "${metadata.siteUrl}${pathname}/#breadcrumb"},` : ``}
+              "about": {"@id": "${metadata.siteUrl}/#personid"},
+              ${publishedAt ? `"datePublished": "${publishedAt}",` : ``}
+              ${updatedAt ? `"dateModified": "${updatedAt}",` : ``}
+              "description": "${metaDescription}",
+              "inLanguage": "${metadata.siteLanguage}",
+              "potentialAction": [{"@type": "ReadAction", "target": ["${metadata.siteUrl}${pathname}/"]}]
+            }${image ? `, {
+              "@type": "ImageObject",
+              "@id": "${metadata.siteUrl}/#primaryimage",
+              "inLanguage": "${metadata.siteLanguage}",
+              "url": "${metadata.siteUrl}${image}",
+              "width": 1000,
+              "height": 520
+            }` : ``}${type === "CollectionPage" ? `, {
+              "@type": "CollectionPage",
+              "@id": "${metadata.siteUrl}${pathname}#webpage",
+              "url": "${metadata.siteUrl}${pathname}/",
+              "name": "${title}",
+              "isPartOf": {"@id": "${metadata.siteUrl}/#website"},
+              "description": "${metaDescription}",
+              "breadcrumb": {"@id": "${metadata.siteUrl}${pathname}/#breadcrumb"},
+              "inLanguage": "${metadata.siteLanguage}"
+            }` : ``}${type === "CollectionPage" || type === "Article" ? `, {
+              "@type": "BreadcrumbList",
+              "@id": "${metadata.siteUrl}${pathname}/#breadcrumb",
+              "itemListElement":
+                [{
+                  "@type": "ListItem",
+                  "position": 1,
+                  "item": {
+                  "@type": "WebPage",
+                  "@id": "${metadata.siteUrl}/#webpage",
+                  "url": "${metadata.siteUrl}/",
+                  "name": "Главная страница"}
+                }, {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "item": {
+                    "@type": "WebPage",
+                    "@id": "${metadata.siteUrl}${pathname}/",
+                    "url": "${metadata.siteUrl}${pathname}/",
+                    "name": "${title}"
+                  }
+                }]
+            }` : ``}${type === "Article" ? `, {
+              "@type": "Article",
+              "@id": "${metadata.siteUrl}${pathname}/#article",
+              "isPartOf": {"@id": "${metadata.siteUrl}${pathname}/#webpage"},
+              "author": {"@id": "${metadata.siteUrl}/#personid"},
+              "headline": "${title}",
+              ${publishedAt ? `"datePublished": "${publishedAt}",` : ``}
+              ${updatedAt ? `"dateModified": "${updatedAt}",` : ``}
+              "mainEntityOfPage": {"@id": "${metadata.siteUrl}${pathname}/#webpage"},
+              "publisher": {"@id": "${metadata.siteUrl}/#personid"},
+              "image": {"@id": "${metadata.siteUrl}${pathname}/#primaryimage"},
+              ${categories ? `"articleSection": "${categories}",` : ``}
+              "inLanguage": "${siteLanguage}"
+            }` : ``}
+          ]
         }
       `}</script>
+
+      {/*<script type={`application/ld+json`}>{`*/}
+      {/*  {*/}
+      {/*    "@context": "https://schema.org/",*/}
+      {/*    "@type": "${type}",*/}
+      {/*    "author": {*/}
+      {/*      "@type": "Person",*/}
+      {/*      "name": "${metadata.author}"*/}
+      {/*    },*/}
+      {/*    "headline": "${siteTitle}",*/}
+      {/*    "url": "${canonical}",*/}
+      {/*    ${publishedAt ? `"datePublished": "${publishedAt}",` : ``}*/}
+      {/*    ${updatedAt ? `"datePublished": "${updatedAt}",` : ``}*/}
+      {/*    ${*/}
+      {/*  metaImage*/}
+      {/*    ? `"image": {*/}
+      {/*      "@type": "ImageObject",*/}
+      {/*      "url": "${metaImage}",*/}
+      {/*      "width": "1000",*/}
+      {/*      "height": "520"*/}
+      {/*    },`*/}
+      {/*    : ``*/}
+      {/*}*/}
+      {/*    "publisher": {*/}
+      {/*      "@type": "Organization",*/}
+      {/*      "name": "${metadata.title}"*/}
+      {/*    },*/}
+      {/*    "description": "${metaDescription}",*/}
+      {/*    "mainEntityOfPage": {*/}
+      {/*      "@type": "WebPage",*/}
+      {/*      "@id": "${metadata.siteUrl}"*/}
+      {/*    }*/}
+      {/*  }*/}
+      {/*`}</script>*/}
     </Helmet>
   )
 }

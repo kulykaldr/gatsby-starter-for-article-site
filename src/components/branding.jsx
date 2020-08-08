@@ -1,16 +1,20 @@
 import React from "react"
 import styled from "styled-components"
-import { graphql, Link, useStaticQuery, withPrefix } from "gatsby"
+import {Link, withPrefix} from "gatsby"
 import Theme from "../styles/theme"
 import Img from "gatsby-image"
+import {useLocation} from "@reach/router"
+import useLogo from "../hooks/use-logo"
 
 const BrandingWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 20px 80px 20px 0;
+  padding: 20px;
+  background-color: ${Theme.layout.backgroundColor};
+  z-index: 20;
 
   @media (max-width: ${Theme.breakpoints.xl}) {
-    padding: 20px;
+    padding: 20px 80px 20px 0;
   }
 `
 
@@ -30,7 +34,7 @@ const LogoImage = styled(Img)`
   }
 `
 
-const SiteTitle = styled.div`
+const SiteTitle = styled.h1`
   font-size: 28px;
   margin: 0;
   line-height: 1.1;
@@ -46,7 +50,8 @@ const SiteTitle = styled.div`
 `
 
 const Subtitle = styled.p`
-  color: ${Theme.layout.lightGray};
+  color: ${Theme.layout.darkColor};
+  opacity: .8;
   line-height: 1.2;
   margin: 0;
   font-size: 16px;
@@ -58,45 +63,42 @@ const Subtitle = styled.p`
 `
 
 const HomeLink = styled(Link)`
+  font-size: 28px;
+  margin: 0;
+  line-height: 1.1;
+  font-weight: 900;
   color: ${Theme.layout.primaryColor};
-  text-decoration: none;
-  align-self: center;
+  white-space: nowrap;
+
+  @media (max-width: ${Theme.breakpoints.lg}) {
+    font-size: 18px;
+    white-space: inherit;
+  }
 `
 
-const Branding = ({ title, subtitle, location }) => {
-  const logo = useStaticQuery(graphql`
-    query {
-      file(sourceInstanceName: { eq: "images" }, name: { eq: "logo" }) {
-        childImageSharp {
-          fluid(maxWidth: 300, quality: 90) {
-            ...GatsbyImageSharpFluid
-            ...GatsbyImageSharpFluidLimitPresentationSize
-          }
-        }
-      }
-    }
-  `)
+const Branding = ({ title, subtitle }) => {
+  const logo = useLogo()
 
-  const isHomepage = location.pathname === withPrefix("/")
+  const { pathname } = useLocation()
+  const isHomepage = pathname === withPrefix("/")
 
   return (
     <BrandingWrapper>
       <LogoWrapper>
         {isHomepage
-          ? <LogoImage fluid={logo.file.childImageSharp.fluid} alt={title}/>
+          ? <LogoImage fluid={logo} alt={title}/>
           : <HomeLink to={`/`}>
-            <LogoImage fluid={logo.file.childImageSharp.fluid} alt={title}/>
+            <LogoImage fluid={logo} alt={title}/>
           </HomeLink>
         }
       </LogoWrapper>
 
       <div>
-        <SiteTitle>
           {isHomepage
-            ? <span>{title}</span>
+            ? <SiteTitle>{title}</SiteTitle>
             : <HomeLink to={`/`}>{title}</HomeLink>
           }
-        </SiteTitle>
+
 
         <Subtitle>{subtitle}</Subtitle>
       </div>

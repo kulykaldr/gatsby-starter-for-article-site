@@ -1,48 +1,48 @@
 import React from "react"
 import Layout from "../components/layout"
-import { Grid } from "../components/common"
+import {Grid} from "../components/common"
 import styled from "styled-components"
-import { graphql } from "gatsby"
+import {graphql} from "gatsby"
 import SEO from "../components/seo"
 import Theme from "../styles/theme"
 import Pagination from "../components/pagination"
-import PostGrid from "../components/post-grid"
+import CardGrid from "../components/card-grid"
+import useSiteMetadata from "../hooks/use-site-metadata"
 
 const PostsContainer = styled(Grid)`
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  /*grid-template-areas: "latest latest" ". .";*/
-  width: 100%;
   margin-left: 0;
   margin-right: 0;
   margin-top: 30px;
 
   @media (max-width: ${Theme.breakpoints.sm}) {
-    display: block;
-    padding: 0;
-
     article {
       margin-bottom: 30px;
     }
   }
 `
 
-const PostsPageTemplate = ({ data, pageContext, location }) => {
+const PostsPageTemplate = ({data, pageContext}) => {
   const posts = data.allPosts.edges.map((node) => node.node)
+  const {title, description} = useSiteMetadata()
+  const {previousPagePath, nextPagePath, humanPageNumber, numberOfPages} = pageContext
 
   return (
-    <Layout location={location}>
-      <SEO location={location} type={`WebSite`}/>
+    <Layout>
+      <SEO
+        type={`WebSite`}
+        title={humanPageNumber > 1 ? `${title} - Страница ${humanPageNumber} из ${numberOfPages}` : null}
+        description={humanPageNumber > 1 ? `${description} | Страница ${humanPageNumber} из ${numberOfPages}` : null}
+      />
 
-        <PostsContainer>
-          <PostGrid posts={posts}/>
-          <Pagination
-            previousPagePath={pageContext.previousPagePath}
-            nextPagePath={pageContext.nextPagePath}
-            humanPageNumber={pageContext.humanPageNumber}
-            numberOfPages={pageContext.numberOfPages}
-          />
-        </PostsContainer>
+      <PostsContainer>
+        <CardGrid posts={posts} halfImage={true}/>
+        <Pagination
+          previousPagePath={previousPagePath}
+          nextPagePath={nextPagePath}
+          humanPageNumber={humanPageNumber}
+          numberOfPages={numberOfPages}
+        />
+      </PostsContainer>
     </Layout>
   )
 }
@@ -60,16 +60,19 @@ export const PostsPageQuery = graphql`
       edges {
         node {
           id
+          fields {
+            slug
+          }
+          excerpt
           frontmatter {
-            title
-            path
+            heading
             categories
-            excerpt
             created
             createdPretty: created(formatString: "DD MMMM YYYY", locale: "ru")
+            updated
             featuredImage {
               childImageSharp {
-                sizes(maxWidth: 500, quality: 100) {
+                fluid(maxWidth: 500, quality: 75) {
                   base64
                   aspectRatio
                   src
