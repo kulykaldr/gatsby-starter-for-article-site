@@ -73,7 +73,7 @@ const PostTemplate = ({ data }) => {
               />
             )}
             <Toc tableOfContents={post.tableOfContents}/>
-            <RenderMdx>{post.body}</RenderMdx>
+            <RenderMdx className={`post`}>{post.body}</RenderMdx>
           </article>
         </StyledPost>
 
@@ -101,9 +101,6 @@ export default PostTemplate
 export const query = graphql`
   query ($postId: String!) {
     post: mdx(id: { eq: $postId }) {
-      headings {
-        depth
-      }
       frontmatter {
         title
         categories
@@ -126,7 +123,6 @@ export const query = graphql`
         }
       }
       body
-      tableOfContents
       related {
         fields {
           slug

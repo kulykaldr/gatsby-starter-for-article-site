@@ -6,126 +6,6 @@ import * as JsSearch from "js-search"
 import {useLocation} from "@reach/router"
 import Theme from "../styles/theme";
 
-export const SearchContainer = styled.div`
-  position: relative;
-  z-index: 50;
-`
-
-export const SearchInput = styled.input`
-  background: transparent;
-  border: 0;
-  width: 100%;
-  outline: 0;
-  padding-left: 8px;
-  outline-offset: -2px;
-
-  &::placeholder {
-    color: hsla(0,0%,100%,.6);
-  }
-
-  &.focused {
-    &::placeholder {
-      color: #000;
-    }
-  }
-`
-
-export const ResultsList = styled.ul`
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  max-height: 50vh;
-  overflow: hidden;
-  overflow-y: auto;
-  white-space: normal!important;
-
-  em {
-    font-style: normal;
-    background-color: rgba(226,164,0,.4);
-  }
-`
-
-export const ResultItem = styled.li`
-  line-height: 1.4em;
-  border-bottom: 1px solid ${Theme.layout.lightGrey};
-
-  ${props => props.selected && `
-    background-color: ${Theme.layout.lightGrey};
-  `};
-`
-
-export const ResultLink = styled(Link)`
-  display: block;
-  padding: 15px;
-  color: #000;
-`
-
-export const ResultTitle = styled.div`
-  font-size: 14px;
-  font-weight: 700;
-  margin: 3px 0 7px;
-`
-
-export const ResultsContainer = styled.div`
-  display: ${props => props.isFocus ? "block" : "none"};
-  position: absolute;
-  background-color: #fff;
-  width: 100%;
-  margin: -8px;
-  top: 35px;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  color: #000;
-  padding-top: 10px;
-`
-
-export const SearchOverlay = styled.div`
-  opacity: 0;
-  height: 0;
-  background-color: rgba(0,0,0,.2);
-  width: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 25;
-  transition: opacity .25s;
-
-  &.focused {
-    opacity: 1;
-    height: 100%;
-  }
-`
-
-export const SearchWrapper = styled.div`
-  display: flex;
-  background-color: hsla(0,0%,100%,.2);
-  padding: 8px;
-  border-radius: 3px;
-  transition: all .25s;
-  width: 180px;
-  color: hsla(0,0%,100%,.6);
-
-  svg {
-    align-self: center;
-    width: 16px;
-    min-width: 16px;
-  }
-
-  &.focused {
-    width: 400px;
-    background-color: #fff;
-    color: #000;
-
-    @media (max-width: ${Theme.breakpoints.lg}) {
-      width: 75vw;
-    }
-  }
-
-  @media (max-width: ${Theme.breakpoints.lg}) {
-      width: 75vw;
-  }
-`
-
 export const Search = () => {
   const [isFocus, setIsFocus] = useState(false)
   const [query, setQuery] = useState("")
@@ -143,11 +23,13 @@ export const Search = () => {
           node {
             id
             excerpt
+            fields {
+              slug
+            }
             frontmatter {
               title
               heading
               description
-              path
               categories
             }
           }
@@ -157,7 +39,8 @@ export const Search = () => {
   `)
 
   const highlight = (text, words, tag = `em`, className = null) => {
-    const splitWords = words.replace(/[^\w\sа-яёіїє]|_/gi, $1 => ` ${$1} `).replace(/[.,:;\-'" ]+/g, ' ').trim().split(' ')
+    const splitWords = words.replace(/[^\w\sа-яёіїє]|_/gi, $1 => ` ${$1} `)
+                            .replace(/[.,:;\-'" ]+/g, ' ').trim().split(' ')
 
     // Global regex to highlight all matches
     for (let word of splitWords) {
@@ -350,3 +233,123 @@ export const Search = () => {
     </SearchContainer>
   )
 }
+
+export const SearchContainer = styled.div`
+  position: relative;
+  z-index: 50;
+`
+
+export const SearchInput = styled.input`
+  background: transparent;
+  border: 0;
+  width: 100%;
+  outline: 0;
+  padding-left: 8px;
+  outline-offset: -2px;
+
+  &::placeholder {
+    color: hsla(0,0%,100%,.6);
+  }
+
+  &.focused {
+    &::placeholder {
+      color: #000;
+    }
+  }
+`
+
+export const ResultsList = styled.ul`
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  max-height: 50vh;
+  overflow: hidden;
+  overflow-y: auto;
+  white-space: normal!important;
+
+  em {
+    font-style: normal;
+    background-color: rgba(226,164,0,.4);
+  }
+`
+
+export const ResultItem = styled.li`
+  line-height: 1.4em;
+  border-bottom: 1px solid ${Theme.layout.lightGrey};
+
+  ${props => props.selected && `
+    background-color: ${Theme.layout.lightGrey};
+  `};
+`
+
+export const ResultLink = styled(Link)`
+  display: block;
+  padding: 15px;
+  color: #000;
+`
+
+export const ResultTitle = styled.div`
+  font-size: 14px;
+  font-weight: 700;
+  margin: 3px 0 7px;
+`
+
+export const ResultsContainer = styled.div`
+  display: ${props => props.isFocus ? "block" : "none"};
+  position: absolute;
+  background-color: #fff;
+  width: 100%;
+  margin: -8px;
+  top: 35px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  color: #000;
+  padding-top: 10px;
+`
+
+export const SearchOverlay = styled.div`
+  opacity: 0;
+  height: 0;
+  background-color: rgba(0,0,0,.2);
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 25;
+  transition: opacity .25s;
+
+  &.focused {
+    opacity: 1;
+    height: 100%;
+  }
+`
+
+export const SearchWrapper = styled.div`
+  display: flex;
+  background-color: hsla(0,0%,100%,.2);
+  padding: 8px;
+  border-radius: 3px;
+  transition: all .25s;
+  width: 180px;
+  color: hsla(0,0%,100%,.6);
+
+  svg {
+    align-self: center;
+    width: 16px;
+    min-width: 16px;
+  }
+
+  &.focused {
+    width: 400px;
+    background-color: #fff;
+    color: #000;
+
+    @media (max-width: ${Theme.breakpoints.lg}) {
+      width: 75vw;
+    }
+  }
+
+  @media (max-width: ${Theme.breakpoints.lg}) {
+      width: 75vw;
+  }
+`

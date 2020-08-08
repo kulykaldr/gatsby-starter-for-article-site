@@ -21,8 +21,8 @@ export const components = {
   blockquote: props => <Attention type="" {...props}/>
 }
 
-const RenderMdx = ({ children }) => (
-  <StyledContent itemProp="articleBody">
+const RenderMdx = ({ children, ...props }) => (
+  <StyledContent itemProp="articleBody" {...props}>
 
     {children &&
     <MDXProvider components={components}>
