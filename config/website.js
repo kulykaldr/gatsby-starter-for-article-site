@@ -1,11 +1,8 @@
 module.exports = {
-  pathPrefix: '/', // Note: it must *not* have a trailing slash.
-
   title: 'Обо всем на свете', // Navigation and Site Title
   description: 'Интересные истории из жизни каждый день',
-  url: `https://gatsby-starter-kulykaldr.netlify.app`, // Site url
-  siteLanguage: 'ru-RU', // Language Tag on <html> element
-  ogLanguage: 'ru_RU', // Facebook Language
+  url: `https://gatsby-starter-kulykaldr1.netlify.app`, // Site url
+  siteLanguage: 'ru-RU', // Site language
 
   // JSONLD / Manifest
   shortName: 'Обо всем на свете', // shortname for manifest. MUST be shorter than 12 characters
@@ -22,8 +19,6 @@ module.exports = {
     youtube: '',
     telegram: '',
   },
-
-  googleAnalyticsID: '',
 
   // Toggle search on site
   search: true,

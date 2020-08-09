@@ -11,7 +11,6 @@ const useSiteMetadata = () => {
           author
           search
           siteLanguage
-          ogLanguage
           topMenu {
             name
             path

@@ -8,8 +8,6 @@ import useLogo from "../hooks/use-logo"
 const SEO = ({
                title,
                description,
-               siteLanguage = "ru-RU",
-               ogLanguage = "ru_RU",
                publishedAt,
                updatedAt,
                isArticle = false,
@@ -28,7 +26,7 @@ const SEO = ({
 
   return (
     <Helmet
-      htmlAttributes={{siteLanguage}}
+      htmlAttributes={{siteLanguage: metadata.siteLanguage}}
       title={siteTitle}
       meta={[
         {
@@ -53,7 +51,7 @@ const SEO = ({
         },
         {
           name: `og:locale`,
-          content: ogLanguage,
+          content: metadata.siteLanguage.replace("-", "_"),
         },
         {
           name: `twitter:card`,
@@ -197,45 +195,11 @@ const SEO = ({
               "publisher": {"@id": "${metadata.siteUrl}/#personid"},
               "image": {"@id": "${metadata.siteUrl}${pathname}/#primaryimage"},
               ${categories ? `"articleSection": "${categories}",` : ``}
-              "inLanguage": "${siteLanguage}"
+              "inLanguage": "${metadata.siteLanguage}"
             }` : ``}
           ]
         }
       `}</script>
-
-      {/*<script type={`application/ld+json`}>{`*/}
-      {/*  {*/}
-      {/*    "@context": "https://schema.org/",*/}
-      {/*    "@type": "${type}",*/}
-      {/*    "author": {*/}
-      {/*      "@type": "Person",*/}
-      {/*      "name": "${metadata.author}"*/}
-      {/*    },*/}
-      {/*    "headline": "${siteTitle}",*/}
-      {/*    "url": "${canonical}",*/}
-      {/*    ${publishedAt ? `"datePublished": "${publishedAt}",` : ``}*/}
-      {/*    ${updatedAt ? `"datePublished": "${updatedAt}",` : ``}*/}
-      {/*    ${*/}
-      {/*  metaImage*/}
-      {/*    ? `"image": {*/}
-      {/*      "@type": "ImageObject",*/}
-      {/*      "url": "${metaImage}",*/}
-      {/*      "width": "1000",*/}
-      {/*      "height": "520"*/}
-      {/*    },`*/}
-      {/*    : ``*/}
-      {/*}*/}
-      {/*    "publisher": {*/}
-      {/*      "@type": "Organization",*/}
-      {/*      "name": "${metadata.title}"*/}
-      {/*    },*/}
-      {/*    "description": "${metaDescription}",*/}
-      {/*    "mainEntityOfPage": {*/}
-      {/*      "@type": "WebPage",*/}
-      {/*      "@id": "${metadata.siteUrl}"*/}
-      {/*    }*/}
-      {/*  }*/}
-      {/*`}</script>*/}
     </Helmet>
   )
 }

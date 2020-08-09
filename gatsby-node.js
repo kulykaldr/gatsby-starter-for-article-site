@@ -1,7 +1,7 @@
 const slugify = require("slugify")
 const { paginate } = require("gatsby-awesome-pagination")
 const { createFilePath } = require("gatsby-source-filesystem")
-const { fmImagesToRelative } = require('gatsby-remark-relative-images')
+const { fmImagesToRelative } = require("gatsby-remark-relative-images")
 
 exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => {
   const postsPerPage = 5 // TO DO: add to config
@@ -34,7 +34,6 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
               slug
             }
             frontmatter {
-              path
               categories
             }
           }
@@ -65,7 +64,7 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
     items: posts, // An array of objects
     itemsPerPage: postsPerPage, // How many items you want per page
     pathPrefix: "/", // Creates pages like `/blog`, `/blog/2`, etc
-    component: require.resolve(`./src/templates/posts-page.jsx`), // Just like `createPage()`
+    component: require.resolve(`${__dirname}/src/templates/posts-page.jsx`), // Just like `createPage()`
   })
 
   // Create a route for every single post (located in `content/posts`)
@@ -76,7 +75,7 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
 
     createPage({
       path: post.fields.slug,
-      component: require.resolve(`./src/templates/post.jsx`),
+      component: require.resolve(`${__dirname}/src/templates/post.jsx`),
       context: {
         postId: post.id,
       },
@@ -87,7 +86,7 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
   pages.forEach(page => {
     createPage({
       path: page.frontmatter.path,
-      component: require.resolve(`./src/templates/page.jsx`),
+      component: require.resolve(`${__dirname}/src/templates/page.jsx`),
       context: {
         page,
       },
@@ -104,7 +103,7 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
       items: posts.filter(post => post.frontmatter.categories.includes(category)), // An array of objects
       itemsPerPage: postsPerPage, // How many items you want per page
       pathPrefix: `/${slugified}`, // Creates pages like `/blog`, `/blog/2`, etc
-      component: require.resolve(`./src/templates/category.jsx`), // Just like `createPage()`
+      component: require.resolve(`${__dirname}/src/templates/category.jsx`), // Just like `createPage()`
       context: {
         category,
       },

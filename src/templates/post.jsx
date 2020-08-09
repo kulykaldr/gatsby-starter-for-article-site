@@ -15,7 +15,7 @@ import useSiteMetadata from "../hooks/use-site-metadata"
 import RenderMdx from "../components/render-mdx"
 import { SmartLink } from "../components/ui/smartlink"
 import Heading from "../components/ui/heading"
-import Toc from "../components/toc";
+import Toc from "../components/toc"
 
 const PostTemplate = ({ data }) => {
   const post = data.post

@@ -7,13 +7,13 @@
   },
   "version": "1.0.0",
   "scripts": {
-    "lint": "npm run lint:js && npm run lint:css",
-    "build": "gatsby build",
+    "lint": "yarn lint:js && yarn lint:css",
+    "build": "yarn clean && gatsby build",
     "serve": "gatsby serve",
     "build:serve": "gatsby build && gatsby serve",
-    "develop:playground": "cross-env GATSBY_GRAPHQL_IDE=playground gatsby develop",
-    "develop": "gatsby develop",
-    "clean": "gatsby clean && yarn cache clean"
+    "develop:playground": "yarn clean && cross-env GATSBY_GRAPHQL_IDE=playground gatsby develop",
+    "develop": "yarn clean && gatsby develop",
+    "clean": "gatsby clean"
   },
   "main": "index.js",
   "license": "MIT",

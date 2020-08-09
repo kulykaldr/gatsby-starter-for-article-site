@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react"
 import Heading from "../../components/ui/heading"
 import GlobalStyle from "../../styles/global-style"
 import { StyledContent } from "../../components/render-mdx"

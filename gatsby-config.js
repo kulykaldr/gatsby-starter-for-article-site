@@ -1,8 +1,7 @@
-require("dotenv").config();
+require("dotenv").config()
 const website = require('./config/website')
 
 module.exports = {
-  pathPrefix: website.pathPrefix,
   siteMetadata: {
     title: website.title,
     description: website.description,
@@ -12,7 +11,6 @@ module.exports = {
     footerMenu: website.footerMenu,
     search: website.search,
     siteLanguage: website.siteLanguage,
-    ogLanguage: website.ogLanguage,
     social: website.social,
   },
   plugins: [
@@ -217,4 +215,4 @@ module.exports = {
     },
     'gatsby-plugin-netlify', // make sure to keep it last in the array
   ].filter(Boolean)
-};
+}
