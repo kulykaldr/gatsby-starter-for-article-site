@@ -45,7 +45,7 @@ const PostTemplate = ({ data }) => {
           categories={post.frontmatter.categories.join(",")}
         />
         <StyledPost itemScope itemType="http://schema.org/Article">
-          <Breadcrumb categoryName={post.frontmatter.categories[0]} categoryPath={categoryPath}/>
+          <Breadcrumb crumb={post.frontmatter.categories[0]}/>
 
           <article ref={readingProgressRef}>
             <PostHeader>

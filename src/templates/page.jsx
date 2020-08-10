@@ -7,6 +7,7 @@ import useSiteMetadata from "../hooks/use-site-metadata"
 import Theme from "../styles/theme"
 import RenderMdx from "../components/render-mdx"
 import Heading from "../components/ui/heading"
+import Breadcrumb from "../components/breadcrumb";
 
 const PageTemplate = ({ pathContext }) => {
   const page = pathContext.page
@@ -21,6 +22,8 @@ const PageTemplate = ({ pathContext }) => {
         type={"Article"}
       />
       <StyledPage>
+        <Breadcrumb />
+
         <article>
           <Heading tag={1}>{page.frontmatter.heading}</Heading>
           <RenderMdx>{page.body}</RenderMdx>

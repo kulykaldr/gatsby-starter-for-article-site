@@ -12,6 +12,7 @@ import Theme from "../../styles/theme"
 export const SmartLink = ({ children, to, activeClassName, ...other }) => {
   // This assumes that any internal link (intended for Gatsby)
   // will start with one slash or a hash tag
+  // eslint-disable-next-line
   const internal = /^\/(?![\/#])/.test(to)
 
   // Use Gatsby Link for internal links, and <a> for others

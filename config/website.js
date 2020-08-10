@@ -3,6 +3,7 @@ module.exports = {
   description: 'Интересные истории из жизни каждый день',
   url: `https://gatsby-starter-kulykaldr1.netlify.app`, // Site url
   siteLanguage: 'ru-RU', // Site language
+  postsPerPage: 5,
 
   // JSONLD / Manifest
   shortName: 'Обо всем на свете', // shortname for manifest. MUST be shorter than 12 characters

@@ -51,8 +51,11 @@ export default PostsPageTemplate
 
 export const PostsPageQuery = graphql`
   query postsPageQuery($skip: Int!, $limit: Int!){
-    allPosts: allMdx(
-      filter: { fileAbsolutePath: { regex: "/(posts)/.*\\\\.(md|mdx)$/" } }
+    allPosts: allMdx (
+      filter: { frontmatter: {
+        templateKey: { eq: "post" }
+        draft: { eq: false }
+      } }
       sort: { fields: frontmatter___created, order: DESC }
       limit: $limit
       skip: $skip

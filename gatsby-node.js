@@ -2,14 +2,16 @@ const slugify = require("slugify")
 const { paginate } = require("gatsby-awesome-pagination")
 const { createFilePath } = require("gatsby-source-filesystem")
 const { fmImagesToRelative } = require("gatsby-remark-relative-images")
+const website = require('./config/website')
 
 exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => {
-  const postsPerPage = 5 // TO DO: add to config
-
   const result = await graphql(`
     query {
       pages: allMdx(
-        filter: { fileAbsolutePath: { regex: "/(\\/pages\\/).*.(md|mdx)/" } }
+        filter: { frontmatter: {
+          templateKey: { eq: "page" }
+          draft: { eq: false }
+        } }
       ) {
         edges {
           node {
@@ -23,8 +25,12 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
           }
         }
       }
+
       posts: allMdx(
-        filter: { fileAbsolutePath: { regex: "/(posts)/.*\\\\.(md|mdx)$/" } }
+        filter: { frontmatter: {
+          templateKey: { eq: "post" }
+          draft: { eq: false }
+        } }
         sort: { fields: frontmatter___created, order: DESC }
       ) {
         edges {
@@ -39,6 +45,7 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
           }
         }
       }
+
       categories: allCategories {
         edges {
           node {
@@ -62,7 +69,7 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
   paginate({
     createPage, // The Gatsby `createPage` function
     items: posts, // An array of objects
-    itemsPerPage: postsPerPage, // How many items you want per page
+    itemsPerPage: website.postsPerPage, // How many items you want per page
     pathPrefix: "/", // Creates pages like `/blog`, `/blog/2`, etc
     component: require.resolve(`${__dirname}/src/templates/posts-page.jsx`), // Just like `createPage()`
   })
@@ -101,7 +108,7 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
     paginate({
       createPage, // The Gatsby `createPage` function
       items: posts.filter(post => post.frontmatter.categories.includes(category)), // An array of objects
-      itemsPerPage: postsPerPage, // How many items you want per page
+      itemsPerPage: website.postsPerPage, // How many items you want per page
       pathPrefix: `/${slugified}`, // Creates pages like `/blog`, `/blog/2`, etc
       component: require.resolve(`${__dirname}/src/templates/category.jsx`), // Just like `createPage()`
       context: {
