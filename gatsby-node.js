@@ -15,6 +15,9 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
       ) {
         edges {
           node {
+            fields {
+              slug
+            }
             frontmatter {
               title
               heading
@@ -92,7 +95,7 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
   // Create a route for every single page (located in `content/pages`)
   pages.forEach(page => {
     createPage({
-      path: page.frontmatter.path,
+      path: page.fields.slug,
       component: require.resolve(`${__dirname}/src/templates/page.jsx`),
       context: {
         page,
@@ -172,10 +175,11 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
             const posts = await context.nodeModel.runQuery({
               query: {
                 filter: {
-                  fileAbsolutePath: { regex: "/(posts)/.*\\.(md|mdx)$/" },
                   //We're filtering for categories that are sharedby our source node
                   frontmatter: {
-                    categories: { in: categories }
+                    categories: { in: categories },
+                    templateKey: { eq: "page" },
+                    draft: { eq: false },
                   },
                   //Dont forget to exclude the current post node!
                   id: { ne: source.id },

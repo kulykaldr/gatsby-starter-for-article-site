@@ -6,6 +6,38 @@ import Img from "gatsby-image"
 import {useLocation} from "@reach/router"
 import useLogo from "../hooks/use-logo"
 
+const Branding = ({ title, subtitle }) => {
+  const logo = useLogo()
+
+  const { pathname } = useLocation()
+  const isHomepage = pathname === withPrefix("/")
+
+  return (
+    <BrandingWrapper>
+      <LogoWrapper>
+        {isHomepage
+          ? <LogoImage fluid={logo} alt={title}/>
+          : <HomeLink to={`/`}>
+            <LogoImage fluid={logo} alt={title}/>
+          </HomeLink>
+        }
+      </LogoWrapper>
+
+      <div>
+          {isHomepage
+            ? <SiteTitle>{title}</SiteTitle>
+            : <HomeLink to={`/`}>{title}</HomeLink>
+          }
+
+
+        <Subtitle>{subtitle}</Subtitle>
+      </div>
+    </BrandingWrapper>
+  )
+}
+
+export default Branding
+
 const BrandingWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -75,35 +107,3 @@ const HomeLink = styled(Link)`
     white-space: inherit;
   }
 `
-
-const Branding = ({ title, subtitle }) => {
-  const logo = useLogo()
-
-  const { pathname } = useLocation()
-  const isHomepage = pathname === withPrefix("/")
-
-  return (
-    <BrandingWrapper>
-      <LogoWrapper>
-        {isHomepage
-          ? <LogoImage fluid={logo} alt={title}/>
-          : <HomeLink to={`/`}>
-            <LogoImage fluid={logo} alt={title}/>
-          </HomeLink>
-        }
-      </LogoWrapper>
-
-      <div>
-          {isHomepage
-            ? <SiteTitle>{title}</SiteTitle>
-            : <HomeLink to={`/`}>{title}</HomeLink>
-          }
-
-
-        <Subtitle>{subtitle}</Subtitle>
-      </div>
-    </BrandingWrapper>
-  )
-}
-
-export default Branding

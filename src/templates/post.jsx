@@ -7,7 +7,7 @@ import { useLocation } from "@reach/router"
 import ReadingProgress from "../components/reading-progress"
 import Theme from "../styles/theme"
 import Layout from "../components/layout"
-import Comments from "../components/comments"
+import AnyComments from "../components/any-comments"
 import SEO from "../components/seo"
 import CardGrid from "../components/card-grid"
 import Breadcrumb from "../components/breadcrumb"
@@ -89,7 +89,7 @@ const PostTemplate = ({ data }) => {
         <meta itemProp="dateModified" content={post.frontmatter.updated}/>
         <meta itemProp="datePublished" content={post.frontmatter.created}/>
         <BlockWrapper>
-          <Comments/>
+          <AnyComments/>
         </BlockWrapper>
       </Layout>
     </>

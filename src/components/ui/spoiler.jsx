@@ -4,6 +4,47 @@ import Theme from "../../styles/theme"
 import {FaChevronDown} from "react-icons/fa"
 import SlideToggle from "react-slide-toggle"
 
+const Spoiler = ({title, children}) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [toggleEvent, setToggleEvent] = useState(0)
+
+  // Toggles the spoiler
+  const toggleSpoiler = () => {
+    setIsOpen(!isOpen)
+    setToggleEvent(Date.now())
+  }
+
+  return (
+    <SpoilerBox>
+      <SpoilerTitle onClick={toggleSpoiler} open={isOpen}>
+        {title}
+        <FaChevronDown/>
+      </SpoilerTitle>
+
+      <SpoilerBody>
+        <SlideToggle
+          duration={800}
+          toggleEvent={toggleEvent}
+          collapsed={false}
+        >
+          {({setCollapsibleElement, progress}) => (
+            <div
+              ref={setCollapsibleElement}
+              style={{
+                transform: `translateY(${Math.round(20 * (-1 + progress))}px)`
+              }}
+            >
+              {children}
+            </div>
+          )}
+        </SlideToggle>
+      </SpoilerBody>
+    </SpoilerBox>
+  )
+}
+
+export default Spoiler
+
 const SpoilerBox = styled.div`
   background: ${Theme.layout.lightGrey};
   border-left: 2px solid ${Theme.layout.primaryColor};
@@ -55,45 +96,3 @@ const SpoilerBody = styled.div`
   padding: 0 20px 0 20px;
   background: #fbfbfb;
 `
-
-const Spoiler = ({title, children}) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [toggleEvent, setToggleEvent] = useState(0)
-
-  // Toggles the spoiler
-  const toggleSpoiler = () => {
-    setIsOpen(!isOpen)
-    setToggleEvent(Date.now())
-  }
-
-  return (
-    <SpoilerBox>
-      <SpoilerTitle onClick={toggleSpoiler} open={isOpen}>
-        {title}
-        <FaChevronDown/>
-      </SpoilerTitle>
-
-      <SpoilerBody>
-        <SlideToggle
-          duration={800}
-          toggleEvent={toggleEvent}
-          collapsed={false}
-        >
-          {({setCollapsibleElement, progress}) => (
-            <div
-              ref={setCollapsibleElement}
-              style={{
-                transform: `translateY(${Math.round(20 * (-1 + progress))}px)`
-              }}
-            >
-              {children}
-            </div>
-          )}
-        </SlideToggle>
-      </SpoilerBody>
-    </SpoilerBox>
-  )
-}
-
-export default Spoiler
-

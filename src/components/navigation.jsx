@@ -7,6 +7,78 @@ import {Link} from "gatsby"
 import {useLocation} from "@reach/router"
 import SlideToggle from "react-slide-toggle"
 
+const Navigation = ({menu, showSearch = true}) => {
+  const {pathname} = useLocation()
+  const [toggleEvent, setToggleEvent] = useState(0)
+  const [isActive, setActive] = useState(false)
+
+  // Toggles the Menu
+  const onToggle = () => {
+    setToggleEvent(Date.now())
+    setActive(!isActive)
+  }
+
+  return (
+    <>
+      <BurgerButton onClick={onToggle} className={isActive ? " active" : null}>
+        <div className={"burger-lines"}/>
+      </BurgerButton>
+      <NavContainer>
+        <NavWrapper>
+          <NavMenu>
+            {menu.map((item, index) => (
+              <NavMenuItem key={index}>
+                {
+                  item.path === pathname
+                    ? <span>{item.name}</span>
+                    : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
+                }
+              </NavMenuItem>
+            ))}
+          </NavMenu>
+
+          {showSearch &&
+          <SearchMenu>
+            <Search/>
+          </SearchMenu>
+          }
+        </NavWrapper>
+      </NavContainer>
+
+      <MobileMenuContainer>
+        <SlideToggle
+          duration={800}
+          toggleEvent={toggleEvent}
+          collapsed
+        >
+          {({setCollapsibleElement, progress}) => (
+            <MobileMenu ref={setCollapsibleElement}>
+              <div
+                style={{
+                  transform: `translateY(${Math.round(20 * (-1 + progress))}px)`
+                }}
+              >
+                {menu.map((item, index) => (
+                  <MobileMenuItem key={index}>
+                    {
+                      item.path === pathname
+                        ? <span>{item.name}</span>
+                        : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
+                    }
+                  </MobileMenuItem>
+                ))}
+              </div>
+            </MobileMenu>
+          )}
+        </SlideToggle>
+      </MobileMenuContainer>
+    </>
+  )
+}
+
+
+export default Navigation
+
 export const NavContainer = styled.nav`
   background-color: ${Theme.layout.primaryColor};
   box-shadow: 0 0 3px rgba(0,0,0,.03), 0 3px 46px rgba(0,0,0,.07);
@@ -236,77 +308,4 @@ const BurgerButton = styled.div`
       }
     }
    }
-
 `
-
-const Navigation = ({menu, showSearch = true}) => {
-  const {pathname} = useLocation()
-  const [toggleEvent, setToggleEvent] = useState(0)
-  const [isActive, setActive] = useState(false)
-
-  // Toggles the Menu
-  const onToggle = () => {
-    setToggleEvent(Date.now())
-    setActive(!isActive)
-  }
-
-  return (
-    <>
-      <BurgerButton onClick={onToggle} className={isActive ? " active" : null}>
-        <div className={"burger-lines"}/>
-      </BurgerButton>
-      <NavContainer>
-        <NavWrapper>
-          <NavMenu>
-            {menu.map((item, index) => (
-              <NavMenuItem key={index}>
-                {
-                  item.path === pathname
-                    ? <span>{item.name}</span>
-                    : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
-                }
-              </NavMenuItem>
-            ))}
-          </NavMenu>
-
-          {showSearch &&
-          <SearchMenu>
-            <Search/>
-          </SearchMenu>
-          }
-        </NavWrapper>
-      </NavContainer>
-
-      <MobileMenuContainer>
-        <SlideToggle
-          duration={800}
-          toggleEvent={toggleEvent}
-          collapsed
-        >
-          {({setCollapsibleElement, progress}) => (
-            <MobileMenu ref={setCollapsibleElement}>
-              <div
-                style={{
-                  transform: `translateY(${Math.round(20 * (-1 + progress))}px)`
-                }}
-              >
-                {menu.map((item, index) => (
-                  <MobileMenuItem key={index}>
-                    {
-                      item.path === pathname
-                        ? <span>{item.name}</span>
-                        : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
-                    }
-                  </MobileMenuItem>
-                ))}
-              </div>
-            </MobileMenu>
-          )}
-        </SlideToggle>
-      </MobileMenuContainer>
-    </>
-  )
-}
-
-
-export default Navigation

@@ -3,11 +3,11 @@ import Heading from "../../components/ui/heading"
 import GlobalStyle from "../../styles/global-style"
 import { StyledContent } from "../../components/render-mdx"
 
-const PostPreview = ({ entry, getAsset, widgetFor }) => {
+const PostPagePreview = ({ entry, getAsset, widgetFor }) => {
   const data = entry.getIn(['data']).toJS()
 
   if (data) {
-    const featuredImage = getAsset(data.featuredImage)
+    const featuredImage = data.featuredImage && getAsset(data.featuredImage)
 
     return (
       <StyledContent style={{margin: "0 20px 0 20px"}}>
@@ -22,4 +22,4 @@ const PostPreview = ({ entry, getAsset, widgetFor }) => {
   }
 }
 
-export default PostPreview
+export default PostPagePreview

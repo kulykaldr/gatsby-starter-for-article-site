@@ -1,5 +1,5 @@
-const attentionEditor = ({ text, type = "quote" }) =>
-  `<Attention type="${type || ""}">${text || ""}</Attention>`
+const attentionEditor = ({ type, text }) =>
+  `<Attention type="${type || ""}">\n${text || ""}\n</Attention>`
 
 export const attentionEditorConfig = {
   // Internal id of the component
@@ -15,24 +15,18 @@ export const attentionEditorConfig = {
       options: ["quote", "check", "info", "warning", "danger"],
       default: "quote"
     },
-    { label: "Text", name: "text", widget: "string" },
+    { label: "Text", name: "text", widget: "markdown" },
   ],
   // Pattern to identify a block as being an instance of this component
-  pattern: /<Attention type="(.*)">(.*)<\/Attention>/g,
+  pattern: /<Attention type="(.*)">([\w\W]*?)<\/Attention>/,
   // Function to extract data elements from the regexp match
-  fromBlock: function(match) {
-    return {
+  fromBlock: match => ({
       type: match[1],
-      text: match[2],
-    }
-  },
+      text: match[2].trim(),
+  }),
   // Function to create a text block from an instance of this component
-  toBlock: function(props) {
-    return attentionEditor(props)
-  },
+  toBlock: props => attentionEditor(props),
   // Preview output for this component. Can either be a string or a React component
   // (component gives better render performance)
-  toPreview: function(props) {
-    return attentionEditor(props)
-  },
+  toPreview: props => attentionEditor(props),
 }

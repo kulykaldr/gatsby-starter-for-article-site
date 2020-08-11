@@ -2,15 +2,6 @@ import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import Theme from "../styles/theme"
 
-const ReadingProgressBar = styled.div`
-  position: fixed;
-  height: 5px;
-  /*top: 70px;*/
-  top: -1px;
-  background-color: ${props => props.color ? props.color : Theme.layout.primaryColor};
-  z-index: 500;
-`
-
 const ReadingProgress = ({ color, target }) => {
   const [readingProgress, setReadingProgress] = useState(0)
   const scrollListener = () => {
@@ -44,3 +35,12 @@ const ReadingProgress = ({ color, target }) => {
 }
 
 export default ReadingProgress
+
+const ReadingProgressBar = styled.div`
+  position: fixed;
+  height: 5px;
+  /*top: 70px;*/
+  top: -1px;
+  background-color: ${props => props.color ? props.color : Theme.layout.primaryColor};
+  z-index: 500;
+`

@@ -8,40 +8,6 @@ import Theme from "../styles/theme"
 import Sidebar from "./sidebar"
 import styled from "styled-components"
 
-const HomeContainer = styled(Grid)`
-  display: grid;
-  grid-template-columns: ${props => props.showSidebar ? `minmax(0, 1fr) .40fr` : `minmax(0,1fr) `};
-  grid-column-gap: 20px;
-
-  @media (max-width: ${Theme.breakpoints.lg}) {
-    grid-template-columns: minmax(0,1fr);
-  }
-`
-
-const SidebarContainer = styled.aside`
-  margin-top: 20px;
-
-  @media (max-width: ${Theme.breakpoints.sm}) {
-    margin-left: 0;
-    margin-top: 0;
-  }
-
-  @media (max-width: ${Theme.breakpoints.md}) {
-    margin-left: 0;
-    margin-top: 0;
-  }
-
-  @media (max-width: ${Theme.breakpoints.lg}) {
-    margin-left: 0;
-    margin-top: 0;
-  }
-
-  @media (max-width: ${Theme.breakpoints.xl}) {
-    width: 100%;
-    margin-top: 20px;
-  }
-`
-
 const Layout = ({ children, showSidebar = true }) => {
   const data = useStaticQuery(graphql`
     query {
@@ -92,3 +58,37 @@ const Layout = ({ children, showSidebar = true }) => {
 }
 
 export default Layout
+
+const HomeContainer = styled(Grid)`
+  display: grid;
+  grid-template-columns: ${props => props.showSidebar ? `minmax(0, 1fr) .40fr` : `minmax(0,1fr) `};
+  grid-column-gap: 20px;
+
+  @media (max-width: ${Theme.breakpoints.lg}) {
+    grid-template-columns: minmax(0,1fr);
+  }
+`
+
+const SidebarContainer = styled.aside`
+  margin-top: 20px;
+
+  @media (max-width: ${Theme.breakpoints.sm}) {
+    margin-left: 0;
+    margin-top: 0;
+  }
+
+  @media (max-width: ${Theme.breakpoints.md}) {
+    margin-left: 0;
+    margin-top: 0;
+  }
+
+  @media (max-width: ${Theme.breakpoints.lg}) {
+    margin-left: 0;
+    margin-top: 0;
+  }
+
+  @media (max-width: ${Theme.breakpoints.xl}) {
+    width: 100%;
+    margin-top: 20px;
+  }
+`

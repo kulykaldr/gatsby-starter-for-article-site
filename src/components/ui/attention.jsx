@@ -9,6 +9,21 @@ import {
   FaExclamationCircle
 } from "react-icons/fa"
 
+const Attention = ({children, type = ""}) => {
+  return (
+    <AttentionWrapper className={type}>
+      {type === "quote" && <FaQuoteLeft/>}
+      {type === "check" && <FaCheckCircle/>}
+      {type === "danger" && <FaTimesCircle/>}
+      {type === "info" && <FaQuestionCircle/>}
+      {type === "warning" && <FaExclamationCircle/>}
+      {children}
+    </AttentionWrapper>
+  )
+}
+
+export default Attention
+
 const AttentionWrapper = styled.blockquote`
   position: relative;
   margin: 35px -40px 35px -40px;
@@ -76,18 +91,3 @@ const AttentionWrapper = styled.blockquote`
     }
   }
 `
-
-const Attention = ({children, type = ""}) => {
-  return (
-    <AttentionWrapper className={type}>
-      {type === "quote" && <FaQuoteLeft/>}
-      {type === "check" && <FaCheckCircle/>}
-      {type === "danger" && <FaTimesCircle/>}
-      {type === "info" && <FaQuestionCircle/>}
-      {type === "warning" && <FaExclamationCircle/>}
-      {children}
-    </AttentionWrapper>
-  )
-}
-
-export default Attention

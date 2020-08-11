@@ -4,6 +4,17 @@ import Branding from "./branding"
 import styled from "styled-components"
 import Theme from "../styles/theme";
 
+const Header = ({title, subtitle, menu, search = true}) => {
+  return (
+    <HeaderContainer itemScope itemType="http://schema.org/WPHeader">
+      <Branding title={title} subtitle={subtitle}/>
+      <Navigation title={title} menu={menu} showSearch={search}/>
+    </HeaderContainer>
+  )
+}
+
+export default Header
+
 const HeaderContainer = styled.header`
   position: relative;
   z-index: 20;
@@ -16,14 +27,3 @@ const HeaderContainer = styled.header`
     padding: 0 20px;
   }
 `
-
-const Header = ({title, subtitle, menu, search = true}) => {
-  return (
-    <HeaderContainer itemScope itemType="http://schema.org/WPHeader">
-      <Branding title={title} subtitle={subtitle}/>
-      <Navigation title={title} menu={menu} showSearch={search}/>
-    </HeaderContainer>
-  )
-}
-
-export default Header

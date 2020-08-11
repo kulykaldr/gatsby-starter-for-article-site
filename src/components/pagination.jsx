@@ -3,16 +3,40 @@ import { Link } from "gatsby"
 import styled from "styled-components"
 import Theme from "../styles/theme"
 
+const Pagination = ({ humanPageNumber, numberOfPages, previousPagePath, nextPagePath }) => {
+
+    return (
+      <PaginationWrapper>
+        {previousPagePath ? (
+          <PreviousBtn to={previousPagePath}>‹ Предыдущая</PreviousBtn>
+        ) : (
+          <Spacer className="previous"/>
+        )}
+
+        {numberOfPages > 1 && <PageInfo>
+          Страница {humanPageNumber} из {numberOfPages}
+        </PageInfo>}
+
+        {nextPagePath ? (
+          <NextBtn to={nextPagePath}>Следующая ›</NextBtn>
+        ) : (
+          <Spacer className="next"/>
+        )}
+      </PaginationWrapper>
+    )
+}
+
+export default Pagination
+
 const PaginationWrapper = styled.nav`
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   align-items: center;
   /*margin-top: 4em;*/
   justify-content: space-between;
   width: 100%;
   max-width: 770px;
-  margin: 0px auto;
+  margin: 0 auto;
 
   @media (max-width: ${Theme.breakpoints.md}) {
     width: 90%;
@@ -80,28 +104,3 @@ const PageInfo = styled.span`
     text-align: center;
   }
 `
-
-const Pagination = ({ humanPageNumber, numberOfPages, previousPagePath, nextPagePath }) => {
-
-    return (
-      <PaginationWrapper>
-        {previousPagePath ? (
-          <PreviousBtn to={previousPagePath}>‹ Предыдущая</PreviousBtn>
-        ) : (
-          <Spacer className="previous"/>
-        )}
-
-        {numberOfPages > 1 && <PageInfo>
-          Страница {humanPageNumber} из {numberOfPages}
-        </PageInfo>}
-
-        {nextPagePath ? (
-          <NextBtn to={nextPagePath}>Следующая ›</NextBtn>
-        ) : (
-          <Spacer className="next"/>
-        )}
-      </PaginationWrapper>
-    )
-}
-
-export default Pagination

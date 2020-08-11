@@ -5,6 +5,21 @@ import styled from "styled-components"
 import Theme from "../styles/theme"
 import SEO from "../components/seo"
 
+const NotFoundPage = () => (
+  <Layout>
+    <SEO title={`Страница не найдена`}/>
+    <Error>
+      <ErrorTitle>404</ErrorTitle>
+      <ErrorDescription>Страница не найдена</ErrorDescription>
+      <BackLink to={`/`}>
+        На главную страницу!
+      </BackLink>
+    </Error>
+  </Layout>
+)
+
+export default NotFoundPage
+
 const Error = styled.section`
   display: flex;
   flex-wrap: wrap;
@@ -37,18 +52,3 @@ const BackLink = styled(Link)`
     text-decoration: underline;
   }
 `
-
-const NotFoundPage = () => (
-  <Layout>
-    <SEO title={`Страница не найдена`}/>
-    <Error>
-      <ErrorTitle>404</ErrorTitle>
-      <ErrorDescription>Страница не найдена</ErrorDescription>
-      <BackLink to={`/`}>
-        На главную страницу!
-      </BackLink>
-    </Error>
-  </Layout>
-)
-
-export default NotFoundPage

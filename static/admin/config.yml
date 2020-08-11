@@ -36,3 +36,23 @@ collections:
       - label: Drafts
         field: draft
         pattern: true
+
+  - name: "page"
+    label: "Page"
+    folder: "content/pages"
+    create: true
+    extension: mdx
+    widget: mdx
+    format: frontmatter
+    slug: "{{slug}}"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "post"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Heading", name: "heading", widget: "string"}
+      - {label: "Draft", name: "draft", widget: "boolean"}
+      - {label: "Description", name: "description", widget: "text"}
+      - {label: "Body", name: "body", widget: "mdx"}
+    view_filters:
+      - label: Drafts
+        field: draft
+        pattern: true

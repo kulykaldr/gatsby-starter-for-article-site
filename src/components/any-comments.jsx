@@ -1,13 +1,7 @@
 import React, {useEffect} from "react"
 import styled from "styled-components"
 
-const CommentTitle = styled.div`
-  font-size: 1.3em;
-  font-weight: 700;
-  margin: 15px 0 20px;
-`
-
-const Comments = () => {
+const AnyComments = () => {
   useEffect(() => {
     const AnyComment = window.AnyComment || []
     AnyComment.Comments = []
@@ -37,4 +31,10 @@ const Comments = () => {
   )
 }
 
-export default Comments
+export default AnyComments
+
+const CommentTitle = styled.div`
+  font-size: 1.3em;
+  font-weight: 700;
+  margin: 15px 0 20px;
+`
