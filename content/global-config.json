@@ -1,0 +1,47 @@
+{
+  "siteUrl": "https://gatsby-starter-kulykaldr1.netlify.app",
+  "author": "KulykAldr",
+  "socialLinks": [
+    {
+      "text": "twitter",
+      "url": "https://twitter.com"
+    },
+    {
+      "text": "facebook",
+      "url": "https://facebook.com"
+    }
+  ],
+  "siteSearch": true,
+  "topMenu": [
+    {
+      "text": "Главная",
+      "url": "/"
+    },
+    {
+      "text": "Контакты",
+      "url": "/kontakty"
+    },
+    {
+      "text": "О нас",
+      "url": "/o-nas"
+    }
+  ],
+  "title": "Обо всем на свете",
+  "postsPerPage": 5,
+  "footerMenu": [
+    {
+      "text": "Политика конфиденциальности",
+      "url": "/politika-konfidencialnosti"
+    },
+    {
+      "text": "RSS",
+      "url": "/rss.xml"
+    },
+    {
+      "text": "Карта сайта",
+      "url": "/sitemap.xml"
+    }
+  ],
+  "description": "Интересные истории из жизни каждый день",
+  "siteLanguage": "ru-RU"
+}
