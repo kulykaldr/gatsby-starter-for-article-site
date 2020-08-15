@@ -13,10 +13,10 @@ const Toc = () => {
       scrollSmoothDuration: 1,
       activeLinkClass: ' ',
       orderedList: false,
-    });
+    })
 
     return () => tocbot.destroy()
-  });
+  })
 
   return (
     <Spoiler title={`Содержание статьи`}>

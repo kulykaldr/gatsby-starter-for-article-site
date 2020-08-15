@@ -1,16 +1,17 @@
-import React, {useState} from "react"
-import {Search} from "./search-js-search"
+import React, { useState } from "react"
+import { Search } from "./search-js-search"
 import styled from "styled-components"
-import {Container} from "./common"
-import Theme from "../styles/theme"
-import {Link} from "gatsby"
-import {useLocation} from "@reach/router"
+import { Container } from "./common"
+import { Link } from "gatsby"
+import { useLocation } from "@reach/router"
 import SlideToggle from "react-slide-toggle"
+import useSiteMetadata from "../hooks/use-site-metadata"
 
-const Navigation = ({menu, showSearch = true}) => {
-  const {pathname} = useLocation()
-  const [toggleEvent, setToggleEvent] = useState(0)
-  const [isActive, setActive] = useState(false)
+const TopMenu = () => {
+  const { pathname } = useLocation()
+  const [ toggleEvent, setToggleEvent ] = useState(0)
+  const [ isActive, setActive ] = useState(false)
+  const { siteTopMenu, siteSearch } = useSiteMetadata()
 
   // Toggles the Menu
   const onToggle = () => {
@@ -26,18 +27,18 @@ const Navigation = ({menu, showSearch = true}) => {
       <NavContainer>
         <NavWrapper>
           <NavMenu>
-            {menu.map((item, index) => (
+            {siteTopMenu.map((item, index) => (
               <NavMenuItem key={index}>
                 {
                   item.path === pathname
-                    ? <span>{item.name}</span>
-                    : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
+                    ? <span>{item.text}</span>
+                    : <NavLink to={item.url} key={index} activeClassName='active'>{item.text}</NavLink>
                 }
               </NavMenuItem>
             ))}
           </NavMenu>
 
-          {showSearch &&
+          {siteSearch &&
           <SearchMenu>
             <Search/>
           </SearchMenu>
@@ -51,19 +52,19 @@ const Navigation = ({menu, showSearch = true}) => {
           toggleEvent={toggleEvent}
           collapsed
         >
-          {({setCollapsibleElement, progress}) => (
+          {({ setCollapsibleElement, progress }) => (
             <MobileMenu ref={setCollapsibleElement}>
               <div
                 style={{
                   transform: `translateY(${Math.round(20 * (-1 + progress))}px)`
                 }}
               >
-                {menu.map((item, index) => (
+                {siteTopMenu.map((item, index) => (
                   <MobileMenuItem key={index}>
                     {
-                      item.path === pathname
-                        ? <span>{item.name}</span>
-                        : <NavLink to={item.path} key={index} activeClassName='active'>{item.name}</NavLink>
+                      item.url === pathname
+                        ? <span>{item.text}</span>
+                        : <NavLink to={item.url} key={index} activeClassName='active'>{item.text}</NavLink>
                     }
                   </MobileMenuItem>
                 ))}
@@ -77,10 +78,10 @@ const Navigation = ({menu, showSearch = true}) => {
 }
 
 
-export default Navigation
+export default TopMenu
 
 export const NavContainer = styled.nav`
-  background-color: ${Theme.layout.primaryColor};
+  background-color: ${props => props.theme.siteColors.primaryColor};
   box-shadow: 0 0 3px rgba(0,0,0,.03), 0 3px 46px rgba(0,0,0,.07);
   min-height: 60px;
   display: flex;
@@ -93,11 +94,11 @@ export const NavWrapper = styled(Container)`
   white-space: nowrap;
   position: relative;
 
-  @media (max-width: ${Theme.breakpoints.lg}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
     padding: 0;
   }
 
-  @media (max-width: ${Theme.breakpoints.lg}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
     justify-content: center;
   }
 `
@@ -111,7 +112,7 @@ export const NavMenu = styled.ul`
   overflow-x: hidden;
   overflow-y: hidden;
 
-  @media (max-width: ${Theme.breakpoints.lg}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
     display: none;
   }
 `
@@ -122,7 +123,7 @@ export const SearchMenu = styled.ul`
   margin: 0;
   padding: 0 20px 0 0;
 
-  @media (max-width: ${Theme.breakpoints.lg}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
     padding-right: 0;
   }
 `
@@ -197,7 +198,7 @@ const MobileMenuContainer = styled.div`
 const MobileMenu = styled.ul`
   margin: 0;
   padding: 0;
-  background-color: ${Theme.layout.primaryColor};
+  background-color: ${props => props.theme.siteColors.primaryColor};
 `
 
 const MobileMenuItem = styled(NavMenuItem)`
@@ -252,7 +253,7 @@ const BurgerButton = styled.div`
   background: 0 0;
   font-size: 12px;
 
-  @media (max-width: ${Theme.breakpoints.lg}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
     display: block;
   }
 
@@ -267,7 +268,7 @@ const BurgerButton = styled.div`
     transition: top .2s .2s,left .1s,transform .2s,background-color .2s .1s;
     pointer-events: none;
     border-radius: .25em;
-    background-color: ${Theme.layout.primaryColor};
+    background-color: ${props => props.theme.siteBreakpoints.primaryColor};
   }
 
   .burger-lines {

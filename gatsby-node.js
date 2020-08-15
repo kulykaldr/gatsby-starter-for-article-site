@@ -2,7 +2,8 @@ const slugify = require("slugify")
 const { paginate } = require("gatsby-awesome-pagination")
 const { createFilePath } = require("gatsby-source-filesystem")
 const { fmImagesToRelative } = require("gatsby-remark-relative-images")
-const website = require('./config/website')
+const siteConfig = require("./content/configs/site-config.json")
+const fs = require("fs")
 
 exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => {
   const result = await graphql(`
@@ -20,9 +21,9 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
             }
             frontmatter {
               title
+              slug
               heading
               description
-              path
             }
             body
           }
@@ -44,15 +45,8 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
             }
             frontmatter {
               categories
+              slug
             }
-          }
-        }
-      }
-
-      categories: allCategories {
-        edges {
-          node {
-            name
           }
         }
       }
@@ -63,28 +57,51 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
     reporter.panic(result.errors)
   }
 
-  const categories = []
   const posts = result.data.posts.edges.map(node => node.node)
   const pages = result.data.pages.edges.map(node => node.node)
-  const categoriesYml = result.data.categories.edges.map(node => node.node).map(c => c.name) || []
 
   // Create your paginated pages
   paginate({
     createPage, // The Gatsby `createPage` function
     items: posts, // An array of objects
-    itemsPerPage: website.postsPerPage, // How many items you want per page
+    itemsPerPage: siteConfig.sitePostsPerPage, // How many items you want per page
     pathPrefix: "/", // Creates pages like `/blog`, `/blog/2`, etc
     component: require.resolve(`${__dirname}/src/templates/posts-page.jsx`), // Just like `createPage()`
   })
 
   // Create a route for every single post (located in `content/posts`)
   posts.forEach(post => {
+    // If category name not exists in categories array site-config.json
+    // then add to this array and
     if (post.frontmatter.categories) {
-      categories.push(...post.frontmatter.categories)
+      let isConfigModified = null
+      post.frontmatter.categories.map(catName => {
+        // if category exists in frontmatter but not in file
+        // then add to file
+        if (!siteConfig.siteCategories.some(category => category.name === catName)) {
+          siteConfig.siteCategories.push({
+            name: catName,
+            description: ""
+          })
+          isConfigModified = true
+        }
+      })
+
+      // write config with new categories in file
+      if (isConfigModified) {
+        fs.writeFile(
+          `${__dirname}/content/configs/site-config.json`,
+          JSON.stringify(siteConfig, null, 2),
+          { flag: 'w' },
+          (err) => {
+            if (err) throw err
+          }
+        )
+      }
     }
 
     createPage({
-      path: post.fields.slug,
+      path: post.frontmatter.slug || post.fields.slug,
       component: require.resolve(`${__dirname}/src/templates/post.jsx`),
       context: {
         postId: post.id,
@@ -95,7 +112,7 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
   // Create a route for every single page (located in `content/pages`)
   pages.forEach(page => {
     createPage({
-      path: page.fields.slug,
+      path: page.frontmatter.slug || page.fields.slug,
       component: require.resolve(`${__dirname}/src/templates/page.jsx`),
       context: {
         page,
@@ -103,19 +120,18 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
     })
   })
 
-  const uniqCategories = [...new Set(categories)].concat(categoriesYml)
-
-  uniqCategories.forEach(category => {
-    const slugified = slugify(category, { lower: true })
+  siteConfig.siteCategories.forEach(category => {
+    const slugified = slugify(category.name, { lower: true })
 
     paginate({
       createPage, // The Gatsby `createPage` function
-      items: posts.filter(post => post.frontmatter.categories.includes(category)), // An array of objects
-      itemsPerPage: website.postsPerPage, // How many items you want per page
+      items: posts.filter(post => post.frontmatter.categories.includes(category.name)), // An array of objects
+      itemsPerPage: siteConfig.sitePostsPerPage, // How many items you want per page
       pathPrefix: `/${slugified}`, // Creates pages like `/blog`, `/blog/2`, etc
       component: require.resolve(`${__dirname}/src/templates/category.jsx`), // Just like `createPage()`
       context: {
-        category,
+        categoryName: category.name,
+        categoryDescription: category.description
       },
     })
   })
@@ -178,7 +194,7 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
                   //We're filtering for categories that are sharedby our source node
                   frontmatter: {
                     categories: { in: categories },
-                    templateKey: { eq: "page" },
+                    templateKey: { eq: "post" },
                     draft: { eq: false },
                   },
                   //Dont forget to exclude the current post node!

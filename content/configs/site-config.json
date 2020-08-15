@@ -1,0 +1,81 @@
+{
+  "siteUrl": "https://gatsby-starter-kulykaldr1.netlify.app",
+  "siteAuthor": "KulykAldr",
+  "siteSocialLinks": [
+    {
+      "text": "twitter",
+      "url": "https://twitter.com"
+    },
+    {
+      "text": "facebook",
+      "url": "https://facebook.com"
+    }
+  ],
+  "siteSearch": true,
+  "siteTopMenu": [
+    {
+      "text": "Главная",
+      "url": "/"
+    },
+    {
+      "text": "Контакты",
+      "url": "/kontakty"
+    },
+    {
+      "text": "О нас",
+      "url": "/o-nas"
+    }
+  ],
+  "siteTitle": "Обо всем на свете",
+  "sitePostsPerPage": 5,
+  "siteFooterMenu": [
+    {
+      "text": "Политика конфиденциальности",
+      "url": "/politika-konfidencialnosti"
+    },
+    {
+      "text": "RSS",
+      "url": "/rss.xml"
+    },
+    {
+      "text": "Карта сайта",
+      "url": "/sitemap.xml"
+    }
+  ],
+  "siteDescription": "Интересные истории из жизни каждый день",
+  "siteLanguage": "ru-RU",
+  "siteCategories": [
+    {
+      "name": "Новости",
+      "description": "Небольшое описание рубрики, которое будет отображаться только на первой странице рубрики. Так же здесь задан свой заголовок H1. А с помощью плагина Yoast SEO Вы сможете задать и title рубрики, чтобы максимально подготовить её к продвижению."
+    },
+    {
+      "name": "Жизнь",
+      "description": ""
+    }
+  ],
+  "siteColors": {
+    "backgroundColor": "#fafafa",
+    "primaryColor": "#5a80b1",
+    "primaryColorLighter": "#88abd8",
+    "primaryColorDarker": "#476791",
+    "linkColorHover": "#e66212",
+    "darkColor": "#20232a",
+    "lightGrey": "#f3f3f3"
+  },
+  "siteBreakpoints": {
+    "xs": "425px",
+    "sm": "576px",
+    "md": "768px",
+    "lg": "992px",
+    "xl": "1200px"
+  },
+  "siteComponents": {
+    "containerWidth": "1160px",
+    "logoWidth": "100px"
+  },
+  "siteFonts": {
+    "base": "Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
+    "heading": "Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif"
+  }
+}

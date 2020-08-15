@@ -1,6 +1,5 @@
 import React, {useState} from "react"
 import styled from "styled-components"
-import Theme from "../styles/theme"
 
 const FormspreeContactForm = ({url}) => {
   const [status, setStatus] = useState("")
@@ -60,7 +59,7 @@ export default FormspreeContactForm
 const Form = styled.form`
   padding-left: 30px;
 
-  @media (max-width: ${Theme.breakpoints.lg}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
     padding-left: 0;
     word-wrap: break-word;
   }

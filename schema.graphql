@@ -12,37 +12,98 @@ interface Node {
   parent: Node
 }
 
-type Categories implements Node {
+type ConfigsJson implements Node {
   children: [Node!]!
-  description: String
   id: ID!
   internal: Internal!
-  name: String
   parent: Node
+  siteAuthor: String
+  siteBreakpoints: ConfigsJsonSiteBreakpoints
+  siteCategories: [ConfigsJsonSiteCategories]
+  siteColors: ConfigsJsonSiteColors
+  siteComponents: ConfigsJsonSiteComponents
+  siteDescription: String
+  siteFonts: ConfigsJsonSiteFonts
+  siteFooterMenu: [ConfigsJsonSiteFooterMenu]
+  siteLanguage: String
+  sitePostsPerPage: Int
+  siteSearch: Boolean
+  siteSocialLinks: [ConfigsJsonSiteSocialLinks]
+  siteTitle: String
+  siteTopMenu: [ConfigsJsonSiteTopMenu]
+  siteUrl: String
 }
 
-type CategoriesConnection {
-  distinct(field: CategoriesFieldsEnum!): [String!]!
-  edges: [CategoriesEdge!]!
-  group(field: CategoriesFieldsEnum!, limit: Int, skip: Int): [CategoriesGroupConnection!]!
-  nodes: [Categories!]!
+type ConfigsJsonConnection {
+  distinct(field: ConfigsJsonFieldsEnum!): [String!]!
+  edges: [ConfigsJsonEdge!]!
+  group(field: ConfigsJsonFieldsEnum!, limit: Int, skip: Int): [ConfigsJsonGroupConnection!]!
+  nodes: [ConfigsJson!]!
   pageInfo: PageInfo!
   totalCount: Int!
 }
 
-type CategoriesEdge {
-  next: Categories
-  node: Categories!
-  previous: Categories
+type ConfigsJsonEdge {
+  next: ConfigsJson
+  node: ConfigsJson!
+  previous: ConfigsJson
 }
 
-type CategoriesGroupConnection {
-  edges: [CategoriesEdge!]!
+type ConfigsJsonGroupConnection {
+  edges: [ConfigsJsonEdge!]!
   field: String!
   fieldValue: String
-  nodes: [Categories!]!
+  nodes: [ConfigsJson!]!
   pageInfo: PageInfo!
   totalCount: Int!
+}
+
+type ConfigsJsonSiteBreakpoints {
+  lg: String
+  md: String
+  sm: String
+  xl: String
+  xs: String
+}
+
+type ConfigsJsonSiteCategories {
+  description: String
+  name: String
+}
+
+type ConfigsJsonSiteColors {
+  backgroundColor: String
+  darkColor: String
+  lightGrey: String
+  linkColorHover: String
+  primaryColor: String
+  primaryColorDarker: String
+  primaryColorLighter: String
+}
+
+type ConfigsJsonSiteComponents {
+  containerWidth: String
+  logoWidth: String
+}
+
+type ConfigsJsonSiteFonts {
+  base: String
+  heading: String
+}
+
+type ConfigsJsonSiteFooterMenu {
+  text: String
+  url: String
+}
+
+type ConfigsJsonSiteSocialLinks {
+  text: String
+  url: String
+}
+
+type ConfigsJsonSiteTopMenu {
+  text: String
+  url: String
 }
 
 type Directory implements Node {
@@ -220,10 +281,10 @@ type File implements Node {
     "Configures the locale Moment.js will use to format the date."
     locale: String
   ): Date!
+  childConfigsJson: ConfigsJson
   childImageSharp: ImageSharp
   childMdx: Mdx
   children: [Node!]!
-  childrenCategories: [Categories]
   ctime(
     "Returns the difference between this date and the current time. Defaults to \"milliseconds\" but you can also pass in as the measurement \"years\", \"months\", \"weeks\", \"days\", \"hours\", \"minutes\", and \"seconds\"."
     difference: String,
@@ -577,7 +638,7 @@ type MdxFrontmatter {
   excerpt: String
   featuredImage: File
   heading: String
-  path: String
+  slug: String
   templateKey: String
   title: String!
   updated(
@@ -623,7 +684,7 @@ type PageInfo {
 }
 
 type Query {
-  allCategories(filter: CategoriesFilterInput, limit: Int, skip: Int, sort: CategoriesSortInput): CategoriesConnection!
+  allConfigsJson(filter: ConfigsJsonFilterInput, limit: Int, skip: Int, sort: ConfigsJsonSortInput): ConfigsJsonConnection!
   allDirectory(filter: DirectoryFilterInput, limit: Int, skip: Int, sort: DirectorySortInput): DirectoryConnection!
   allFile(filter: FileFilterInput, limit: Int, skip: Int, sort: FileSortInput): FileConnection!
   allImageSharp(filter: ImageSharpFilterInput, limit: Int, skip: Int, sort: ImageSharpSortInput): ImageSharpConnection!
@@ -633,9 +694,9 @@ type Query {
   allSiteBuildMetadata(filter: SiteBuildMetadataFilterInput, limit: Int, skip: Int, sort: SiteBuildMetadataSortInput): SiteBuildMetadataConnection!
   allSitePage(filter: SitePageFilterInput, limit: Int, skip: Int, sort: SitePageSortInput): SitePageConnection!
   allSitePlugin(filter: SitePluginFilterInput, limit: Int, skip: Int, sort: SitePluginSortInput): SitePluginConnection!
-  categories(children: NodeFilterListInput, description: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, name: StringQueryOperatorInput, parent: NodeFilterInput): Categories
+  configsJson(children: NodeFilterListInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput, siteAuthor: StringQueryOperatorInput, siteBreakpoints: ConfigsJsonSiteBreakpointsFilterInput, siteCategories: ConfigsJsonSiteCategoriesFilterListInput, siteColors: ConfigsJsonSiteColorsFilterInput, siteComponents: ConfigsJsonSiteComponentsFilterInput, siteDescription: StringQueryOperatorInput, siteFonts: ConfigsJsonSiteFontsFilterInput, siteFooterMenu: ConfigsJsonSiteFooterMenuFilterListInput, siteLanguage: StringQueryOperatorInput, sitePostsPerPage: IntQueryOperatorInput, siteSearch: BooleanQueryOperatorInput, siteSocialLinks: ConfigsJsonSiteSocialLinksFilterListInput, siteTitle: StringQueryOperatorInput, siteTopMenu: ConfigsJsonSiteTopMenuFilterListInput, siteUrl: StringQueryOperatorInput): ConfigsJson
   directory(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, changeTime: DateQueryOperatorInput, children: NodeFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput): Directory
-  file(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, changeTime: DateQueryOperatorInput, childImageSharp: ImageSharpFilterInput, childMdx: MdxFilterInput, children: NodeFilterListInput, childrenCategories: CategoriesFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, publicURL: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput): File
+  file(absolutePath: StringQueryOperatorInput, accessTime: DateQueryOperatorInput, atime: DateQueryOperatorInput, atimeMs: FloatQueryOperatorInput, base: StringQueryOperatorInput, birthTime: DateQueryOperatorInput, birthtime: DateQueryOperatorInput, birthtimeMs: FloatQueryOperatorInput, blksize: IntQueryOperatorInput, blocks: IntQueryOperatorInput, changeTime: DateQueryOperatorInput, childConfigsJson: ConfigsJsonFilterInput, childImageSharp: ImageSharpFilterInput, childMdx: MdxFilterInput, children: NodeFilterListInput, ctime: DateQueryOperatorInput, ctimeMs: FloatQueryOperatorInput, dev: IntQueryOperatorInput, dir: StringQueryOperatorInput, ext: StringQueryOperatorInput, extension: StringQueryOperatorInput, gid: IntQueryOperatorInput, id: StringQueryOperatorInput, ino: FloatQueryOperatorInput, internal: InternalFilterInput, mode: IntQueryOperatorInput, modifiedTime: DateQueryOperatorInput, mtime: DateQueryOperatorInput, mtimeMs: FloatQueryOperatorInput, name: StringQueryOperatorInput, nlink: IntQueryOperatorInput, parent: NodeFilterInput, prettySize: StringQueryOperatorInput, publicURL: StringQueryOperatorInput, rdev: IntQueryOperatorInput, relativeDirectory: StringQueryOperatorInput, relativePath: StringQueryOperatorInput, root: StringQueryOperatorInput, size: IntQueryOperatorInput, sourceInstanceName: StringQueryOperatorInput, uid: IntQueryOperatorInput): File
   imageSharp(children: NodeFilterListInput, fixed: ImageSharpFixedFilterInput, fluid: ImageSharpFluidFilterInput, id: StringQueryOperatorInput, internal: InternalFilterInput, original: ImageSharpOriginalFilterInput, parent: NodeFilterInput, resize: ImageSharpResizeFilterInput, resolutions: ImageSharpResolutionsFilterInput, sizes: ImageSharpSizesFilterInput): ImageSharp
   markdownRemark(children: NodeFilterListInput, excerpt: StringQueryOperatorInput, excerptAst: JSONQueryOperatorInput, headings: MarkdownHeadingFilterListInput, html: StringQueryOperatorInput, htmlAst: JSONQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, parent: NodeFilterInput, tableOfContents: StringQueryOperatorInput, timeToRead: IntQueryOperatorInput, wordCount: MarkdownWordCountFilterInput): MarkdownRemark
   mdx(body: StringQueryOperatorInput, children: NodeFilterListInput, excerpt: StringQueryOperatorInput, fields: MdxFieldsFilterInput, fileAbsolutePath: StringQueryOperatorInput, frontmatter: MdxFrontmatterFilterInput, headings: MdxHeadingMdxFilterListInput, html: StringQueryOperatorInput, id: StringQueryOperatorInput, internal: InternalFilterInput, mdxAST: JSONQueryOperatorInput, parent: NodeFilterInput, rawBody: StringQueryOperatorInput, related: MdxFilterListInput, slug: StringQueryOperatorInput, tableOfContents: JSONQueryOperatorInput, timeToRead: IntQueryOperatorInput, wordCount: MdxWordCountFilterInput): Mdx
@@ -759,7 +820,8 @@ type SitePageConnection {
 }
 
 type SitePageContext {
-  category: String
+  categoryDescription: String
+  categoryName: String
   humanPageNumber: Int
   limit: Int
   nextPagePath: String
@@ -773,13 +835,18 @@ type SitePageContext {
 
 type SitePageContextPage {
   body: String
+  fields: SitePageContextPageFields
   frontmatter: SitePageContextPageFrontmatter
+}
+
+type SitePageContextPageFields {
+  slug: String
 }
 
 type SitePageContextPageFrontmatter {
   description: String
   heading: String
-  path: String
+  slug: String
   title: String
 }
 
@@ -885,13 +952,11 @@ type SitePluginPluginOptions {
   pathCheck: Boolean
   plugins: [SitePluginPluginOptionsPlugins]
   policy: [SitePluginPluginOptionsPolicy]
-  query: String
   short_name: String
   sitemap: String
   start_url: String
   theme_color: String
   theme_color_in_head: Boolean
-  typeName: String
 }
 
 type SitePluginPluginOptionsFeeds {
@@ -920,40 +985,12 @@ type SitePluginPluginOptionsPolicy {
 }
 
 type SiteSiteMetadata {
-  author: String
   description: String
-  footerMenu: [SiteSiteMetadataFooterMenu]
-  search: Boolean
-  siteLanguage: String
   siteUrl: String
-  social: SiteSiteMetadataSocial
   title: String
-  topMenu: [SiteSiteMetadataTopMenu]
 }
 
-type SiteSiteMetadataFooterMenu {
-  name: String
-  path: String
-}
-
-type SiteSiteMetadataSocial {
-  facebook: String
-  github: String
-  instagram: String
-  ok: String
-  reddit: String
-  telegram: String
-  twitter: String
-  vk: String
-  youtube: String
-}
-
-type SiteSiteMetadataTopMenu {
-  name: String
-  path: String
-}
-
-enum CategoriesFieldsEnum {
+enum ConfigsJsonFieldsEnum {
   children
   children___children
   children___children___children
@@ -993,7 +1030,6 @@ enum CategoriesFieldsEnum {
   children___parent___internal___type
   children___parent___parent___children
   children___parent___parent___id
-  description
   id
   internal___content
   internal___contentDigest
@@ -1003,7 +1039,6 @@ enum CategoriesFieldsEnum {
   internal___mediaType
   internal___owner
   internal___type
-  name
   parent___children
   parent___children___children
   parent___children___children___children
@@ -1042,6 +1077,41 @@ enum CategoriesFieldsEnum {
   parent___parent___internal___type
   parent___parent___parent___children
   parent___parent___parent___id
+  siteAuthor
+  siteBreakpoints___lg
+  siteBreakpoints___md
+  siteBreakpoints___sm
+  siteBreakpoints___xl
+  siteBreakpoints___xs
+  siteCategories
+  siteCategories___description
+  siteCategories___name
+  siteColors___backgroundColor
+  siteColors___darkColor
+  siteColors___lightGrey
+  siteColors___linkColorHover
+  siteColors___primaryColor
+  siteColors___primaryColorDarker
+  siteColors___primaryColorLighter
+  siteComponents___containerWidth
+  siteComponents___logoWidth
+  siteDescription
+  siteFonts___base
+  siteFonts___heading
+  siteFooterMenu
+  siteFooterMenu___text
+  siteFooterMenu___url
+  siteLanguage
+  sitePostsPerPage
+  siteSearch
+  siteSocialLinks
+  siteSocialLinks___text
+  siteSocialLinks___url
+  siteTitle
+  siteTopMenu
+  siteTopMenu___text
+  siteTopMenu___url
+  siteUrl
 }
 
 enum DirectoryFieldsEnum {
@@ -1178,6 +1248,79 @@ enum FileFieldsEnum {
   blksize
   blocks
   changeTime
+  childConfigsJson___children
+  childConfigsJson___children___children
+  childConfigsJson___children___children___children
+  childConfigsJson___children___children___id
+  childConfigsJson___children___id
+  childConfigsJson___children___internal___content
+  childConfigsJson___children___internal___contentDigest
+  childConfigsJson___children___internal___description
+  childConfigsJson___children___internal___fieldOwners
+  childConfigsJson___children___internal___ignoreType
+  childConfigsJson___children___internal___mediaType
+  childConfigsJson___children___internal___owner
+  childConfigsJson___children___internal___type
+  childConfigsJson___children___parent___children
+  childConfigsJson___children___parent___id
+  childConfigsJson___id
+  childConfigsJson___internal___content
+  childConfigsJson___internal___contentDigest
+  childConfigsJson___internal___description
+  childConfigsJson___internal___fieldOwners
+  childConfigsJson___internal___ignoreType
+  childConfigsJson___internal___mediaType
+  childConfigsJson___internal___owner
+  childConfigsJson___internal___type
+  childConfigsJson___parent___children
+  childConfigsJson___parent___children___children
+  childConfigsJson___parent___children___id
+  childConfigsJson___parent___id
+  childConfigsJson___parent___internal___content
+  childConfigsJson___parent___internal___contentDigest
+  childConfigsJson___parent___internal___description
+  childConfigsJson___parent___internal___fieldOwners
+  childConfigsJson___parent___internal___ignoreType
+  childConfigsJson___parent___internal___mediaType
+  childConfigsJson___parent___internal___owner
+  childConfigsJson___parent___internal___type
+  childConfigsJson___parent___parent___children
+  childConfigsJson___parent___parent___id
+  childConfigsJson___siteAuthor
+  childConfigsJson___siteBreakpoints___lg
+  childConfigsJson___siteBreakpoints___md
+  childConfigsJson___siteBreakpoints___sm
+  childConfigsJson___siteBreakpoints___xl
+  childConfigsJson___siteBreakpoints___xs
+  childConfigsJson___siteCategories
+  childConfigsJson___siteCategories___description
+  childConfigsJson___siteCategories___name
+  childConfigsJson___siteColors___backgroundColor
+  childConfigsJson___siteColors___darkColor
+  childConfigsJson___siteColors___lightGrey
+  childConfigsJson___siteColors___linkColorHover
+  childConfigsJson___siteColors___primaryColor
+  childConfigsJson___siteColors___primaryColorDarker
+  childConfigsJson___siteColors___primaryColorLighter
+  childConfigsJson___siteComponents___containerWidth
+  childConfigsJson___siteComponents___logoWidth
+  childConfigsJson___siteDescription
+  childConfigsJson___siteFonts___base
+  childConfigsJson___siteFonts___heading
+  childConfigsJson___siteFooterMenu
+  childConfigsJson___siteFooterMenu___text
+  childConfigsJson___siteFooterMenu___url
+  childConfigsJson___siteLanguage
+  childConfigsJson___sitePostsPerPage
+  childConfigsJson___siteSearch
+  childConfigsJson___siteSocialLinks
+  childConfigsJson___siteSocialLinks___text
+  childConfigsJson___siteSocialLinks___url
+  childConfigsJson___siteTitle
+  childConfigsJson___siteTopMenu
+  childConfigsJson___siteTopMenu___text
+  childConfigsJson___siteTopMenu___url
+  childConfigsJson___siteUrl
   childImageSharp___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childImageSharp___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childImageSharp___children___children___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -1305,7 +1448,6 @@ enum FileFieldsEnum {
   childMdx___frontmatter___featuredImage___blocks
   childMdx___frontmatter___featuredImage___changeTime
   childMdx___frontmatter___featuredImage___children
-  childMdx___frontmatter___featuredImage___childrenCategories
   childMdx___frontmatter___featuredImage___ctime
   childMdx___frontmatter___featuredImage___ctimeMs
   childMdx___frontmatter___featuredImage___dev
@@ -1331,7 +1473,7 @@ enum FileFieldsEnum {
   childMdx___frontmatter___featuredImage___sourceInstanceName
   childMdx___frontmatter___featuredImage___uid
   childMdx___frontmatter___heading
-  childMdx___frontmatter___path
+  childMdx___frontmatter___slug
   childMdx___frontmatter___templateKey
   childMdx___frontmatter___title
   childMdx___frontmatter___updated
@@ -1378,7 +1520,7 @@ enum FileFieldsEnum {
   childMdx___related___frontmatter___draft @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___frontmatter___excerpt @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___frontmatter___heading @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
-  childMdx___related___frontmatter___path @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  childMdx___related___frontmatter___slug @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___frontmatter___templateKey @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___frontmatter___title @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___related___frontmatter___updated @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -1426,47 +1568,6 @@ enum FileFieldsEnum {
   childMdx___wordCount___sentences @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   childMdx___wordCount___words @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   children
-  childrenCategories
-  childrenCategories___children
-  childrenCategories___children___children
-  childrenCategories___children___children___children
-  childrenCategories___children___children___id
-  childrenCategories___children___id
-  childrenCategories___children___internal___content
-  childrenCategories___children___internal___contentDigest
-  childrenCategories___children___internal___description
-  childrenCategories___children___internal___fieldOwners
-  childrenCategories___children___internal___ignoreType
-  childrenCategories___children___internal___mediaType
-  childrenCategories___children___internal___owner
-  childrenCategories___children___internal___type
-  childrenCategories___children___parent___children
-  childrenCategories___children___parent___id
-  childrenCategories___description
-  childrenCategories___id
-  childrenCategories___internal___content
-  childrenCategories___internal___contentDigest
-  childrenCategories___internal___description
-  childrenCategories___internal___fieldOwners
-  childrenCategories___internal___ignoreType
-  childrenCategories___internal___mediaType
-  childrenCategories___internal___owner
-  childrenCategories___internal___type
-  childrenCategories___name
-  childrenCategories___parent___children
-  childrenCategories___parent___children___children
-  childrenCategories___parent___children___id
-  childrenCategories___parent___id
-  childrenCategories___parent___internal___content
-  childrenCategories___parent___internal___contentDigest
-  childrenCategories___parent___internal___description
-  childrenCategories___parent___internal___fieldOwners
-  childrenCategories___parent___internal___ignoreType
-  childrenCategories___parent___internal___mediaType
-  childrenCategories___parent___internal___owner
-  childrenCategories___parent___internal___type
-  childrenCategories___parent___parent___children
-  childrenCategories___parent___parent___id
   children___children
   children___children___children
   children___children___children___children
@@ -1934,6 +2035,19 @@ enum MdxFieldsEnum {
   frontmatter___featuredImage___blksize
   frontmatter___featuredImage___blocks
   frontmatter___featuredImage___changeTime
+  frontmatter___featuredImage___childConfigsJson___children
+  frontmatter___featuredImage___childConfigsJson___id
+  frontmatter___featuredImage___childConfigsJson___siteAuthor
+  frontmatter___featuredImage___childConfigsJson___siteCategories
+  frontmatter___featuredImage___childConfigsJson___siteDescription
+  frontmatter___featuredImage___childConfigsJson___siteFooterMenu
+  frontmatter___featuredImage___childConfigsJson___siteLanguage
+  frontmatter___featuredImage___childConfigsJson___sitePostsPerPage
+  frontmatter___featuredImage___childConfigsJson___siteSearch
+  frontmatter___featuredImage___childConfigsJson___siteSocialLinks
+  frontmatter___featuredImage___childConfigsJson___siteTitle
+  frontmatter___featuredImage___childConfigsJson___siteTopMenu
+  frontmatter___featuredImage___childConfigsJson___siteUrl
   frontmatter___featuredImage___childImageSharp___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childImageSharp___id @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___body
@@ -1950,11 +2064,6 @@ enum MdxFieldsEnum {
   frontmatter___featuredImage___childMdx___tableOfContents @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___childMdx___timeToRead @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   frontmatter___featuredImage___children
-  frontmatter___featuredImage___childrenCategories
-  frontmatter___featuredImage___childrenCategories___children
-  frontmatter___featuredImage___childrenCategories___description
-  frontmatter___featuredImage___childrenCategories___id
-  frontmatter___featuredImage___childrenCategories___name
   frontmatter___featuredImage___children___children
   frontmatter___featuredImage___children___id
   frontmatter___featuredImage___ctime
@@ -1992,7 +2101,7 @@ enum MdxFieldsEnum {
   frontmatter___featuredImage___sourceInstanceName
   frontmatter___featuredImage___uid
   frontmatter___heading
-  frontmatter___path
+  frontmatter___slug
   frontmatter___templateKey
   frontmatter___title
   frontmatter___updated
@@ -2086,7 +2195,6 @@ enum MdxFieldsEnum {
   related___frontmatter___featuredImage___blocks @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___featuredImage___changeTime @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___featuredImage___children @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
-  related___frontmatter___featuredImage___childrenCategories @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___featuredImage___ctime @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___featuredImage___ctimeMs @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___featuredImage___dev @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -2112,7 +2220,7 @@ enum MdxFieldsEnum {
   related___frontmatter___featuredImage___sourceInstanceName @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___featuredImage___uid @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___heading @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
-  related___frontmatter___path @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  related___frontmatter___slug @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___templateKey @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___title @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___frontmatter___updated @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -2159,7 +2267,7 @@ enum MdxFieldsEnum {
   related___related___frontmatter___draft @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___frontmatter___excerpt @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___frontmatter___heading @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
-  related___related___frontmatter___path @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
+  related___related___frontmatter___slug @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___frontmatter___templateKey @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___frontmatter___title @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
   related___related___frontmatter___updated @deprecated(reason : "Sorting on fields that need arguments to resolve is deprecated.")
@@ -2405,27 +2513,9 @@ enum SiteFieldsEnum {
   pathPrefix
   polyfill
   port
-  siteMetadata___author
   siteMetadata___description
-  siteMetadata___footerMenu
-  siteMetadata___footerMenu___name
-  siteMetadata___footerMenu___path
-  siteMetadata___search
-  siteMetadata___siteLanguage
   siteMetadata___siteUrl
-  siteMetadata___social___facebook
-  siteMetadata___social___github
-  siteMetadata___social___instagram
-  siteMetadata___social___ok
-  siteMetadata___social___reddit
-  siteMetadata___social___telegram
-  siteMetadata___social___twitter
-  siteMetadata___social___vk
-  siteMetadata___social___youtube
   siteMetadata___title
-  siteMetadata___topMenu
-  siteMetadata___topMenu___name
-  siteMetadata___topMenu___path
 }
 
 enum SitePageFieldsEnum {
@@ -2471,16 +2561,18 @@ enum SitePageFieldsEnum {
   component
   componentChunkName
   componentPath
-  context___category
+  context___categoryDescription
+  context___categoryName
   context___humanPageNumber
   context___limit
   context___nextPagePath
   context___numberOfPages
   context___pageNumber
   context___page___body
+  context___page___fields___slug
   context___page___frontmatter___description
   context___page___frontmatter___heading
-  context___page___frontmatter___path
+  context___page___frontmatter___slug
   context___page___frontmatter___title
   context___postId
   context___previousPagePath
@@ -2626,13 +2718,11 @@ enum SitePageFieldsEnum {
   pluginCreator___pluginOptions___policy
   pluginCreator___pluginOptions___policy___allow
   pluginCreator___pluginOptions___policy___userAgent
-  pluginCreator___pluginOptions___query
   pluginCreator___pluginOptions___short_name
   pluginCreator___pluginOptions___sitemap
   pluginCreator___pluginOptions___start_url
   pluginCreator___pluginOptions___theme_color
   pluginCreator___pluginOptions___theme_color_in_head
-  pluginCreator___pluginOptions___typeName
   pluginCreator___resolve
   pluginCreator___ssrAPIs
   pluginCreator___version
@@ -2776,13 +2866,11 @@ enum SitePluginFieldsEnum {
   pluginOptions___policy
   pluginOptions___policy___allow
   pluginOptions___policy___userAgent
-  pluginOptions___query
   pluginOptions___short_name
   pluginOptions___sitemap
   pluginOptions___start_url
   pluginOptions___theme_color
   pluginOptions___theme_color_in_head
-  pluginOptions___typeName
   resolve
   ssrAPIs
   version
@@ -2800,21 +2888,94 @@ input BooleanQueryOperatorInput {
   nin: [Boolean]
 }
 
-input CategoriesFilterInput {
+input ConfigsJsonFilterInput {
   children: NodeFilterListInput
-  description: StringQueryOperatorInput
   id: StringQueryOperatorInput
   internal: InternalFilterInput
-  name: StringQueryOperatorInput
   parent: NodeFilterInput
+  siteAuthor: StringQueryOperatorInput
+  siteBreakpoints: ConfigsJsonSiteBreakpointsFilterInput
+  siteCategories: ConfigsJsonSiteCategoriesFilterListInput
+  siteColors: ConfigsJsonSiteColorsFilterInput
+  siteComponents: ConfigsJsonSiteComponentsFilterInput
+  siteDescription: StringQueryOperatorInput
+  siteFonts: ConfigsJsonSiteFontsFilterInput
+  siteFooterMenu: ConfigsJsonSiteFooterMenuFilterListInput
+  siteLanguage: StringQueryOperatorInput
+  sitePostsPerPage: IntQueryOperatorInput
+  siteSearch: BooleanQueryOperatorInput
+  siteSocialLinks: ConfigsJsonSiteSocialLinksFilterListInput
+  siteTitle: StringQueryOperatorInput
+  siteTopMenu: ConfigsJsonSiteTopMenuFilterListInput
+  siteUrl: StringQueryOperatorInput
 }
 
-input CategoriesFilterListInput {
-  elemMatch: CategoriesFilterInput
+input ConfigsJsonSiteBreakpointsFilterInput {
+  lg: StringQueryOperatorInput
+  md: StringQueryOperatorInput
+  sm: StringQueryOperatorInput
+  xl: StringQueryOperatorInput
+  xs: StringQueryOperatorInput
 }
 
-input CategoriesSortInput {
-  fields: [CategoriesFieldsEnum]
+input ConfigsJsonSiteCategoriesFilterInput {
+  description: StringQueryOperatorInput
+  name: StringQueryOperatorInput
+}
+
+input ConfigsJsonSiteCategoriesFilterListInput {
+  elemMatch: ConfigsJsonSiteCategoriesFilterInput
+}
+
+input ConfigsJsonSiteColorsFilterInput {
+  backgroundColor: StringQueryOperatorInput
+  darkColor: StringQueryOperatorInput
+  lightGrey: StringQueryOperatorInput
+  linkColorHover: StringQueryOperatorInput
+  primaryColor: StringQueryOperatorInput
+  primaryColorDarker: StringQueryOperatorInput
+  primaryColorLighter: StringQueryOperatorInput
+}
+
+input ConfigsJsonSiteComponentsFilterInput {
+  containerWidth: StringQueryOperatorInput
+  logoWidth: StringQueryOperatorInput
+}
+
+input ConfigsJsonSiteFontsFilterInput {
+  base: StringQueryOperatorInput
+  heading: StringQueryOperatorInput
+}
+
+input ConfigsJsonSiteFooterMenuFilterInput {
+  text: StringQueryOperatorInput
+  url: StringQueryOperatorInput
+}
+
+input ConfigsJsonSiteFooterMenuFilterListInput {
+  elemMatch: ConfigsJsonSiteFooterMenuFilterInput
+}
+
+input ConfigsJsonSiteSocialLinksFilterInput {
+  text: StringQueryOperatorInput
+  url: StringQueryOperatorInput
+}
+
+input ConfigsJsonSiteSocialLinksFilterListInput {
+  elemMatch: ConfigsJsonSiteSocialLinksFilterInput
+}
+
+input ConfigsJsonSiteTopMenuFilterInput {
+  text: StringQueryOperatorInput
+  url: StringQueryOperatorInput
+}
+
+input ConfigsJsonSiteTopMenuFilterListInput {
+  elemMatch: ConfigsJsonSiteTopMenuFilterInput
+}
+
+input ConfigsJsonSortInput {
+  fields: [ConfigsJsonFieldsEnum]
   order: [SortOrderEnum] = [ASC]
 }
 
@@ -2892,10 +3053,10 @@ input FileFilterInput {
   blksize: IntQueryOperatorInput
   blocks: IntQueryOperatorInput
   changeTime: DateQueryOperatorInput
+  childConfigsJson: ConfigsJsonFilterInput
   childImageSharp: ImageSharpFilterInput
   childMdx: MdxFilterInput
   children: NodeFilterListInput
-  childrenCategories: CategoriesFilterListInput
   ctime: DateQueryOperatorInput
   ctimeMs: FloatQueryOperatorInput
   dev: IntQueryOperatorInput
@@ -3133,7 +3294,7 @@ input MdxFrontmatterFilterInput {
   excerpt: StringQueryOperatorInput
   featuredImage: FileFilterInput
   heading: StringQueryOperatorInput
-  path: StringQueryOperatorInput
+  slug: StringQueryOperatorInput
   templateKey: StringQueryOperatorInput
   title: StringQueryOperatorInput
   updated: DateQueryOperatorInput
@@ -3209,7 +3370,8 @@ input SiteFilterInput {
 }
 
 input SitePageContextFilterInput {
-  category: StringQueryOperatorInput
+  categoryDescription: StringQueryOperatorInput
+  categoryName: StringQueryOperatorInput
   humanPageNumber: IntQueryOperatorInput
   limit: IntQueryOperatorInput
   nextPagePath: StringQueryOperatorInput
@@ -3221,15 +3383,20 @@ input SitePageContextFilterInput {
   skip: IntQueryOperatorInput
 }
 
+input SitePageContextPageFieldsFilterInput {
+  slug: StringQueryOperatorInput
+}
+
 input SitePageContextPageFilterInput {
   body: StringQueryOperatorInput
+  fields: SitePageContextPageFieldsFilterInput
   frontmatter: SitePageContextPageFrontmatterFilterInput
 }
 
 input SitePageContextPageFrontmatterFilterInput {
   description: StringQueryOperatorInput
   heading: StringQueryOperatorInput
-  path: StringQueryOperatorInput
+  slug: StringQueryOperatorInput
   title: StringQueryOperatorInput
 }
 
@@ -3340,13 +3507,11 @@ input SitePluginPluginOptionsFilterInput {
   pathCheck: BooleanQueryOperatorInput
   plugins: SitePluginPluginOptionsPluginsFilterListInput
   policy: SitePluginPluginOptionsPolicyFilterListInput
-  query: StringQueryOperatorInput
   short_name: StringQueryOperatorInput
   sitemap: StringQueryOperatorInput
   start_url: StringQueryOperatorInput
   theme_color: StringQueryOperatorInput
   theme_color_in_head: BooleanQueryOperatorInput
-  typeName: StringQueryOperatorInput
 }
 
 input SitePluginPluginOptionsFontsFilterInput {
@@ -3386,45 +3551,9 @@ input SitePluginSortInput {
 }
 
 input SiteSiteMetadataFilterInput {
-  author: StringQueryOperatorInput
   description: StringQueryOperatorInput
-  footerMenu: SiteSiteMetadataFooterMenuFilterListInput
-  search: BooleanQueryOperatorInput
-  siteLanguage: StringQueryOperatorInput
   siteUrl: StringQueryOperatorInput
-  social: SiteSiteMetadataSocialFilterInput
   title: StringQueryOperatorInput
-  topMenu: SiteSiteMetadataTopMenuFilterListInput
-}
-
-input SiteSiteMetadataFooterMenuFilterInput {
-  name: StringQueryOperatorInput
-  path: StringQueryOperatorInput
-}
-
-input SiteSiteMetadataFooterMenuFilterListInput {
-  elemMatch: SiteSiteMetadataFooterMenuFilterInput
-}
-
-input SiteSiteMetadataSocialFilterInput {
-  facebook: StringQueryOperatorInput
-  github: StringQueryOperatorInput
-  instagram: StringQueryOperatorInput
-  ok: StringQueryOperatorInput
-  reddit: StringQueryOperatorInput
-  telegram: StringQueryOperatorInput
-  twitter: StringQueryOperatorInput
-  vk: StringQueryOperatorInput
-  youtube: StringQueryOperatorInput
-}
-
-input SiteSiteMetadataTopMenuFilterInput {
-  name: StringQueryOperatorInput
-  path: StringQueryOperatorInput
-}
-
-input SiteSiteMetadataTopMenuFilterListInput {
-  elemMatch: SiteSiteMetadataTopMenuFilterInput
 }
 
 input SiteSortInput {

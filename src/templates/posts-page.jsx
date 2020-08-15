@@ -9,18 +9,6 @@ import Pagination from "../components/pagination"
 import CardGrid from "../components/card-grid"
 import useSiteMetadata from "../hooks/use-site-metadata"
 
-const PostsContainer = styled(Grid)`
-  margin-left: 0;
-  margin-right: 0;
-  margin-top: 30px;
-
-  @media (max-width: ${Theme.breakpoints.sm}) {
-    article {
-      margin-bottom: 30px;
-    }
-  }
-`
-
 const PostsPageTemplate = ({data, pageContext}) => {
   const posts = data.allPosts.edges.map((node) => node.node)
   const {title, description} = useSiteMetadata()
@@ -69,6 +57,7 @@ export const PostsPageQuery = graphql`
           excerpt
           frontmatter {
             heading
+            slug
             categories
             created
             createdPretty: created(formatString: "DD MMMM YYYY", locale: "ru")
@@ -87,6 +76,18 @@ export const PostsPageQuery = graphql`
           }
         }
       }
+    }
+  }
+`
+
+const PostsContainer = styled(Grid)`
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 30px;
+
+  @media (max-width: ${Theme.breakpoints.sm}) {
+    article {
+      margin-bottom: 30px;
     }
   }
 `

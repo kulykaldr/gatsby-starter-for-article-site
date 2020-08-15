@@ -1,29 +1,28 @@
 import React from "react"
 import { Link } from "gatsby"
 import styled from "styled-components"
-import Theme from "../styles/theme"
 
 const Pagination = ({ humanPageNumber, numberOfPages, previousPagePath, nextPagePath }) => {
 
-    return (
-      <PaginationWrapper>
-        {previousPagePath ? (
-          <PreviousBtn to={previousPagePath}>‹ Предыдущая</PreviousBtn>
-        ) : (
-          <Spacer className="previous"/>
-        )}
+  return (
+    <PaginationWrapper>
+      {previousPagePath ? (
+        <PreviousBtn to={previousPagePath}>‹ Предыдущая</PreviousBtn>
+      ) : (
+        <Spacer className="previous"/>
+      )}
 
-        {numberOfPages > 1 && <PageInfo>
-          Страница {humanPageNumber} из {numberOfPages}
-        </PageInfo>}
+      {numberOfPages > 1 && <PageInfo>
+        Страница {humanPageNumber} из {numberOfPages}
+      </PageInfo>}
 
-        {nextPagePath ? (
-          <NextBtn to={nextPagePath}>Следующая ›</NextBtn>
-        ) : (
-          <Spacer className="next"/>
-        )}
-      </PaginationWrapper>
-    )
+      {nextPagePath ? (
+        <NextBtn to={nextPagePath}>Следующая ›</NextBtn>
+      ) : (
+        <Spacer className="next"/>
+      )}
+    </PaginationWrapper>
+  )
 }
 
 export default Pagination
@@ -38,30 +37,30 @@ const PaginationWrapper = styled.nav`
   max-width: 770px;
   margin: 0 auto;
 
-  @media (max-width: ${Theme.breakpoints.md}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.md}) {
     width: 90%;
   }
 `
 
 const PageBtn = styled(Link)`
   border-radius: 3px;
-  background-color: ${Theme.layout.darkColor};
-  border: 1px solid ${Theme.layout.darkColor};
-  color: ${Theme.layout.backgroundColor};
+  background-color: ${props => props.theme.siteColors.darkColor};
+  border: 1px solid ${props => props.theme.siteColors.darkColor};
+  color: ${props => props.theme.siteColors.backgroundColor};
   padding: 8px 20px;
   min-width: 140px;
   transition: background-color .5s;
 
   &:hover {
-    background-color: ${Theme.layout.backgroundColor};
-    color: ${Theme.layout.darkColor};
-    border: 1px solid ${Theme.layout.darkColor};
+    background-color: ${props => props.theme.siteColors.backgroundColor};
+    color: ${props => props.theme.siteColors.darkColor};
+    border: 1px solid ${props => props.theme.siteColors.darkColor};
   }
 `
 
 const PreviousBtn = styled(PageBtn)`
   order: 1;
-  @media (max-width: ${Theme.breakpoints.sm}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
     order: 2;
   }
 `
@@ -82,7 +81,7 @@ const Spacer = styled.span`
     order: 3;
   }
 
-  @media (max-width: ${Theme.breakpoints.sm}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
     display: none;
 
     &.previous {
@@ -98,7 +97,7 @@ const Spacer = styled.span`
 const PageInfo = styled.span`
   order: 2;
   padding: 1em 0;
-  @media (max-width: ${Theme.breakpoints.sm}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
     order: 1;
     width: 100%;
     text-align: center;

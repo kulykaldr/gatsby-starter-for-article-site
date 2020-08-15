@@ -1,5 +1,5 @@
-import { MdxControl, setupPreview } from "netlify-cms-widget-mdx"
 import CMS from "netlify-cms-app"
+import { MdxControl, setupPreview } from "netlify-cms-widget-mdx"
 import PostPagePreview from "./preview-templates/post-page-preview-template"
 import withStyled from './with-styled'
 import { components } from "../components/render-mdx"
@@ -21,6 +21,10 @@ CMS.registerWidget(
     }
   )
 )
+
+// Register color picker widget
+const WidgetColor = require('netlify-cms-widget-color/dist/es/color')
+CMS.registerWidget('color', WidgetColor.default.Control)
 
 // Add Previews
 CMS.registerPreviewTemplate('post', withStyled(PostPagePreview))

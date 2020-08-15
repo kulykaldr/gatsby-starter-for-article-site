@@ -55,17 +55,17 @@ export const Card = ({
       <CardContent dangerouslySetInnerHTML={{__html: content}} itemProp="articleBody"/>
       }
 
-      <meta itemProp="author" content={metadata.author}/>
+      <meta itemProp="author" content={metadata.siteAuthor}/>
       <meta itemScope itemProp="mainEntityOfPage" itemType="https://schema.org/WebPage"
             itemID={`${metadata.siteUrl}${slug}`} content={heading}/>
       <meta itemProp="datePublished" content={meta.timeCreated}/>
       <meta itemProp="dateModified" content={meta.timeUpdated}/>
       <div itemProp="publisher" itemScope itemType="https://schema.org/Organization">
         <div itemProp="logo" itemScope itemType="https://schema.org/ImageObject" style={{display: "none"}}>
-          <img itemProp="url image" src={logo.src} alt={metadata.title}/>
+          <img itemProp="url image" src={logo.src} alt={metadata.siteTitle}/>
         </div>
-        <meta itemProp="name" content={metadata.title}/>
-        <meta itemProp="telephone" content={metadata.title}/>
+        <meta itemProp="name" content={metadata.siteTitle}/>
+        <meta itemProp="telephone" content={metadata.siteTitle}/>
         <meta itemProp="address" content={metadata.siteUrl}/>
       </div>
     </StyledCard>

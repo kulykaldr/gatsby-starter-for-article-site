@@ -1,6 +1,5 @@
 import React, {useState} from "react"
 import styled from "styled-components"
-import Theme from "../../styles/theme"
 import {FaChevronDown} from "react-icons/fa"
 import SlideToggle from "react-slide-toggle"
 
@@ -46,8 +45,8 @@ const Spoiler = ({title, children}) => {
 export default Spoiler
 
 const SpoilerBox = styled.div`
-  background: ${Theme.layout.lightGrey};
-  border-left: 2px solid ${Theme.layout.primaryColor};
+  background: ${props => props.theme.siteColors.lightGrey};
+  border-left: 2px solid ${props => props.theme.siteColors.primaryColor};
   margin: 15px 0;
 
   /*

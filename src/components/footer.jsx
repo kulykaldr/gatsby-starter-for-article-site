@@ -1,9 +1,8 @@
 import React from "react"
-import styled, { css } from "styled-components"
-import { Container } from "./common"
 import { Link } from "gatsby"
-import Theme from "../styles/theme"
+import styled, { css } from "styled-components"
 import {useLocation} from "@reach/router"
+import { Container } from "./common"
 
 const Footer = ({ menu, owner }) => {
   const { pathname } = useLocation()
@@ -17,11 +16,11 @@ const Footer = ({ menu, owner }) => {
               <li key={index}>
                 {/* Links to RSS and Sitemap are handled
                   differently (for now) since they're technically external links */}
-                {["/rss.xml", "/sitemap.xml"].indexOf(item.path) >= 0
-                  ? <FooterMenuItem href={item.path} rel={`noopener noreferrer`}>{item.name}</FooterMenuItem>
+                {["/rss.xml", "/sitemap.xml"].indexOf(item.url) >= 0
+                  ? <FooterMenuItem href={item.url} rel={`noopener noreferrer`}>{item.text}</FooterMenuItem>
                   : item.path === pathname
-                    ? <span>{item.name}</span>
-                    : <FooterMenuLink to={item.path}>{item.name}</FooterMenuLink>
+                    ? <span>{item.text}</span>
+                    : <FooterMenuLink to={item.url}>{item.text}</FooterMenuLink>
                 }
               </li>
             ))}
@@ -78,12 +77,12 @@ export const StyledNav = styled.nav`
 
   span {
     cursor: default;
-    color: ${Theme.layout.darkColor};
+    color: ${props => props.theme.siteColors.darkColor};
   }
 `
 
 const LinkStyle = css`
-  color: ${Theme.layout.darkColor};
+  color: ${props => props.theme.siteColors.darkColor};
   text-decoration: none;
 `
 

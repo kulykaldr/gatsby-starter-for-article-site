@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
 import { Link } from "gatsby"
-import Theme from "../styles/theme"
 import slugify from "slugify"
 
 const Breadcrumb = ({ crumb = "" }) => {
@@ -35,13 +34,13 @@ const BreadcrumbStyled = styled.div`
   color: #999;
   padding-top: 20px;
 
-  @media (max-width: ${Theme.breakpoints.sm}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
     padding-left: 20px;
     padding-right: 20px;
   }
 
   a {
-    color: ${Theme.layout.primaryColorLighter};
+    color: ${props => props.theme.siteColors.primaryColorLighter};
 
     &:hover {
       text-decoration: underline;

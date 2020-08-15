@@ -1,7 +1,6 @@
 import React from "react"
 import { Link as GatsbyLink } from "gatsby"
 import styled from "styled-components"
-import Theme from "../../styles/theme"
 
 /*
  * Used to dynamically swap CMS links with appropriate Gatsby links
@@ -28,19 +27,19 @@ export const SmartLink = ({ children, to, activeClassName, ...other }) => {
 }
 
 const StyledGatsbyLink = styled(GatsbyLink)`
-  color: ${Theme.layout.primaryColor};
+  color: ${props => props.theme.siteColors.primaryColor};
   transition: color 0.5s;
 
   &:hover {
-    color: ${Theme.layout.linkColorHover};
+    color: ${props => props.theme.siteColors.linkColorHover};
   }
 `
 
 const StyledLink = styled.a`
-  color: ${Theme.layout.primaryColor};
+  color: ${props => props.theme.siteColors.primaryColor};
   transition: color 0.5s;
 
   &:hover {
-    color: ${Theme.layout.linkColorHover};
+    color: ${props => props.theme.siteColors.linkColorHover};
   }
 `

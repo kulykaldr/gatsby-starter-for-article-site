@@ -1,5 +1,4 @@
 import { createGlobalStyle, css } from "styled-components"
-import Theme from "./theme"
 import styledNormalize from "styled-normalize"
 import * as prismStyle from "prismjs/themes/prism-okaidia.css"
 
@@ -10,11 +9,11 @@ const GlobalStyle = createGlobalStyle`
   html {
     box-sizing: border-box;
     /*scroll-behavior: smooth;*/
-    background-color: ${Theme.layout.backgroundColor};
+    background-color: ${props => props.theme.siteColors.backgroundColor};
   }
 
   body {
-    font-family: ${Theme.fonts.base};
+    font-family: ${props => props.theme.siteFonts.base};
     line-height: 1.5;
   }
 
@@ -23,17 +22,17 @@ const GlobalStyle = createGlobalStyle`
   }
 
   *::selection {
-    background-color: ${Theme.layout.primaryColor};
+    background-color: ${props => props.theme.siteColors.primaryColor};
     color: #fff;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: ${Theme.fonts.heading};
+    font-family: ${props => props.theme.siteFonts.heading};
     outline: none;
   }
 
   a {
-    color: ${Theme.layout.primaryColor};
+    color: ${props => props.theme.siteColors.primaryColor};
     text-decoration: none;
   }
 

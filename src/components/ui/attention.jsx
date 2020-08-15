@@ -1,6 +1,5 @@
 import React from "react"
 import styled from "styled-components"
-import Theme from "../../styles/theme"
 import {
   FaQuoteLeft,
   FaCheckCircle,
@@ -9,18 +8,17 @@ import {
   FaExclamationCircle
 } from "react-icons/fa"
 
-const Attention = ({children, type = ""}) => {
-  return (
-    <AttentionWrapper className={type}>
-      {type === "quote" && <FaQuoteLeft/>}
-      {type === "check" && <FaCheckCircle/>}
-      {type === "danger" && <FaTimesCircle/>}
-      {type === "info" && <FaQuestionCircle/>}
-      {type === "warning" && <FaExclamationCircle/>}
-      {children}
-    </AttentionWrapper>
-  )
-}
+const Attention = ({ children, type = "", ...props }) => (
+  <AttentionWrapper className={type} {...props}>
+    {type === "quote" && <FaQuoteLeft/>}
+    {type === "check" && <FaCheckCircle/>}
+    {type === "danger" && <FaTimesCircle/>}
+    {type === "info" && <FaQuestionCircle/>}
+    {type === "warning" && <FaExclamationCircle/>}
+    {children}
+  </AttentionWrapper>
+)
+
 
 export default Attention
 
@@ -28,10 +26,10 @@ const AttentionWrapper = styled.blockquote`
   position: relative;
   margin: 35px -40px 35px -40px;
   padding: 10px 20px;
-  border-left: 2px solid ${Theme.layout.primaryColor}!important;
+  border-left: 2px solid ${props => props.theme.siteColors.primaryColor}!important;
   background: #f5f4f1;
 
-  @media (max-width: ${Theme.breakpoints.md}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.md}) {
     margin: 20px -20px 20px -20px;
   }
 

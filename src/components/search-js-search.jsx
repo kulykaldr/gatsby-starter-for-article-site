@@ -1,17 +1,16 @@
-import React, {useEffect, useRef, useState} from "react"
-import {FaSearch} from "react-icons/fa"
-import {navigate, Link, useStaticQuery, graphql} from "gatsby"
+import React, { useEffect, useRef, useState } from "react"
+import { FaSearch } from "react-icons/fa"
+import { navigate, Link, useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import * as JsSearch from "js-search"
-import {useLocation} from "@reach/router"
-import Theme from "../styles/theme";
+import { useLocation } from "@reach/router"
 
 export const Search = () => {
-  const [isFocus, setIsFocus] = useState(false)
-  const [query, setQuery] = useState("")
-  const [results, setResults] = useState([])
-  const [selected, setSelected] = useState(0)
-  const {origin} = useLocation()
+  const [ isFocus, setIsFocus ] = useState(false)
+  const [ query, setQuery ] = useState("")
+  const [ results, setResults ] = useState([])
+  const [ selected, setSelected ] = useState(0)
+  const { origin } = useLocation()
   const resultListRef = useRef(null)
   const searchWrapperRef = useRef(null)
   const resultRefs = []
@@ -40,7 +39,7 @@ export const Search = () => {
 
   const highlight = (text, words, tag = `em`, className = null) => {
     const splitWords = words.replace(/[^\w\sа-яёіїє]|_/gi, $1 => ` ${$1} `)
-                            .replace(/[.,:;\-'" ]+/g, ' ').trim().split(' ')
+      .replace(/[.,:;\-'" ]+/g, ' ').trim().split(' ')
 
     // Global regex to highlight all matches
     for (let word of splitWords) {
@@ -98,12 +97,12 @@ export const Search = () => {
      */
     dataToSearch.searchIndex = new JsSearch.TfIdfSearchIndex("id")
 
-    dataToSearch.addIndex(["frontmatter", "title"]) // sets the index attribute for the data
-    dataToSearch.addIndex(["frontmatter", "categories"]) // sets the index attribute for the data
-    dataToSearch.addIndex(["frontmatter", "heading"]) // sets the index attribute for the data
-    dataToSearch.addIndex(["frontmatter", "description"]) // sets the index attribute for the data
-    dataToSearch.addIndex(["fields", "slug"]) // sets the index attribute for the data
-    dataToSearch.addIndex(["excerpt"]) // sets the index attribute for the data
+    dataToSearch.addIndex([ "frontmatter", "title" ]) // sets the index attribute for the data
+    dataToSearch.addIndex([ "frontmatter", "categories" ]) // sets the index attribute for the data
+    dataToSearch.addIndex([ "frontmatter", "heading" ]) // sets the index attribute for the data
+    dataToSearch.addIndex([ "frontmatter", "description" ]) // sets the index attribute for the data
+    dataToSearch.addIndex([ "fields", "slug" ]) // sets the index attribute for the data
+    dataToSearch.addIndex([ "excerpt" ]) // sets the index attribute for the data
 
     dataToSearch.addDocuments(pages) // adds the data to be searched
 
@@ -220,8 +219,8 @@ export const Search = () => {
                     {item.categories &&
                     <small>{item.categories.join(", ")}</small>
                     }
-                    <ResultTitle dangerouslySetInnerHTML={{__html: item.heading}}/>
-                    <div dangerouslySetInnerHTML={{__html: item.excerpt}}/>
+                    <ResultTitle dangerouslySetInnerHTML={{ __html: item.heading }}/>
+                    <div dangerouslySetInnerHTML={{ __html: item.excerpt }}/>
                   </ResultLink>
                 </ResultItem>
               ))}
@@ -275,10 +274,10 @@ export const ResultsList = styled.ul`
 
 export const ResultItem = styled.li`
   line-height: 1.4em;
-  border-bottom: 1px solid ${Theme.layout.lightGrey};
+  border-bottom: 1px solid ${props => props.theme.siteColors.lightGrey};
 
   ${props => props.selected && `
-    background-color: ${Theme.layout.lightGrey};
+    background-color: ${props => props.theme.siteColors.lightGrey};
   `};
 `
 
@@ -344,12 +343,12 @@ export const SearchWrapper = styled.div`
     background-color: #fff;
     color: #000;
 
-    @media (max-width: ${Theme.breakpoints.lg}) {
+    @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
       width: 75vw;
     }
   }
 
-  @media (max-width: ${Theme.breakpoints.lg}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
       width: 75vw;
   }
 `

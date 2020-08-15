@@ -1,43 +1,24 @@
 import React from "react"
+import styled, { ThemeProvider } from "styled-components"
 import GlobalStyle from "../styles/global-style"
-import { graphql, useStaticQuery } from "gatsby"
 import Header from "./header"
 import Footer from "./footer"
 import { Grid } from "./common"
-import Theme from "../styles/theme"
 import Sidebar from "./sidebar"
-import styled from "styled-components"
+import useSiteMetadata from "../hooks/use-site-metadata"
+import useSiteTheme from "../hooks/use-site-theme"
 
-const Layout = ({ children, showSidebar = true }) => {
-  const data = useStaticQuery(graphql`
-    query {
-      site {
-        siteMetadata {
-          title
-          description
-          topMenu {
-            name
-            path
-          }
-          footerMenu {
-            name
-            path
-          }
-          search
-        }
-      }
-    }
-  `)
+const Layout = ({ children, showSidebar = true }) => { // TODO: showSidebar add to netlify cms Post config
+  const metadata = useSiteMetadata()
+  const siteTheme = useSiteTheme()
 
   return (
-    <>
+    <ThemeProvider theme={siteTheme}>
       <GlobalStyle/>
 
       <Header
-        menu={data.site.siteMetadata.topMenu}
-        search={data.site.siteMetadata.search}
-        title={data.site.siteMetadata.title}
-        subtitle={data.site.siteMetadata.description}
+        title={metadata.siteTitle}
+        subtitle={metadata.siteDescription}
       />
 
       <HomeContainer showSidebar={showSidebar}>
@@ -50,10 +31,10 @@ const Layout = ({ children, showSidebar = true }) => {
       </HomeContainer>
 
       <Footer
-        menu={data.site.siteMetadata.footerMenu}
-        owner={data.site.siteMetadata.title}
+        menu={metadata.siteFooterMenu}
+        owner={metadata.siteTitle}
       />
-    </>
+    </ThemeProvider>
   )
 }
 
@@ -64,7 +45,7 @@ const HomeContainer = styled(Grid)`
   grid-template-columns: ${props => props.showSidebar ? `minmax(0, 1fr) .40fr` : `minmax(0,1fr) `};
   grid-column-gap: 20px;
 
-  @media (max-width: ${Theme.breakpoints.lg}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
     grid-template-columns: minmax(0,1fr);
   }
 `
@@ -72,22 +53,22 @@ const HomeContainer = styled(Grid)`
 const SidebarContainer = styled.aside`
   margin-top: 20px;
 
-  @media (max-width: ${Theme.breakpoints.sm}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
     margin-left: 0;
     margin-top: 0;
   }
 
-  @media (max-width: ${Theme.breakpoints.md}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.md}) {
     margin-left: 0;
     margin-top: 0;
   }
 
-  @media (max-width: ${Theme.breakpoints.lg}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
     margin-left: 0;
     margin-top: 0;
   }
 
-  @media (max-width: ${Theme.breakpoints.xl}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.xl}) {
     width: 100%;
     margin-top: 20px;
   }

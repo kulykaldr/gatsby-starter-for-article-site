@@ -1,53 +1,32 @@
 import React from "react"
+import { graphql } from "gatsby"
+import styled from "styled-components"
 import Layout from "../components/layout"
-import {graphql} from "gatsby"
 import SEO from "../components/seo"
 import CardGrid from "../components/card-grid"
 import Pagination from "../components/pagination"
-import styled from "styled-components"
-import Theme from "../styles/theme"
 import useSiteMetadata from "../hooks/use-site-metadata"
 
-const TitleCategory = styled.h1`
-  padding-left: 20px;
-`
-
-const DescriptionCategory = styled.p`
-  margin-bottom: 25px;
-  font-size: .95em;
-  line-height: 1.4;
-  background: #f3f3f3;
-  padding: 10px 20px;
-  color: ${Theme.layout.darkColor};
-`
-
-const CategoryTemplate = ({data, pageContext}) => {
-  let category = data.category
+const CategoryTemplate = ({ data, pageContext }) => {
   const posts = data.posts.edges.map((node) => node.node)
-  const {title, description} = useSiteMetadata()
-  const {previousPagePath, nextPagePath, humanPageNumber, numberOfPages} = pageContext
-
-  if (!category && posts.length > 0) {
-    category = {
-      name: posts[0].frontmatter.categories[0],
-      description: null,
-    }
-  }
+  const { siteTitle, siteDescription } = useSiteMetadata()
+  const { previousPagePath, nextPagePath, humanPageNumber, numberOfPages } = pageContext
+  const { categoryName, categoryDescription } = pageContext
 
   return (
     <Layout>
       <SEO
         title={humanPageNumber > 1
-          ? `${category.name} - Страница ${humanPageNumber} из ${numberOfPages} | ${title}`
-          : `${category.name} | ${title}`}
+          ? `${categoryName} - Страница ${humanPageNumber} из ${numberOfPages} | ${siteTitle}`
+          : `${categoryName} | ${siteTitle}`}
         description={humanPageNumber > 1
-          ? `${category.description} - Страница ${humanPageNumber} из ${numberOfPages} | ${description}`
-          : `${category.description} | ${description}`}
+          ? `${categoryDescription} - Страница ${humanPageNumber} из ${numberOfPages} | ${siteDescription}`
+          : `${categoryDescription} | ${siteDescription}`}
         type={`CollectionPage`}
       />
-      <TitleCategory>{category.name}</TitleCategory>
-      {humanPageNumber === 1 && category.description ?
-        <DescriptionCategory>{category.description}</DescriptionCategory> : null}
+      <TitleCategory>{categoryName}</TitleCategory>
+      {humanPageNumber === 1 && categoryDescription ?
+        <DescriptionCategory>{categoryDescription}</DescriptionCategory> : null}
       <CardGrid posts={posts} halfImage={true}/>
       <Pagination
         previousPagePath={previousPagePath}
@@ -62,15 +41,14 @@ const CategoryTemplate = ({data, pageContext}) => {
 export default CategoryTemplate
 
 export const query = graphql`
-  query ($category: String!, $skip: Int!, $limit: Int!) {
-    category: categories(name: { eq: $category }) {
-      name
-      description
-    }
+  query ($categoryName: String!, $skip: Int!, $limit: Int!) {
     posts: allMdx(
       filter: {
-        fileAbsolutePath: { regex: "/(posts)/.*\\\\.(md|mdx)$/" }
-        frontmatter: { categories: { eq: $category } }
+        frontmatter: {
+          categories: { eq: $categoryName }
+          templateKey: { eq: "post" }
+          draft: { eq: false }
+        }
       }
       sort: { fields: frontmatter___created, order: DESC }
       limit: $limit
@@ -85,6 +63,7 @@ export const query = graphql`
           excerpt
           frontmatter {
             heading
+            slug
             categories
             created
             createdPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
@@ -105,4 +84,17 @@ export const query = graphql`
       }
     }
   }
+`
+
+const TitleCategory = styled.h1`
+  padding-left: 20px;
+`
+
+const DescriptionCategory = styled.p`
+  margin-bottom: 25px;
+  font-size: .95em;
+  line-height: 1.4;
+  background: #f3f3f3;
+  padding: 10px 20px;
+  color: ${props => props.theme.siteColors.darkColor};
 `
