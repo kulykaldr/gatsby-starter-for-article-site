@@ -5,9 +5,8 @@ import slugify from "slugify"
 import styled from "styled-components"
 import { useLocation } from "@reach/router"
 import ReadingProgress from "../components/reading-progress"
-import Theme from "../styles/theme"
 import Layout from "../components/layout"
-import Comments from "../components/comments"
+import AnyComments from "../components/any-comments"
 import SEO from "../components/seo"
 import CardGrid from "../components/card-grid"
 import Breadcrumb from "../components/breadcrumb"
@@ -15,7 +14,7 @@ import useSiteMetadata from "../hooks/use-site-metadata"
 import RenderMdx from "../components/render-mdx"
 import { SmartLink } from "../components/ui/smartlink"
 import Heading from "../components/ui/heading"
-import Toc from "../components/toc";
+import Toc from "../components/toc"
 
 const PostTemplate = ({ data }) => {
   const post = data.post
@@ -26,11 +25,8 @@ const PostTemplate = ({ data }) => {
 
   return (
     <>
-      <ReadingProgress
-        target={readingProgressRef}
-        color={Theme.layout.primaryColor}
-      />
-      <Layout>
+      <Layout showSidebar={metadata.siteShowSidebar || post.showSidebar}>
+        <ReadingProgress target={readingProgressRef}/>
         <SEO
           title={post.frontmatter.title}
           publishedAt={post.frontmatter.created}
@@ -45,7 +41,7 @@ const PostTemplate = ({ data }) => {
           categories={post.frontmatter.categories.join(",")}
         />
         <StyledPost itemScope itemType="http://schema.org/Article">
-          <Breadcrumb categoryName={post.frontmatter.categories[0]} categoryPath={categoryPath}/>
+          <Breadcrumb crumb={post.frontmatter.categories[0]}/>
 
           <article ref={readingProgressRef}>
             <PostHeader>
@@ -72,7 +68,7 @@ const PostTemplate = ({ data }) => {
                 itemProp="image"
               />
             )}
-            <Toc tableOfContents={post.tableOfContents}/>
+            <Toc/>
             <RenderMdx className={`post`}>{post.body}</RenderMdx>
           </article>
         </StyledPost>
@@ -89,7 +85,7 @@ const PostTemplate = ({ data }) => {
         <meta itemProp="dateModified" content={post.frontmatter.updated}/>
         <meta itemProp="datePublished" content={post.frontmatter.created}/>
         <BlockWrapper>
-          <Comments/>
+          <AnyComments/>
         </BlockWrapper>
       </Layout>
     </>
@@ -110,6 +106,7 @@ export const query = graphql`
         createdPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
         updated
         updatedPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
+        showSidebar
         featuredImage {
           childImageSharp {
             fluid(maxWidth: 500, quality: 75) {
@@ -161,11 +158,11 @@ export const StyledPost = styled.div`
   z-index: 10;
   max-width: 100%;
 
-  @media (max-width: ${Theme.breakpoints.md}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.md}) {
     margin: 1.5em 0 1.5em 0;
   }
 
-  @media (max-width: ${Theme.breakpoints.sm}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
     padding: 0 20px 20px 20px;
   }
 `
@@ -177,7 +174,7 @@ export const PostHeader = styled.header`
 export const FeaturedImage = styled(Img)`
   border-radius: 0;
 
-  @media (max-width: ${Theme.breakpoints.xl}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.xl}) {
     margin-left: -1px;
     margin-right: -1px;
   }
@@ -200,11 +197,11 @@ export const BlockWrapper = styled.div`
   padding: 41px;
   margin: 1.5em 0 1.5em 0;
 
-  @media (max-width: ${Theme.breakpoints.md}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.md}) {
     margin: 1.1em 0 1.1em 0;
   }
 
-  @media (max-width: ${Theme.breakpoints.sm}) {
+  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
     padding: 21px;
   }
 `

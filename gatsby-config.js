@@ -1,19 +1,11 @@
-require("dotenv").config();
-const website = require('./config/website')
+require("dotenv").config()
+const siteConfig = require('./content/configs/site-config.json')
 
 module.exports = {
-  pathPrefix: website.pathPrefix,
   siteMetadata: {
-    title: website.title,
-    description: website.description,
-    siteUrl: website.url,
-    author: website.author,
-    topMenu: website.topMenu,
-    footerMenu: website.footerMenu,
-    search: website.search,
-    siteLanguage: website.siteLanguage,
-    ogLanguage: website.ogLanguage,
-    social: website.social,
+    siteUrl: siteConfig.siteUrl,
+    title: siteConfig.siteTitle,
+    description: siteConfig.siteDescription
   },
   plugins: [
     {
@@ -27,7 +19,7 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/src/assets`,
+        path: `${__dirname}/content/assets`,
         name: 'assets',
       },
     },
@@ -48,8 +40,8 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        name: 'content',
-        path: `${__dirname}/content`,
+        name: 'configs',
+        path: `${__dirname}/content/configs`,
       },
     },
     `gatsby-plugin-sharp`,
@@ -63,22 +55,17 @@ module.exports = {
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-styled-components`,
     `gatsby-plugin-sitemap`,
+    'gatsby-transformer-json',
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: website.title,
-        short_name: website.description,
+        name: siteConfig.siteTitle,
+        short_name: siteConfig.siteDescription,
         start_url: `/`,
-        background_color: website.primaryColor,
-        theme_color: website.primaryColor,
+        background_color: siteConfig.siteColors.primaryColor,
+        theme_color: siteConfig.siteColors.primaryColor,
         display: `minimal-ui`,
-        icon: `${__dirname}/src/assets/favicon.png`
-      }
-    },
-    {
-      resolve: `gatsby-transformer-yaml`,
-      options: {
-        typeName: `Categories`
+        icon: `${__dirname}/content/assets/favicon.png`
       }
     },
     {
@@ -97,7 +84,6 @@ module.exports = {
               quality: 75
             },
           },
-          'gatsby-remark-prismjs',
           'gatsby-remark-responsive-iframe',
           'gatsby-remark-copy-linked-files',
           {
@@ -113,6 +99,7 @@ module.exports = {
               icon: false
             }
           },
+          'gatsby-remark-prismjs',
         ],
       },
     },
@@ -133,24 +120,13 @@ module.exports = {
     {
       resolve: `gatsby-plugin-feed-mdx`,
       options: {
-        query: `
-            {
-              site {
-                siteMetadata {
-                  title
-                  description
-                  siteUrl
-                }
-              }
-            }
-          `,
         feeds: [
           {
-            serialize: ({ query: { site, allMdx } }) => {
+            serialize: ({ query: { allMdx } }) => {
               return allMdx.edges.map(edge => {
-                const siteUrl = site.siteMetadata.siteUrl
-                const slug = siteUrl + edge.node.fields.slug
+                const siteUrl = siteConfig.siteUrl
                 const frontmatter = edge.node.frontmatter
+                const slug = siteUrl + (frontmatter.slug || edge.node.fields.slug)
 
                 return Object.assign({}, edge.node.frontmatter, {
                   description: edge.node.excerpt,
@@ -165,7 +141,10 @@ module.exports = {
               {
                 allMdx(
                   sort: { order: DESC, fields: [frontmatter___created] },
-                  filter: { fileAbsolutePath: { regex: "/(posts)/.*\\\\.(md|mdx)$/" } }
+                  filter: { frontmatter: {
+                    templateKey: { eq: "post" }
+                    draft: { eq: false }
+                  } }
                 ) {
                   edges {
                     node {
@@ -176,6 +155,7 @@ module.exports = {
                       }
                       frontmatter {
                         title
+                        slug
                         created
                       }
                     }
@@ -203,8 +183,8 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-robots-txt',
       options: {
-        host: website.url,
-        sitemap: `${website.url}/sitemap.xml`,
+        host: siteConfig.siteUrl,
+        sitemap: `${siteConfig.siteUrl}/sitemap.xml`,
         policy: [{ userAgent: '*', allow: '/' }]
       }
     },
@@ -212,8 +192,9 @@ module.exports = {
       resolve: 'gatsby-plugin-netlify-cms',
       options: {
         modulePath: `${__dirname}/src/cms/cms.jsx`,
+        manualInit: true,
       },
     },
     'gatsby-plugin-netlify', // make sure to keep it last in the array
   ].filter(Boolean)
-};
+}

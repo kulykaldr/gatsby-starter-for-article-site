@@ -2,7 +2,6 @@ import React from "react"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
 import styled from "styled-components"
-import Theme from "../styles/theme"
 import Spoiler from "./ui/spoiler"
 import Attention from "./ui/attention"
 import Heading from "./ui/heading"
@@ -63,13 +62,13 @@ export const StyledContent = styled.div`
       display: inline-block;
       width: 8px;
       height: 8px;
-      background-color: ${Theme.layout.primaryColor};
+      background-color: ${props => props.theme.siteColors.primaryColor};
       margin: 0 22px 0 -30px;
     }
   }
 
   ol li {
-    border-color: ${Theme.layout.primaryColor};
+    border-color: ${props => props.theme.siteColors.primaryColor};
 
     &:before {
       content: counter(point);
@@ -79,7 +78,7 @@ export const StyledContent = styled.div`
       height: 24px;
       margin: 0 13px 0 -40px;
       text-align: center;
-      border: 2px solid ${Theme.layout.primaryColor};
+      border: 2px solid ${props => props.theme.siteColors.primaryColor};
       border-radius: 50%;
     }
   }

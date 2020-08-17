@@ -1,17 +1,6 @@
 import React from "react"
 import {Card} from "./card"
 import styled from "styled-components"
-import Theme from "../styles/theme"
-
-const StyledCardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(${({columns}) => columns ? columns : "1"}, 1fr);
-  grid-gap: 30px;
-
-  @media (max-width: ${Theme.breakpoints.sm}) {
-    display: block;
-  }
-`
 
 const CardGrid = ({posts, halfImage = false, compact = false, random = false, columns = 1, count = null}) => {
   if (random) {
@@ -27,7 +16,7 @@ const CardGrid = ({posts, halfImage = false, compact = false, random = false, co
       {posts.map((post, index) => (
         <Card
           heading={post.frontmatter.heading}
-          slug={post.fields.slug}
+          slug={post.frontmatter.slug || post.fields.slug}
           featuredImage={post.frontmatter.featuredImage ? post.frontmatter.featuredImage.childImageSharp : null}
           content={post.excerpt}
           compact={compact}
@@ -52,3 +41,13 @@ const CardGrid = ({posts, halfImage = false, compact = false, random = false, co
 }
 
 export default CardGrid
+
+const StyledCardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(${({columns}) => columns ? columns : "1"}, 1fr);
+  grid-gap: 30px;
+
+  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
+    display: block;
+  }
+`

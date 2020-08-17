@@ -1,32 +1,33 @@
 import React from "react"
 import styled from "styled-components"
-import { useLocation } from "@reach/router"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import useSiteMetadata from "../hooks/use-site-metadata"
 import Theme from "../styles/theme"
 import RenderMdx from "../components/render-mdx"
 import Heading from "../components/ui/heading"
+import Breadcrumb from "../components/breadcrumb";
 
 const PageTemplate = ({ pathContext }) => {
   const page = pathContext.page
   const metadata = useSiteMetadata()
-  const { pathname } = useLocation()
 
   return (
-    <Layout>
+    <Layout showSidebar={metadata.siteShowSidebar || page.showSidebar}>
       <SEO
         title={page.frontmatter.title}
         description={page.frontmatter.description}
         type={"Article"}
       />
       <StyledPage>
+        <Breadcrumb />
+
         <article>
           <Heading tag={1}>{page.frontmatter.heading}</Heading>
           <RenderMdx>{page.body}</RenderMdx>
         </article>
         <meta itemScope itemProp="mainEntityOfPage" itemType="https://schema.org/WebPage"
-              itemID={`${metadata.siteUrl}${pathname}`} content={page.frontmatter.heading}/>
+              itemID={`${metadata.siteUrl}${page.fields.slug}`} content={page.frontmatter.heading}/>
         <meta itemProp="dateModified" content={page.frontmatter.updated}/>
         <meta itemProp="datePublished" content={page.frontmatter.created}/>
       </StyledPage>

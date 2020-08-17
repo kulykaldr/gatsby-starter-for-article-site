@@ -3,40 +3,40 @@ import { graphql, useStaticQuery } from "gatsby"
 const useSiteMetadata = () => {
   const data = useStaticQuery(graphql`
     query {
-      site {
-        siteMetadata {
-          title
-          description
-          siteUrl
-          author
-          search
-          siteLanguage
-          ogLanguage
-          topMenu {
-            name
-            path
-          }
-          footerMenu {
-            name
-            path
-          }
-          social {
-            twitter
-            facebook
-            instagram
-            vk
-            ok
-            github
-            reddit
-            youtube
-            telegram
+      allConfigsJson {
+        edges {
+          node {
+            siteTitle
+            siteDescription
+            siteUrl
+            siteAuthor
+            siteLanguage
+            sitePostsPerPage
+            siteSearch
+            siteShowSidebar
+            siteCategories {
+              description
+              name
+            }
+            siteTopMenu {
+              text
+              url
+            }
+            siteFooterMenu {
+              text
+              url
+            }
+            siteSocialLinks {
+              text
+              url
+            }
           }
         }
       }
     }
   `)
 
-  return data.site.siteMetadata
+  return data.allConfigsJson.edges[0].node
 }
 
 export default useSiteMetadata

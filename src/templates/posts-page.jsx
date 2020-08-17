@@ -1,37 +1,25 @@
 import React from "react"
 import Layout from "../components/layout"
-import {Grid} from "../components/common"
+import { Grid } from "../components/common"
 import styled from "styled-components"
-import {graphql} from "gatsby"
+import { graphql } from "gatsby"
 import SEO from "../components/seo"
 import Theme from "../styles/theme"
 import Pagination from "../components/pagination"
 import CardGrid from "../components/card-grid"
 import useSiteMetadata from "../hooks/use-site-metadata"
 
-const PostsContainer = styled(Grid)`
-  margin-left: 0;
-  margin-right: 0;
-  margin-top: 30px;
-
-  @media (max-width: ${Theme.breakpoints.sm}) {
-    article {
-      margin-bottom: 30px;
-    }
-  }
-`
-
-const PostsPageTemplate = ({data, pageContext}) => {
+const PostsPageTemplate = ({ data, pageContext }) => {
   const posts = data.allPosts.edges.map((node) => node.node)
-  const {title, description} = useSiteMetadata()
-  const {previousPagePath, nextPagePath, humanPageNumber, numberOfPages} = pageContext
+  const { siteTitle, siteDescription, siteShowSidebar } = useSiteMetadata()
+  const { previousPagePath, nextPagePath, humanPageNumber, numberOfPages } = pageContext
 
   return (
-    <Layout>
+    <Layout showSidebar={siteShowSidebar}>
       <SEO
         type={`WebSite`}
-        title={humanPageNumber > 1 ? `${title} - Страница ${humanPageNumber} из ${numberOfPages}` : null}
-        description={humanPageNumber > 1 ? `${description} | Страница ${humanPageNumber} из ${numberOfPages}` : null}
+        title={humanPageNumber > 1 ? `${siteTitle} - Страница ${humanPageNumber} из ${numberOfPages}` : null}
+        description={humanPageNumber > 1 ? `${siteDescription} | Страница ${humanPageNumber} из ${numberOfPages}` : null}
       />
 
       <PostsContainer>
@@ -51,8 +39,11 @@ export default PostsPageTemplate
 
 export const PostsPageQuery = graphql`
   query postsPageQuery($skip: Int!, $limit: Int!){
-    allPosts: allMdx(
-      filter: { fileAbsolutePath: { regex: "/(posts)/.*\\\\.(md|mdx)$/" } }
+    allPosts: allMdx (
+      filter: { frontmatter: {
+        templateKey: { eq: "post" }
+        draft: { eq: false }
+      } }
       sort: { fields: frontmatter___created, order: DESC }
       limit: $limit
       skip: $skip
@@ -66,6 +57,7 @@ export const PostsPageQuery = graphql`
           excerpt
           frontmatter {
             heading
+            slug
             categories
             created
             createdPretty: created(formatString: "DD MMMM YYYY", locale: "ru")
@@ -84,6 +76,18 @@ export const PostsPageQuery = graphql`
           }
         }
       }
+    }
+  }
+`
+
+const PostsContainer = styled(Grid)`
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 30px;
+
+  @media (max-width: ${Theme.breakpoints.sm}) {
+    article {
+      margin-bottom: 30px;
     }
   }
 `

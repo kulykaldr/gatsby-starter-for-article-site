@@ -3,6 +3,30 @@ import tocbot from "tocbot"
 import styled from "styled-components"
 import Spoiler from "./ui/spoiler"
 
+const Toc = () => {
+  useEffect(() => {
+    tocbot.init({
+      tocSelector: `.toc`,
+      contentSelector: `.post`,
+      headingSelector: `h2,h3,h4,h5,h6`,
+      scrollSmooth: true,
+      scrollSmoothDuration: 1,
+      activeLinkClass: ' ',
+      orderedList: false,
+    })
+
+    return () => tocbot.destroy()
+  })
+
+  return (
+    <Spoiler title={`Содержание статьи`}>
+      <StyledNav className={`toc`}/>
+    </Spoiler>
+  )
+}
+
+export default Toc
+
 const StyledNav = styled.nav`
   padding: 20px;
 
@@ -28,27 +52,3 @@ const StyledNav = styled.nav`
     }
   }
 `
-
-const Toc = () => {
-  useEffect(() => {
-    tocbot.init({
-      tocSelector: `.toc`,
-      contentSelector: `.post`,
-      headingSelector: `h2,h3,h4,h5,h6`,
-      scrollSmooth: true,
-      scrollSmoothDuration: 1,
-      activeLinkClass: ' ',
-      orderedList: false,
-    });
-
-    return () => tocbot.destroy()
-  });
-
-  return (
-    <Spoiler title={`Содержание статьи`}>
-      <StyledNav className={`toc`}/>
-    </Spoiler>
-  )
-}
-
-export default Toc

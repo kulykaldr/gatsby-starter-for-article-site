@@ -2,8 +2,22 @@ import React from "react"
 import Layout from "../components/layout"
 import { Link } from "gatsby"
 import styled from "styled-components"
-import Theme from "../styles/theme"
 import SEO from "../components/seo"
+
+const NotFoundPage = () => (
+  <Layout>
+    <SEO title={`Страница не найдена`}/>
+    <Error>
+      <ErrorTitle>404</ErrorTitle>
+      <ErrorDescription>Страница не найдена</ErrorDescription>
+      <BackLink to={`/`}>
+        На главную страницу!
+      </BackLink>
+    </Error>
+  </Layout>
+)
+
+export default NotFoundPage
 
 const Error = styled.section`
   display: flex;
@@ -31,24 +45,9 @@ const ErrorDescription = styled.h2`
 `
 
 const BackLink = styled(Link)`
-  color: ${Theme.layout.primaryColor};
+  color: ${props => props.theme.siteColors.primaryColor};
 
   &:hover {
     text-decoration: underline;
   }
 `
-
-const NotFoundPage = () => (
-  <Layout>
-    <SEO title={`Страница не найдена`}/>
-    <Error>
-      <ErrorTitle>404</ErrorTitle>
-      <ErrorDescription>Страница не найдена</ErrorDescription>
-      <BackLink to={`/`}>
-        На главную страницу!
-      </BackLink>
-    </Error>
-  </Layout>
-)
-
-export default NotFoundPage

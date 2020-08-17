@@ -8,8 +8,6 @@ import useLogo from "../hooks/use-logo"
 const SEO = ({
                title,
                description,
-               siteLanguage = "ru-RU",
-               ogLanguage = "ru_RU",
                publishedAt,
                updatedAt,
                isArticle = false,
@@ -20,15 +18,15 @@ const SEO = ({
   const {pathname} = useLocation()
   const metadata = useSiteMetadata()
   const logo = useLogo()
-  const siteTitle = title ? title : metadata.title
-  const metaDescription = description ? description : metadata.description
+  const siteTitle = title ? title : metadata.siteTitle
+  const metaDescription = description ? description : metadata.siteDescription
   const metaImage = image ? `${metadata.siteUrl}${image}` : null
   const canonical = url.resolve(metadata.siteUrl, pathname)
-  const social = Object.values(metadata.social).filter(item => item.length > 0).map(item => `"${item}"`).join(', ')
+  const social = Object.values(metadata.siteSocialLinks).filter(item => item.length > 0).map(item => `"${item}"`).join(', ')
 
   return (
     <Helmet
-      htmlAttributes={{siteLanguage}}
+      htmlAttributes={{siteLanguage: metadata.siteLanguage}}
       title={siteTitle}
       meta={[
         {
@@ -53,7 +51,7 @@ const SEO = ({
         },
         {
           name: `og:locale`,
-          content: ogLanguage,
+          content: metadata.siteLanguage.replace("-", "_"),
         },
         {
           name: `twitter:card`,
@@ -113,13 +111,13 @@ const SEO = ({
             {
               "@type": ["Person", "Organization"],
               "@id": "${metadata.siteUrl}/#personid",
-              "name": "${metadata.author}",
+              "name": "${metadata.siteAuthor}",
               ${logo.src ? `"image": {
                 "@type": "ImageObject",
                 "@id": "${metadata.siteUrl}/#personlogo",
                 "inLanguage": "${metadata.siteLanguage}",
                 "url": "${metadata.siteUrl}${logo.src}",
-                "caption": "${metadata.author}"
+                "caption": "${metadata.siteAuthor}"
               },` : ``}
               ${logo.src ? `"logo": {"@id": "${metadata.siteUrl}/#personlogo"},` : ``}
               "description": "${metaDescription}",
@@ -128,8 +126,8 @@ const SEO = ({
               "@type": "WebSite",
               "@id": "${metadata.siteUrl}/#website",
               "url": "${metadata.siteUrl}/",
-              "name": "${metadata.title}",
-              "description": "${metadata.description}",
+              "name": "${siteTitle}",
+              "description": "${metaDescription}",
               "publisher": {"@id": "${metadata.siteUrl}/#personid"},
               "inLanguage": "${metadata.siteLanguage}"
             }, {
@@ -190,52 +188,18 @@ const SEO = ({
               "@id": "${metadata.siteUrl}${pathname}/#article",
               "isPartOf": {"@id": "${metadata.siteUrl}${pathname}/#webpage"},
               "author": {"@id": "${metadata.siteUrl}/#personid"},
-              "headline": "${title}",
+              "headline": "${siteTitle}",
               ${publishedAt ? `"datePublished": "${publishedAt}",` : ``}
               ${updatedAt ? `"dateModified": "${updatedAt}",` : ``}
               "mainEntityOfPage": {"@id": "${metadata.siteUrl}${pathname}/#webpage"},
               "publisher": {"@id": "${metadata.siteUrl}/#personid"},
               "image": {"@id": "${metadata.siteUrl}${pathname}/#primaryimage"},
               ${categories ? `"articleSection": "${categories}",` : ``}
-              "inLanguage": "${siteLanguage}"
+              "inLanguage": "${metadata.siteLanguage}"
             }` : ``}
           ]
         }
       `}</script>
-
-      {/*<script type={`application/ld+json`}>{`*/}
-      {/*  {*/}
-      {/*    "@context": "https://schema.org/",*/}
-      {/*    "@type": "${type}",*/}
-      {/*    "author": {*/}
-      {/*      "@type": "Person",*/}
-      {/*      "name": "${metadata.author}"*/}
-      {/*    },*/}
-      {/*    "headline": "${siteTitle}",*/}
-      {/*    "url": "${canonical}",*/}
-      {/*    ${publishedAt ? `"datePublished": "${publishedAt}",` : ``}*/}
-      {/*    ${updatedAt ? `"datePublished": "${updatedAt}",` : ``}*/}
-      {/*    ${*/}
-      {/*  metaImage*/}
-      {/*    ? `"image": {*/}
-      {/*      "@type": "ImageObject",*/}
-      {/*      "url": "${metaImage}",*/}
-      {/*      "width": "1000",*/}
-      {/*      "height": "520"*/}
-      {/*    },`*/}
-      {/*    : ``*/}
-      {/*}*/}
-      {/*    "publisher": {*/}
-      {/*      "@type": "Organization",*/}
-      {/*      "name": "${metadata.title}"*/}
-      {/*    },*/}
-      {/*    "description": "${metaDescription}",*/}
-      {/*    "mainEntityOfPage": {*/}
-      {/*      "@type": "WebPage",*/}
-      {/*      "@id": "${metadata.siteUrl}"*/}
-      {/*    }*/}
-      {/*  }*/}
-      {/*`}</script>*/}
     </Helmet>
   )
 }

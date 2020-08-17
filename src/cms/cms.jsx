@@ -1,6 +1,6 @@
-import { MdxControl, setupPreview } from "netlify-cms-widget-mdx"
 import CMS from "netlify-cms-app"
-import PostPreview from "./preview-templates/post-preview-template"
+import { MdxControl, setupPreview } from "netlify-cms-widget-mdx"
+import PostPagePreview from "./preview-templates/post-page-preview-template"
 import withStyled from './with-styled'
 import { components } from "../components/render-mdx"
 import Spoiler from "../components/ui/spoiler"
@@ -22,9 +22,16 @@ CMS.registerWidget(
   )
 )
 
+// Register color picker widget
+const WidgetColor = require('netlify-cms-widget-color/dist/es/color')
+CMS.registerWidget('color', WidgetColor.default.Control)
+
 // Add Previews
-CMS.registerPreviewTemplate('post', withStyled(PostPreview))
+CMS.registerPreviewTemplate('post', withStyled(PostPagePreview))
+CMS.registerPreviewTemplate('page', withStyled(PostPagePreview))
 
 // Extend editor
 CMS.registerEditorComponent(attentionEditorConfig)
 CMS.registerEditorComponent(spoilerEditorConfig)
+
+CMS.init()
