@@ -13,6 +13,7 @@ const useSiteMetadata = () => {
             siteLanguage
             sitePostsPerPage
             siteSearch
+            siteShowSidebar
             siteCategories {
               description
               name

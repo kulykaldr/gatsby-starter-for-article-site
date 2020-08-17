@@ -27,6 +27,7 @@
     }
   ],
   "siteTitle": "Обо всем на свете",
+  "siteShowSidebar": true,
   "sitePostsPerPage": 5,
   "siteFooterMenu": [
     {
@@ -77,5 +78,7 @@
   "siteFonts": {
     "base": "Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif",
     "heading": "Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif"
-  }
+  },
+  "siteLogo": "/images/logo.png",
+  "siteFavicon": "/images/favicon.png"
 }

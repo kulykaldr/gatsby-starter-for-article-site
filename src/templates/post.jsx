@@ -25,7 +25,7 @@ const PostTemplate = ({ data }) => {
 
   return (
     <>
-      <Layout>
+      <Layout showSidebar={metadata.siteShowSidebar || post.showSidebar}>
         <ReadingProgress target={readingProgressRef}/>
         <SEO
           title={post.frontmatter.title}
@@ -106,6 +106,7 @@ export const query = graphql`
         createdPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
         updated
         updatedPretty: created(formatString: "DD MMMM, YYYY", locale: "ru")
+        showSidebar
         featuredImage {
           childImageSharp {
             fluid(maxWidth: 500, quality: 75) {

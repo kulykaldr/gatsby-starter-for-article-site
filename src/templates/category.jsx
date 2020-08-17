@@ -9,12 +9,14 @@ import useSiteMetadata from "../hooks/use-site-metadata"
 
 const CategoryTemplate = ({ data, pageContext }) => {
   const posts = data.posts.edges.map((node) => node.node)
-  const { siteTitle, siteDescription } = useSiteMetadata()
-  const { previousPagePath, nextPagePath, humanPageNumber, numberOfPages } = pageContext
-  const { categoryName, categoryDescription } = pageContext
+  const { siteTitle, siteDescription, siteShowSidebar } = useSiteMetadata()
+  const {
+    previousPagePath, nextPagePath, humanPageNumber, numberOfPages,
+    categoryName, categoryDescription
+  } = pageContext
 
   return (
-    <Layout>
+    <Layout showSidebar={siteShowSidebar}>
       <SEO
         title={humanPageNumber > 1
           ? `${categoryName} - Страница ${humanPageNumber} из ${numberOfPages} | ${siteTitle}`

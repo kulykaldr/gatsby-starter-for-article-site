@@ -24,6 +24,7 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
               slug
               heading
               description
+              showSidebar
             }
             body
           }
@@ -60,7 +61,31 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
   const posts = result.data.posts.edges.map(node => node.node)
   const pages = result.data.pages.edges.map(node => node.node)
 
-  // Create your paginated pages
+  // Create a route for every single page (located in `content/pages`)
+  pages.forEach(page => {
+    createPage({
+      path: page.frontmatter.slug || page.fields.slug,
+      component: require.resolve(`${__dirname}/src/templates/page.jsx`),
+      context: {
+        page,
+      },
+    })
+  })
+
+  // If only one post then on home page show this post only, Else show all posts cards
+  // Use for landing page
+  if (posts.length === 1) {
+    createPage({
+      path: "/",
+      component: require.resolve(`${__dirname}/src/templates/post.jsx`),
+      context: {
+        postId: posts[0].id,
+      },
+    })
+  }
+
+  // Create your paginated post page
+  // Show all posts cards
   paginate({
     createPage, // The Gatsby `createPage` function
     items: posts, // An array of objects
@@ -100,22 +125,12 @@ exports.createPages = async ({ graphql, actions: { createPage }, reporter }) => 
       }
     }
 
+    // Create post
     createPage({
       path: post.frontmatter.slug || post.fields.slug,
       component: require.resolve(`${__dirname}/src/templates/post.jsx`),
       context: {
         postId: post.id,
-      },
-    })
-  })
-
-  // Create a route for every single page (located in `content/pages`)
-  pages.forEach(page => {
-    createPage({
-      path: page.frontmatter.slug || page.fields.slug,
-      component: require.resolve(`${__dirname}/src/templates/page.jsx`),
-      context: {
-        page,
       },
     })
   })

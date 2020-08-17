@@ -19,7 +19,7 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/src/assets`,
+        path: `${__dirname}/content/assets`,
         name: 'assets',
       },
     },
@@ -65,7 +65,7 @@ module.exports = {
         background_color: siteConfig.siteColors.primaryColor,
         theme_color: siteConfig.siteColors.primaryColor,
         display: `minimal-ui`,
-        icon: `${__dirname}/src/assets/favicon.png` // TODO: add to config
+        icon: `${__dirname}/content/assets/favicon.png`
       }
     },
     {

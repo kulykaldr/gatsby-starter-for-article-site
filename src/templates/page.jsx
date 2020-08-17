@@ -13,7 +13,7 @@ const PageTemplate = ({ pathContext }) => {
   const metadata = useSiteMetadata()
 
   return (
-    <Layout>
+    <Layout showSidebar={metadata.siteShowSidebar || page.showSidebar}>
       <SEO
         title={page.frontmatter.title}
         description={page.frontmatter.description}
