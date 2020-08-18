@@ -27,7 +27,7 @@ const useSiteMetadata = () => {
               url
             }
             siteSocialLinks {
-              text
+              name
               url
             }
           }

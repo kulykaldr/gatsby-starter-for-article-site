@@ -3,11 +3,11 @@
   "siteAuthor": "KulykAldr",
   "siteSocialLinks": [
     {
-      "text": "twitter",
+      "name": "twitter",
       "url": "https://twitter.com"
     },
     {
-      "text": "facebook",
+      "name": "facebook",
       "url": "https://facebook.com"
     }
   ],

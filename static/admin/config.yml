@@ -63,6 +63,8 @@ collections:
 
   - name: configs
     label: Configs
+    editor:
+      preview: false
     files:
       - file: content/configs/site-config.json
         label: Site Config

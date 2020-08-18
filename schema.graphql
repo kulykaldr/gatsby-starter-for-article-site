@@ -100,7 +100,7 @@ type ConfigsJsonSiteFooterMenu {
 }
 
 type ConfigsJsonSiteSocialLinks {
-  text: String
+  name: String
   url: String
 }
 
@@ -1113,7 +1113,7 @@ enum ConfigsJsonFieldsEnum {
   siteSearch
   siteShowSidebar
   siteSocialLinks
-  siteSocialLinks___text
+  siteSocialLinks___name
   siteSocialLinks___url
   siteTitle
   siteTopMenu
@@ -1325,7 +1325,7 @@ enum FileFieldsEnum {
   childConfigsJson___siteSearch
   childConfigsJson___siteShowSidebar
   childConfigsJson___siteSocialLinks
-  childConfigsJson___siteSocialLinks___text
+  childConfigsJson___siteSocialLinks___name
   childConfigsJson___siteSocialLinks___url
   childConfigsJson___siteTitle
   childConfigsJson___siteTopMenu
@@ -2980,7 +2980,7 @@ input ConfigsJsonSiteFooterMenuFilterListInput {
 }
 
 input ConfigsJsonSiteSocialLinksFilterInput {
-  text: StringQueryOperatorInput
+  name: StringQueryOperatorInput
   url: StringQueryOperatorInput
 }
 
