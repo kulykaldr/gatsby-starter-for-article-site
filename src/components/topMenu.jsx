@@ -2,10 +2,10 @@ import React, { useState } from "react"
 import { Search } from "./search-js-search"
 import styled from "styled-components"
 import { Container } from "./common"
-import { Link } from "gatsby"
 import { useLocation } from "@reach/router"
 import SlideToggle from "react-slide-toggle"
 import useSiteMetadata from "../hooks/use-site-metadata"
+import SmartLink from "../components/ui/smartlink"
 
 const TopMenu = () => {
   const { pathname } = useLocation()
@@ -143,7 +143,7 @@ export const NavMenuItem = styled.li`
   }
 `
 
-export const NavLink = styled(Link)`
+export const NavLink = styled(SmartLink)`
   color: #fff;
   opacity: .8;
   padding: 18px;

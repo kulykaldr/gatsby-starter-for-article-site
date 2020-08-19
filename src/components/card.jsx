@@ -1,10 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import {Link} from "gatsby"
 import Theme from "../styles/theme"
 import Img from "gatsby-image"
 import useSiteMetadata from "../hooks/use-site-metadata"
 import useLogo from "../hooks/use-logo"
+import SmartLink from "../components/ui/smartlink"
 
 export const Card = ({
                        heading,
@@ -21,7 +21,7 @@ export const Card = ({
   return (
     <StyledCard itemScope itemType="http://schema.org/BlogPosting">
       {(featuredImage && featuredImage.fluid) &&
-      <Link to={slug}>
+      <SmartLink to={slug}>
         <FeaturedImage
           fluid={featuredImage.fluid}
           compact={compact}
@@ -29,7 +29,7 @@ export const Card = ({
           alt={heading}
           itemProp="image"
         />
-      </Link>
+      </SmartLink>
       }
 
       <CardHeader>
@@ -45,9 +45,9 @@ export const Card = ({
         }
         {heading &&
         <CardTitle compact={compact} itemProp="name">
-          <Link to={slug} rel="bookmark" itemProp="url">
+          <SmartLink to={slug} rel="bookmark" itemProp="url">
             <span itemProp="headline">{heading}</span>
-          </Link>
+          </SmartLink>
         </CardTitle>
         }
       </CardHeader>

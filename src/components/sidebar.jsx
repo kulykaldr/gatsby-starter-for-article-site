@@ -1,10 +1,11 @@
 import React from "react"
-import { graphql, useStaticQuery, Link } from "gatsby"
+import { graphql, useStaticQuery } from "gatsby"
 import styled from "styled-components"
 import slugify from "slugify"
 import {FaAngleRight} from "react-icons/fa"
 import CardGrid from "./card-grid"
 import useSiteMetadata from "../hooks/use-site-metadata"
+import SmartLink from "../components/ui/smartlink"
 
 const Sidebar = () => {
   const metadata = useSiteMetadata()
@@ -64,7 +65,7 @@ const Sidebar = () => {
         {categories.map(category =>
           <li key={category}>
             <FaAngleRight/>
-            <Link to={`/${slugify(category, { lower: true })}`}>{category}</Link>
+            <SmartLink to={`/${slugify(category, { lower: true })}`}>{category}</SmartLink>
           </li>)
         }
       </CategoriesList>

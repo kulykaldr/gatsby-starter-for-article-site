@@ -1,6 +1,6 @@
 import React from "react"
-import { Link } from "gatsby"
 import styled from "styled-components"
+import SmartLink from "../components/ui/smartlink"
 
 const Pagination = ({ humanPageNumber, numberOfPages, previousPagePath, nextPagePath }) => {
 
@@ -42,7 +42,7 @@ const PaginationWrapper = styled.nav`
   }
 `
 
-const PageBtn = styled(Link)`
+const PageBtn = styled(SmartLink)`
   border-radius: 3px;
   background-color: ${props => props.theme.siteColors.darkColor};
   border: 1px solid ${props => props.theme.siteColors.darkColor};
