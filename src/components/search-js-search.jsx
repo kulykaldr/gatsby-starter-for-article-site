@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react"
 import { FaSearch } from "react-icons/fa"
-import { navigate, Link, useStaticQuery, graphql } from "gatsby"
+import { navigate, useStaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
 import * as JsSearch from "js-search"
 import { useLocation } from "@reach/router"
+import SmartLink from "../components/ui/smartlink"
 
 export const Search = () => {
   const [ isFocus, setIsFocus ] = useState(false)
@@ -281,7 +282,7 @@ export const ResultItem = styled.li`
   `};
 `
 
-export const ResultLink = styled(Link)`
+export const ResultLink = styled(SmartLink)`
   display: block;
   padding: 15px;
   color: #000;

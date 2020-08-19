@@ -1,9 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import { Link, withPrefix } from "gatsby"
+import { withPrefix } from "gatsby"
 import Img from "gatsby-image"
 import { useLocation } from "@reach/router"
 import useLogo from "../hooks/use-logo"
+import SmartLink from "../components/ui/smartlink"
 
 const Branding = ({ title, subtitle }) => {
   const logo = useLogo()
@@ -93,7 +94,7 @@ const Subtitle = styled.p`
   }
 `
 
-const HomeLink = styled(Link)`
+const HomeLink = styled(SmartLink)`
   font-size: 28px;
   margin: 0;
   line-height: 1.1;

@@ -1,8 +1,8 @@
 import React from "react"
-import { Link } from "gatsby"
 import styled, { css } from "styled-components"
 import {useLocation} from "@reach/router"
 import { Container } from "./common"
+import SmartLink from "../components/ui/smartlink"
 
 const Footer = ({ menu, owner }) => {
   const { pathname } = useLocation()
@@ -90,6 +90,6 @@ export const FooterMenuItem = styled.a`
   ${LinkStyle}
 `
 
-export const FooterMenuLink = styled(Link)`
+export const FooterMenuLink = styled(SmartLink)`
   ${LinkStyle}
 `
