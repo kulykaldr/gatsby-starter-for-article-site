@@ -1,7 +1,7 @@
 import React from "react"
 import styled from "styled-components"
-import { Link } from "gatsby"
 import slugify from "slugify"
+import SmartLink from "../components/ui/smartlink"
 
 const Breadcrumb = ({ crumb = "" }) => {
   const categoryPath = `/${slugify(crumb, { lower: true })}`
@@ -9,18 +9,18 @@ const Breadcrumb = ({ crumb = "" }) => {
   return (
     <BreadcrumbStyled itemScope itemType="http://schema.org/BreadcrumbList">
       <span itemProp="itemListElement" itemScope itemType="http://schema.org/ListItem">
-        <Link to={`/`} itemProp="item">
+        <SmartLink to={`/`} itemProp="item">
           <span itemProp="name">Главная</span>
-        </Link>
+        </SmartLink>
         <meta itemProp="position" content="0"/>
       </span>
 
       {crumb && <span>»</span>}
 
       {crumb && <span itemProp="itemListElement" itemScope itemType="http://schema.org/ListItem">
-        <Link to={categoryPath} itemProp="item">
+        <SmartLink to={categoryPath} itemProp="item">
         <span itemProp="name">{crumb}</span>
-        </Link>
+        </SmartLink>
         <meta itemProp="position" content="0"/>
         </span>}
     </BreadcrumbStyled>
