@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import { styled, theme } from "twin.macro"
 import slugify from "slugify"
 import SmartLink from "../components/ui/smartlink"
 
@@ -34,13 +34,13 @@ const BreadcrumbStyled = styled.div`
   color: #999;
   padding-top: 20px;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
+  @media (max-width: ${theme`screens.sm`}) {
     padding-left: 20px;
     padding-right: 20px;
   }
 
   a {
-    color: ${props => props.theme.siteColors.primaryColorLighter};
+    color: ${theme`colors.primary.lighter`};
 
     &:hover {
       text-decoration: underline;

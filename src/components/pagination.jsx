@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import { styled, theme } from "twin.macro"
 import SmartLink from "../components/ui/smartlink"
 
 const Pagination = ({ humanPageNumber, numberOfPages, previousPagePath, nextPagePath }) => {
@@ -37,30 +37,30 @@ const PaginationWrapper = styled.nav`
   max-width: 770px;
   margin: 0 auto;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.md}) {
+  @media (max-width: ${theme`screens.md`}) {
     width: 90%;
   }
 `
 
 const PageBtn = styled(SmartLink)`
   border-radius: 3px;
-  background-color: ${props => props.theme.siteColors.darkColor};
-  border: 1px solid ${props => props.theme.siteColors.darkColor};
-  color: ${props => props.theme.siteColors.backgroundColor};
+  background-color: ${theme`colors.gray.900`};
+  border: 1px solid ${theme`colors.gray.900`};
+  color: ${theme`colors.gray.100`};
   padding: 8px 20px;
   min-width: 140px;
   transition: background-color .5s;
 
   &:hover {
-    background-color: ${props => props.theme.siteColors.backgroundColor};
-    color: ${props => props.theme.siteColors.darkColor};
-    border: 1px solid ${props => props.theme.siteColors.darkColor};
+    background-color: ${theme`colors.gray.100`};
+    color: ${theme`colors.gray.900`};
+    border: 1px solid ${theme`colors.gray.900`};
   }
 `
 
 const PreviousBtn = styled(PageBtn)`
   order: 1;
-  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
+  @media (max-width: ${theme`screens.sm`}) {
     order: 2;
   }
 `
@@ -81,7 +81,7 @@ const Spacer = styled.span`
     order: 3;
   }
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
+  @media (max-width: ${theme`screens.sm`}) {
     display: none;
 
     &.previous {
@@ -97,7 +97,7 @@ const Spacer = styled.span`
 const PageInfo = styled.span`
   order: 2;
   padding: 1em 0;
-  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
+  @media (max-width: ${theme`screens.sm`}) {
     order: 1;
     width: 100%;
     text-align: center;

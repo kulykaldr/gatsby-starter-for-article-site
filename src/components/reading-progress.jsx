@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import styled from "styled-components"
+import { styled, theme } from "twin.macro"
 
 const ReadingProgress = ({ target }) => {
   const [readingProgress, setReadingProgress] = useState(0)
@@ -41,6 +41,6 @@ const ReadingProgressBar = styled.div`
   /*top: 70px;*/
   left: 0;
   top: -1px;
-  background-color: ${props => props.theme.siteColors.primaryColor};
+  background-color: ${theme`colors.primary.default`};
   z-index: 500;
 `

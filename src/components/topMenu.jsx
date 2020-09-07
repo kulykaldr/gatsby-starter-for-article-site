@@ -1,312 +1,180 @@
 import React, { useState } from "react"
 import { Search } from "./search-js-search"
-import styled from "styled-components"
-import { Container } from "./common"
 import { useLocation } from "@reach/router"
-import SlideToggle from "react-slide-toggle"
+import tw, { styled, css } from "twin.macro"
 import useSiteMetadata from "../hooks/use-site-metadata"
 import SmartLink from "../components/ui/smartlink"
 
 const TopMenu = () => {
   const { pathname } = useLocation()
-  const [ toggleEvent, setToggleEvent ] = useState(0)
   const [ isActive, setActive ] = useState(false)
-  const { siteTopMenu, siteSearch } = useSiteMetadata()
-
-  // Toggles the Menu
-  const onToggle = () => {
-    setToggleEvent(Date.now())
-    setActive(!isActive)
-  }
+  const { siteTopMenu } = useSiteMetadata()
 
   return (
-    <>
-      <BurgerButton onClick={onToggle} className={isActive ? " active" : null}>
-        <div className={"burger-lines"}/>
-      </BurgerButton>
-      <NavContainer>
-        <NavWrapper>
-          <NavMenu>
-            {siteTopMenu.map((item, index) => (
-              <NavMenuItem key={index}>
-                {
-                  item.path === pathname
-                    ? <span>{item.text}</span>
-                    : <NavLink to={item.url} key={index} activeClassName='active'>{item.text}</NavLink>
-                }
-              </NavMenuItem>
-            ))}
-          </NavMenu>
+    <TopMenuContainer>
+      <HamburgerButton onClick={() => setActive(!isActive)}
+                       className={`hamburger hamburger--spin ${isActive ? 'is-active' : null}`}
+                       data-target="#navigation">
+        <span className="hamburger-box">
+          <span className="hamburger-inner"/>
+        </span>
+      </HamburgerButton>
 
-          {siteSearch &&
-          <SearchMenu>
-            <Search/>
-          </SearchMenu>
-          }
-        </NavWrapper>
-      </NavContainer>
+      <Search/>
 
-      <MobileMenuContainer>
-        <SlideToggle
-          duration={800}
-          toggleEvent={toggleEvent}
-          collapsed
-        >
-          {({ setCollapsibleElement, progress }) => (
-            <MobileMenu ref={setCollapsibleElement}>
-              <div
-                style={{
-                  transform: `translateY(${Math.round(20 * (-1 + progress))}px)`
-                }}
-              >
-                {siteTopMenu.map((item, index) => (
-                  <MobileMenuItem key={index}>
-                    {
-                      item.url === pathname
-                        ? <span>{item.text}</span>
-                        : <NavLink to={item.url} key={index} activeClassName='active'>{item.text}</NavLink>
-                    }
-                  </MobileMenuItem>
-                ))}
-              </div>
-            </MobileMenu>
-          )}
-        </SlideToggle>
-      </MobileMenuContainer>
-    </>
+      <NavMenuContainer id={"navigation"} isActive={isActive}>
+        <NavMenu>
+          {siteTopMenu.map((item, index) => (
+            <>
+              {
+                item.path === pathname
+                  ? <NavSpan key={index}>{item.text}</NavSpan>
+                  : <NavLink to={item.url} key={index} activeClassName='active'>{item.text}</NavLink>
+              }
+            </>
+          ))}
+        </NavMenu>
+      </NavMenuContainer>
+    </TopMenuContainer>
   )
 }
 
-
 export default TopMenu
 
-export const NavContainer = styled.nav`
-  background-color: ${props => props.theme.siteColors.primaryColor};
-  box-shadow: 0 0 3px rgba(0,0,0,.03), 0 3px 46px rgba(0,0,0,.07);
-  min-height: 60px;
-  display: flex;
-`
-
-export const NavWrapper = styled(Container)`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  white-space: nowrap;
-  position: relative;
-
-  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
-    padding: 0;
-  }
-
-  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
-    justify-content: center;
-  }
-`
-
-export const NavMenu = styled.ul`
-  align-self: center;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  flex: 1 1;
-  overflow-x: hidden;
-  overflow-y: hidden;
-
-  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
-    display: none;
-  }
-`
-
-export const SearchMenu = styled.ul`
-  align-self: center;
-  list-style-type: none;
-  margin: 0;
-  padding: 0 20px 0 0;
-
-  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
-    padding-right: 0;
-  }
-`
-
-export const NavMenuItem = styled.li`
-  display: inline-block;
-
-  span {
-    cursor: default;
-    color: #fff;
-    padding: 18px;
-    transition: all .5s;
-    height: 100%;
-    display: block;
-    opacity: 1;
-    background: rgba(255,255,255,.1);
-  }
-`
-
-export const NavLink = styled(SmartLink)`
-  color: #fff;
-  opacity: .8;
-  padding: 18px;
-  transition: all .5s;
-  height: 100%;
-  display: block;
-
-  &:hover {
-    opacity: 1;
-    background: rgba(255,255,255,.1);
-  }
-
-  &.active {
-    opacity: 1;
-    background: rgba(255,255,255,.1);
-  }
-`
-
-const MobileMenuContainer = styled.div`
-  position: relative;
-  overflow: hidden;
-  z-index: -1;
-  margin-top: -1px;
-  width: 100%;
-  margin-right: 20px;
-
-  /*
-  Slide animation styles
-
-  You may need to add vendor prefixes for transform depending on your desired browser support.
-  */
-
-  .slide-enter {
-    transform: translateY(-100%);
-    transition: .7s cubic-bezier(0, 1, 0.5, 1);
-  }
-
-  .slide-enter-active {
-      transform: translateY(0%);
-  }
-
-  .slide-exit {
-    transform: translateY(0%);
-    transition: .7s ease-in-out;
-  }
-
-  .slide-exit-active {
-      transform: translateY(-100%);
-  }
-`
-
-const MobileMenu = styled.ul`
-  margin: 0;
-  padding: 0;
-  background-color: ${props => props.theme.siteColors.primaryColor};
-`
-
-const MobileMenuItem = styled(NavMenuItem)`
-  display: block;
-  border-bottom: 1px solid rgba(255,255,255,.2);
-`
-
-/*
-const HamburgerButton = styled.div`
-  display: none;
-  position: absolute;
-  top: 26px;
-  right: 20px;
-  width: 38px;
-  height: 28px;
-  padding-top: 8px;
-  border-top: 4px solid ${Theme.layout.primaryColor};
-  border-bottom: 4px solid ${Theme.layout.primaryColor};
-  transition: all .3s ease;
-
-  &.active {
-    height: 20px;
-    padding-top: 4px;
-    opacity: .5;
-    filter: "alpha(opacity=50)";
-  }
-
-  span {
-    display: block;
-    height: 4px;
-    background: ${Theme.layout.primaryColor};
-  }
-
-  @media (max-width: ${Theme.breakpoints.sm}) {
-    display: block;
-  }
-`
-*/
-
-const BurgerButton = styled.div`
-  position: absolute;
-  top: 26px;
-  right: 20px;
-  display: none;
-  flex-shrink: 0;
-  width: 3em;
-  height: 3em;
-  padding: 0;
-  cursor: pointer;
-  transition: .2s;
-  border: none;
-  background: 0 0;
-  font-size: 12px;
-
-  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
-    display: block;
-  }
-
-  .burger-lines,
-  .burger-lines:before,
-  .burger-lines:after
-  {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: .25em;
-    transition: top .2s .2s,left .1s,transform .2s,background-color .2s .1s;
-    pointer-events: none;
-    border-radius: .25em;
-    background-color: ${props => props.theme.siteBreakpoints.primaryColor};
-  }
-
-  .burger-lines {
-    top: 50%;
-    margin-top: -.125em;
-
-    &:before {
-      top: 1em;
-      left: 1em;
-      width: 2em;
+const TopMenuContainer = styled.nav([
+  tw`flex bg-blue-800 p-2 flex-wrap overflow-hidden`,
+  css`
+    /*
+     * Tasty CSS-animated hamburgers
+     * https://github.com/jonsuh/hamburgers
+     * https://codepen.io/shushik81/pen/xxVqaJR
+     */
+    .hamburger {
+      cursor: pointer;
+      transition-property: opacity, filter;
+      transition-duration: 0.15s;
+      transition-timing-function: linear;
+      font: inherit;
+      color: inherit;
+      text-transform: none;
+      background-color: transparent;
+      border: 0;
+      margin: 0;
+      overflow: visible;
     }
 
-    &:after {
-      top: -1em;
-      left: 0;
-      width: 2em;
+    .hamburger,
+    .hamburger.is-active {
+      opacity: 0.7;
     }
-  }
 
-  &.active {
-    .burger-lines {
-      background-color: initial;
-
-      &:before,
-      &:after
-      {
-        top: 0;
-        left: .5em;
-        transition: background-color .2s,top .2s,left .2s,transform .2s .15s;
-      }
-
-      &:before {
-        transform: rotate(-45deg);
-      }
-
-      &:after {
-        transform: rotate(45deg);
-      }
+    .hamburger:hover,
+    .hamburger.is-active:hover {
+      opacity: 1;
     }
-   }
-`
+
+    .hamburger.is-active .hamburger-inner,
+    .hamburger.is-active .hamburger-inner::before,
+    .hamburger.is-active .hamburger-inner::after {
+      background-color: #fff;
+    }
+
+    .hamburger-box {
+      width: 30px;
+      height: 24px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .hamburger-inner {
+      display: block;
+      top: 50%;
+      margin-top: -2px;
+    }
+
+    .hamburger-inner,
+    .hamburger-inner::before,
+    .hamburger-inner::after {
+      width: 30px;
+      height: 4px;
+      background-color: #fff;
+      border-radius: 4px;
+      position: absolute;
+      transition-property: transform;
+      transition-duration: 0.15s;
+      transition-timing-function: ease;
+    }
+    .hamburger-inner::before,
+    .hamburger-inner::after {
+      content: "";
+      display: block;
+    }
+    .hamburger-inner::before {
+      top: -10px;
+    }
+    .hamburger-inner::after {
+      bottom: -10px;
+    }
+
+    /*
+      * Spin
+    */
+    .hamburger--spin .hamburger-inner {
+      transition-duration: 0.22s;
+      transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+
+    .hamburger--spin .hamburger-inner::before {
+      transition: top 0.1s 0.25s ease-in, opacity 0.1s ease-in;
+    }
+
+    .hamburger--spin .hamburger-inner::after {
+      transition: bottom 0.1s 0.25s ease-in,
+        transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+
+    .hamburger--spin.is-active .hamburger-inner {
+      transform: rotate(225deg);
+      transition-delay: 0.12s;
+      transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+
+    .hamburger--spin.is-active .hamburger-inner::before {
+      top: 0;
+      opacity: 0;
+      transition: top 0.1s ease-out, opacity 0.1s 0.12s ease-out;
+    }
+
+    .hamburger--spin.is-active .hamburger-inner::after {
+      bottom: 0;
+      transform: rotate(-90deg);
+      transition: bottom 0.1s ease-out,
+        transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+  `
+])
+
+const NavMenuContainer = styled.div(({ isActive }) => [
+  tw`w-full lg:inline-flex lg:w-auto transition-all duration-500 lg:max-h-screen`,
+  css`max-height: 0;`,
+  isActive && css`max-height: 100vh;`
+])
+
+const NavMenu = styled.div([
+  tw`flex flex-col items-start lg:inline-flex lg:flex-row lg:ml-auto lg:w-auto w-full lg:items-center lg:h-auto`
+])
+
+const linkStyle = `lg:inline-flex lg:w-auto w-full px-3 py-2 rounded text-gray-400 items-center
+                  justify-center hover:bg-blue-900 hover:text-white`
+
+export const NavSpan = styled.div([
+  tw`${linkStyle}`
+])
+
+export const NavLink = styled(SmartLink)([
+  tw`${linkStyle}`
+])
+
+const HamburgerButton = styled.button([
+  tw`flex p-2 rounded lg:hidden hover:bg-blue-900 hover:text-white outline-none`,
+])

@@ -1,5 +1,5 @@
 import React from "react"
-import styled, { css } from "styled-components"
+import { styled, theme, css } from "twin.macro"
 import {useLocation} from "@reach/router"
 import { Container } from "./common"
 import SmartLink from "../components/ui/smartlink"
@@ -77,12 +77,12 @@ export const StyledNav = styled.nav`
 
   span {
     cursor: default;
-    color: ${props => props.theme.siteColors.darkColor};
+    color: ${theme`colors.gray.900`};
   }
 `
 
 const LinkStyle = css`
-  color: ${props => props.theme.siteColors.darkColor};
+  color: ${theme`colors.gray.900`};
   text-decoration: none;
 `
 

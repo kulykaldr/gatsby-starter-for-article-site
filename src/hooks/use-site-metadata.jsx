@@ -12,7 +12,6 @@ const useSiteMetadata = () => {
             siteAuthor
             siteLanguage
             sitePostsPerPage
-            siteSearch
             siteShowSidebar
             siteCategories {
               description

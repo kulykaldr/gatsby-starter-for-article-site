@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import { styled, theme } from "twin.macro"
 import {
   FaQuoteLeft,
   FaCheckCircle,
@@ -24,13 +24,13 @@ export default Attention
 
 const AttentionWrapper = styled.blockquote`
   position: relative;
-  margin: 35px -40px 35px -40px;
+  margin: 35px -40px;
   padding: 10px 20px;
-  border-left: 2px solid ${props => props.theme.siteColors.primaryColor}!important;
+  border-left: 2px solid ${theme`colors.primary.default`};
   background: #f5f4f1;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.md}) {
-    margin: 20px -20px 20px -20px;
+  @media (max-width: ${theme`screens.md`}) {
+    margin: 20px -20px;
   }
 
   &.quote, &.check, &.danger, &.info, &.warning {

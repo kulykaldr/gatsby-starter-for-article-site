@@ -1,6 +1,6 @@
 import React from "react"
 import { graphql } from "gatsby"
-import styled from "styled-components"
+import { styled, theme } from "twin.macro"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import CardGrid from "../components/card-grid"
@@ -98,5 +98,5 @@ const DescriptionCategory = styled.p`
   line-height: 1.4;
   background: #f3f3f3;
   padding: 10px 20px;
-  color: ${props => props.theme.siteColors.darkColor};
+  color: ${theme`colors.gray.900`};
 `

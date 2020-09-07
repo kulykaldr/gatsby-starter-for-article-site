@@ -1,8 +1,8 @@
 import React from "react"
-import {Card} from "./card"
-import styled from "styled-components"
+import { Card } from "./card"
+import { styled, theme } from "twin.macro"
 
-const CardGrid = ({posts, halfImage = false, compact = false, random = false, columns = 1, count = null}) => {
+const CardGrid = ({ posts, halfImage = false, compact = false, random = false, columns = 1, count = null }) => {
   if (random) {
     posts = posts.sort(() => Math.random() - 0.5)
   }
@@ -44,10 +44,10 @@ export default CardGrid
 
 const StyledCardGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(${({columns}) => columns ? columns : "1"}, 1fr);
+  grid-template-columns: repeat(${({ columns }) => columns ? columns : "1"}, 1fr);
   grid-gap: 30px;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
+  @media (max-width: ${theme`screens.sm`}) {
     display: block;
   }
 `

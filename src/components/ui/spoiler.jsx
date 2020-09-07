@@ -1,97 +1,63 @@
-import React, {useState} from "react"
-import styled from "styled-components"
-import {FaChevronDown} from "react-icons/fa"
-import SlideToggle from "react-slide-toggle"
+import React from "react"
+import tw, { css, styled } from 'twin.macro'
 
-const Spoiler = ({title, children}) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [toggleEvent, setToggleEvent] = useState(0)
+let lastId = 0
 
-  // Toggles the spoiler
-  const toggleSpoiler = () => {
-    setIsOpen(!isOpen)
-    setToggleEvent(Date.now())
-  }
-
-  return (
-    <SpoilerBox>
-      <SpoilerTitle onClick={toggleSpoiler} open={isOpen}>
-        {title}
-        <FaChevronDown/>
-      </SpoilerTitle>
-
-      <SpoilerBody>
-        <SlideToggle
-          duration={800}
-          toggleEvent={toggleEvent}
-          collapsed={false}
-        >
-          {({setCollapsibleElement, progress}) => (
-            <div
-              ref={setCollapsibleElement}
-              style={{
-                transform: `translateY(${Math.round(20 * (-1 + progress))}px)`
-              }}
-            >
-              {children}
-            </div>
-          )}
-        </SlideToggle>
-      </SpoilerBody>
-    </SpoilerBox>
-  )
+function newId (prefix = 'id') {
+  lastId++
+  return `${prefix}${lastId}`
 }
 
+const Spoiler = ({ title, children, isOpen = false }) => (
+  <StyledSpoiler>
+    <StyledInput type="checkbox" id={newId()} defaultChecked={isOpen} />
+    <StyledLabel htmlFor={`id${lastId++}`}>{title}</StyledLabel>
+
+    <StyledContent>{children}</StyledContent>
+  </StyledSpoiler>
+)
+
+const StyledSpoiler = styled.div([
+  tw`text-gray-800 overflow-hidden rounded-md shadow my-6`,
+  css`
+    input:checked {
+      + label {
+        ${tw`bg-gray-300`}
+        &::after {
+          ${tw`origin-bottom transform rotate-90`}
+        }
+      }
+      ~ div {
+        max-height: 100vh;
+        padding: 1em;
+      }
+    }
+  `
+])
+
+const StyledInput = styled.input([
+  tw`absolute opacity-0`,
+  css`
+    z-index: -1;
+  `
+])
+
+const StyledLabel = styled.label([
+  tw`flex justify-between p-4 bg-gray-200 text-base font-medium cursor-pointer hover:bg-gray-300`,
+  tw`transition-all duration-300`,
+  tw`after:(w-4 h-4 text-center text-xl text-primary transition-all duration-300)`,
+  css`
+    ::after {
+      content: '\\276F';
+    }
+  `
+])
+
+const StyledContent = styled.div([
+  tw`px-4 transition-all duration-300 bg-gray-200`,
+  css`
+    max-height: 0;
+  `
+])
+
 export default Spoiler
-
-const SpoilerBox = styled.div`
-  background: ${props => props.theme.siteColors.lightGrey};
-  border-left: 2px solid ${props => props.theme.siteColors.primaryColor};
-  margin: 15px 0;
-
-  /*
-  Slide animation styles
-
-  You may need to add vendor prefixes for transform depending on your desired browser support.
-  */
-
-  .slide-enter {
-    transform: translateY(-100%);
-    transition: .7s cubic-bezier(0, 1, 0.5, 1);
-  }
-
-  .slide-enter-active {
-      transform: translateY(0%);
-  }
-
-  .slide-exit {
-    transform: translateY(0%);
-    transition: .7s ease-in-out;
-  }
-
-  .slide-exit-active {
-      transform: translateY(-100%);
-  }
-`
-
-const SpoilerTitle = styled.div`
-  position: relative;
-  cursor: pointer;
-  padding: 15px 30px 15px 20px;
-
-  svg {
-    transition: all .3s ease;
-    position: absolute;
-    top: 48%;
-    right: 10px;
-    font-size: 18px;
-    margin-top: -5px;
-    color: #5a80b1;
-    transform: ${props => props.open ? "rotate(180deg)" : "rotate(0deg)"};
-  }
-`
-
-const SpoilerBody = styled.div`
-  padding: 0 20px 0 20px;
-  background: #fbfbfb;
-`

@@ -56,14 +56,16 @@ module.exports = {
     `gatsby-plugin-styled-components`,
     `gatsby-plugin-sitemap`,
     'gatsby-transformer-json',
+    `gatsby-plugin-emotion`,
+    `gatsby-plugin-postcss`,
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: siteConfig.siteTitle,
         short_name: siteConfig.siteDescription,
         start_url: `/`,
-        background_color: siteConfig.siteColors.primaryColor,
-        theme_color: siteConfig.siteColors.primaryColor,
+        background_color: '#1565c0',
+        theme_color: '#1565c0',
         display: `minimal-ui`,
         icon: `${__dirname}/content/assets/favicon.png`
       }
@@ -165,17 +167,6 @@ module.exports = {
               `,
             output: `/rss.xml`,
             title: `RSS Feed`
-          }
-        ]
-      }
-    },
-    {
-      resolve: `gatsby-plugin-prefetch-google-fonts`,
-      options: {
-        fonts: [
-          {
-            family: `Roboto`,
-            variants: [`400`, `700`, `900`]
           }
         ]
       }

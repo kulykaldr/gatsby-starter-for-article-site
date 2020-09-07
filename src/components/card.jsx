@@ -1,6 +1,5 @@
 import React from "react"
-import styled from "styled-components"
-import Theme from "../styles/theme"
+import { styled, theme } from "twin.macro"
 import Img from "gatsby-image"
 import useSiteMetadata from "../hooks/use-site-metadata"
 import useLogo from "../hooks/use-logo"
@@ -81,14 +80,14 @@ export const StyledCard = styled.div`
   transition: .5s all;
   height: 100%;
   overflow: hidden;
-  color: ${Theme.layout.darkColor};
+  color: ${theme`colors.gray.900`};
 
   &:hover {
     transform: translate3d(0, -5px, 0);
     box-shadow: 0 1px 1px #ccc, 0 4px 4px #ccc;
   }
 
-  @media (max-width: ${Theme.breakpoints.sm}) {
+  @media (max-width: ${theme`screens.sm`}) {
     grid-area: unset !important;
   }
 `
@@ -106,7 +105,7 @@ export const FeaturedImage = styled(Img)`
     margin-right: 30px;
     height: 320px;
 
-    @media (max-width: ${Theme.breakpoints.md}) {
+    @media (max-width: ${theme`screens.md`}) {
       width: 100%;
       float: none;
       height: 200px;
@@ -144,11 +143,11 @@ export const CardTitle = styled.div`
   padding: 0;
 
   a {
-    color: ${Theme.layout.primaryColor};
+    color: ${theme`colors.primary.default`};
     transition: color .5s;
 
     &:hover {
-      color: ${Theme.layout.linkColorHover};
+      color: ${theme`colors.secondary.default`};
     }
   }
 `

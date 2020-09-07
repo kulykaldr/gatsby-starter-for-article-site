@@ -1,6 +1,6 @@
 import React from "react"
 import { graphql, useStaticQuery } from "gatsby"
-import styled from "styled-components"
+import tw from "twin.macro"
 import slugify from "slugify"
 import {FaAngleRight} from "react-icons/fa"
 import CardGrid from "./card-grid"
@@ -59,14 +59,14 @@ const Sidebar = () => {
     .slice(0, 3)
 
   return (
-    <>
+    <SidebarWrapper itemScope itemType="http://schema.org/WPSideBar">
       <SidebarTitle>Рубрики</SidebarTitle>
       <CategoriesList>
         {categories.map(category =>
-          <li key={category}>
-            <FaAngleRight/>
+          <CategoriesListItem key={category}>
+            <CategoriesListIcon/>
             <SmartLink to={`/${slugify(category, { lower: true })}`}>{category}</SmartLink>
-          </li>)
+          </CategoriesListItem>)
         }
       </CategoriesList>
 
@@ -75,53 +75,32 @@ const Sidebar = () => {
       <StickyContent>
         Sticky SideBar Content
       </StickyContent>
-    </>
+    </SidebarWrapper>
   )
 }
 
 export default Sidebar
 
-const SidebarTitle = styled.div`
-  font-size: 18px;
-  font-weight: 700;
-  padding-left: 10px;
-  margin-bottom: 20px;
-  border-bottom: 2px solid ${props => props.theme.siteColors.primaryColor};
+const SidebarWrapper = tw.aside`
+  mt-10 w-full xl:col-span-1
 `
 
-const StickyContent = styled.div`
-  position: sticky;
-  top: 30px;
-  display: initial;
-
-  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
-    display: none;
-  }
+const SidebarTitle = tw.div`
+  text-lg font-bold px-4 pb-3 mb-3 border-primary-darker border-b-2 border-solid
 `
 
-const CategoriesList = styled.ul`
-  list-style: none;
-  padding: 0;
+const StickyContent = tw.div`
+  sticky top-0 mt-4
+`
 
-  li {
-    position: relative;
-    padding: 6px 0 6px 25px;
-    border-bottom: 1px solid #eee;
+const CategoriesList = tw.ul`
+    list-none p-0 mb-4
+`
 
-    a {
-      transition: color 0.5s;
+const CategoriesListItem = tw.li`
+  flex py-2 pl-4 items-center
+`
 
-      &:hover {
-        color: ${props => props.theme.siteColors.linkColorHover};
-      }
-    }
-
-    svg {
-      position: absolute;
-      top: 11px;
-      left: 3px;
-      color: #ccc;
-      font-size: 14px;
-    }
-  }
+const CategoriesListIcon = tw(FaAngleRight)`
+  text-gray-500 text-xs
 `

@@ -1,7 +1,8 @@
 import React from "react"
-import Layout from "../components/layout"
 import { Link } from "gatsby"
-import styled from "styled-components"
+import { styled, theme } from "twin.macro"
+
+import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 const NotFoundPage = () => (
@@ -45,7 +46,7 @@ const ErrorDescription = styled.h2`
 `
 
 const BackLink = styled(Link)`
-  color: ${props => props.theme.siteColors.primaryColor};
+  color: ${theme`colors.primary.default`};
 
   &:hover {
     text-decoration: underline;

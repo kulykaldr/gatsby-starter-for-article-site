@@ -1,7 +1,8 @@
 import CMS from "netlify-cms-app"
 import { MdxControl, setupPreview } from "netlify-cms-widget-mdx"
+
 import PostPagePreview from "./preview-templates/post-page-preview-template"
-import withStyled from './with-styled'
+import withEmotion from './with-emotion'
 import { components } from "../components/render-mdx"
 import Spoiler from "../components/ui/spoiler"
 import Attention from "../components/ui/attention"
@@ -27,8 +28,8 @@ const WidgetColor = require('netlify-cms-widget-color/dist/es/color')
 CMS.registerWidget('color', WidgetColor.default.Control)
 
 // Add Previews
-CMS.registerPreviewTemplate('post', withStyled(PostPagePreview))
-CMS.registerPreviewTemplate('page', withStyled(PostPagePreview))
+CMS.registerPreviewTemplate('post', withEmotion(PostPagePreview))
+CMS.registerPreviewTemplate('page', withEmotion(PostPagePreview))
 
 // Extend editor
 CMS.registerEditorComponent(attentionEditorConfig)

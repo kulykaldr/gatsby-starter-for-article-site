@@ -1,5 +1,5 @@
 import React from "react"
-import styled from "styled-components"
+import { styled, theme } from "twin.macro"
 import { withPrefix } from "gatsby"
 import Img from "gatsby-image"
 import { useLocation } from "@reach/router"
@@ -42,17 +42,16 @@ const BrandingWrapper = styled.div`
   display: flex;
   flex-direction: row;
   padding: 20px;
-  background-color: ${props => props.theme.siteColors.backgroundColor};
+  background-color: ${theme`colors.gray.100`};
   z-index: 20;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.xl}) {
+  @media (max-width: ${theme`screens.xl`}) {
     padding: 20px 80px 20px 0;
   }
 `
 
 const LogoWrapper = styled.div`
   margin-right: 20px;
-  width: ${props => props.theme.siteComponents.logoWidth};
 `
 
 const LogoImage = styled(Img)`
@@ -60,7 +59,7 @@ const LogoImage = styled(Img)`
   max-height: 100px;
   min-width: 100px;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
+  @media (max-width: ${theme`screens.sm`}) {
     max-width: 80px;
     max-height: 80px;
   }
@@ -71,25 +70,25 @@ const SiteTitle = styled.h1`
   margin: 0;
   line-height: 1.1;
   font-weight: 900;
-  color: ${props => props.theme.siteColors.primaryColor};
+  color: ${theme`colors.primary.default`};
   white-space: nowrap;
   cursor: default;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
+  @media (max-width: ${theme`screens.lg`}) {
     font-size: 18px;
     white-space: inherit;
   }
 `
 
 const Subtitle = styled.p`
-  color: ${props => props.theme.siteColors.darkColor};
+  color: ${theme`colors.gray.900`};
   opacity: .8;
   line-height: 1.2;
   margin: 0;
   font-size: 16px;
   cursor: default;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
+  @media (max-width: ${theme`screens.sm`}) {
     font-size: 14px;
   }
 `
@@ -99,10 +98,14 @@ const HomeLink = styled(SmartLink)`
   margin: 0;
   line-height: 1.1;
   font-weight: 900;
-  color: ${props => props.theme.siteColors.primaryColor};
+  color: ${theme`colors.primary.default`};
   white-space: nowrap;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
+  &:hover {
+    color: ${theme`colors.primary.default`};
+  }
+
+  @media (max-width: ${theme`screens.lg`}) {
     font-size: 18px;
     white-space: inherit;
   }

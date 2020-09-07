@@ -1,5 +1,5 @@
 import React, {useEffect} from "react"
-import styled from "styled-components"
+import { styled } from "twin.macro"
 
 const AnyComments = () => {
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React from "react"
 import { Link as GatsbyLink } from "gatsby"
-import styled from "styled-components"
+import tw from 'twin.macro'
 
 /*
  * Used to dynamically swap CMS links with appropriate Gatsby links
@@ -26,20 +26,14 @@ export const SmartLink = ({ children, to, activeClassName, ...other }) => {
   )
 }
 
-const StyledGatsbyLink = styled(GatsbyLink)`
-  color: ${props => props.theme.siteColors.primaryColor};
-  transition: color 0.5s;
+export default SmartLink
 
-  &:hover {
-    color: ${props => props.theme.siteColors.linkColorHover};
-  }
+const styledLink = `text-primary transition-colors duration-500 hover:text-secondary`
+
+const StyledGatsbyLink = tw(GatsbyLink)`
+  ${styledLink}
 `
 
-const StyledLink = styled.a`
-  color: ${props => props.theme.siteColors.primaryColor};
-  transition: color 0.5s;
-
-  &:hover {
-    color: ${props => props.theme.siteColors.linkColorHover};
-  }
+const StyledLink = tw.a`
+  ${styledLink}
 `

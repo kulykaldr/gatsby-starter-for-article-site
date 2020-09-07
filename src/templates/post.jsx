@@ -2,7 +2,7 @@ import React, { createRef } from "react"
 import { graphql } from "gatsby"
 import Img from "gatsby-image"
 import slugify from "slugify"
-import styled from "styled-components"
+import { styled, theme } from "twin.macro"
 import { useLocation } from "@reach/router"
 import ReadingProgress from "../components/reading-progress"
 import Layout from "../components/layout"
@@ -158,11 +158,11 @@ export const StyledPost = styled.div`
   z-index: 10;
   max-width: 100%;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.md}) {
+  @media (max-width: ${theme`screens.md`}) {
     margin: 1.5em 0 1.5em 0;
   }
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
+  @media (max-width: ${theme`screens.sm`}) {
     padding: 0 20px 20px 20px;
   }
 `
@@ -174,7 +174,7 @@ export const PostHeader = styled.header`
 export const FeaturedImage = styled(Img)`
   border-radius: 0;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.xl}) {
+  @media (max-width: ${theme`screens.xl`}) {
     margin-left: -1px;
     margin-right: -1px;
   }
@@ -197,11 +197,11 @@ export const BlockWrapper = styled.div`
   padding: 41px;
   margin: 1.5em 0 1.5em 0;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.md}) {
+  @media (max-width: ${theme`screens.md`}) {
     margin: 1.1em 0 1.1em 0;
   }
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.sm}) {
+  @media (max-width: ${theme`screens.sm`}) {
     padding: 21px;
   }
 `

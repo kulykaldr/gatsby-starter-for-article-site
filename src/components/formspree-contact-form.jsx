@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import styled from "styled-components"
+import { styled, theme } from "twin.macro"
 
 const FormspreeContactForm = ({url}) => {
   const [status, setStatus] = useState("")
@@ -59,7 +59,7 @@ export default FormspreeContactForm
 const Form = styled.form`
   padding-left: 30px;
 
-  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
+  @media (max-width: ${theme`screens.lg`}) {
     padding-left: 0;
     word-wrap: break-word;
   }

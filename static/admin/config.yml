@@ -106,39 +106,3 @@ collections:
                 { label: URL, name: url, widget: string },
                 ]
           }
-          - { label: Site colors, name: siteColors, widget: object,
-              fields:
-                [
-                { label: Background, name: backgroundColor, widget: color },
-                { label: Primary, name: primaryColor, widget: color },
-                { label: Primary Lighter, name: primaryColorLighter, widget: color },
-                { label: Primary Darker, name: primaryColorDarker, widget: color },
-                { label: Link Hover, name: linkColorHover, widget: color },
-                { label: Dark, name: darkColor, widget: color },
-                { label: Light Grey, name: lightGrey, widget: color },
-                ]
-          }
-          - { label: Breakpoints, name: siteBreakpoints, widget: object,
-              fields:
-                [
-                { label: XS, name: xs, widget: string },
-                { label: SM, name: sm, widget: string },
-                { label: MD, name: md, widget: string },
-                { label: LG, name: lg, widget: string },
-                { label: XL, name: xl, widget: string },
-                ]
-          }
-          - { label: Fonts, name: siteFonts, widget: object,
-              fields:
-                [
-                { label: Base, name: base, widget: string },
-                { label: Heading, name: heading, widget: string },
-                ]
-          }
-          - { label: Components, name: siteComponents, widget: object,
-              fields:
-                [
-                { label: Container Width, name: containerWidth, widget: string },
-                { label: Logo Width, name: logoWidth, widget: string },
-                ]
-          }

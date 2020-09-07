@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from "react"
 import { FaSearch } from "react-icons/fa"
 import { navigate, useStaticQuery, graphql } from "gatsby"
-import styled from "styled-components"
+import tw, { styled, css } from "twin.macro"
 import * as JsSearch from "js-search"
-import { useLocation } from "@reach/router"
 import SmartLink from "../components/ui/smartlink"
 
 export const Search = () => {
@@ -11,7 +10,6 @@ export const Search = () => {
   const [ query, setQuery ] = useState("")
   const [ results, setResults ] = useState([])
   const [ selected, setSelected ] = useState(0)
-  const { origin } = useLocation()
   const resultListRef = useRef(null)
   const searchWrapperRef = useRef(null)
   const resultRefs = []
@@ -38,7 +36,7 @@ export const Search = () => {
     }
   `)
 
-  const highlight = (text, words, tag = `em`, className = null) => {
+  const highlight = (text, words, tag = `em`) => {
     const splitWords = words.replace(/[^\w\sа-яёіїє]|_/gi, $1 => ` ${$1} `)
       .replace(/[.,:;\-'" ]+/g, ' ').trim().split(' ')
 
@@ -46,11 +44,7 @@ export const Search = () => {
     for (let word of splitWords) {
       const re = new RegExp(word, 'gi')
       if (re.test(text)) {
-        if (className) {
-          text = text.replace(re, `<${tag} className=${className}>$&</${tag}>`)
-        } else {
-          text = text.replace(re, `<${tag}>$&</${tag}>`)
-        }
+        text = text.replace(re, `<${tag}>$&</${tag}>`)
       }
     }
     return text
@@ -169,7 +163,7 @@ export const Search = () => {
       case "Enter":
         event.preventDefault()
         setIsFocus(false)
-        navigate(`${origin}${currentSelection.slug}`)
+        navigate(`${currentSelection.slug}`)
         return
       default:
         return
@@ -182,174 +176,100 @@ export const Search = () => {
   }
 
   return (
-    <SearchContainer>
-      <SearchOverlay className={isFocus ? " focused" : null}/>
+    <>
+      <SearchOverlay isFocus={isFocus}/>
 
-      <SearchContainer>
-        <SearchWrapper
-          className={isFocus ? " focused" : null}
-          ref={searchWrapperRef}
-        >
-          <FaSearch/>
-          <SearchInput
-            value={query}
-            type={"search"}
-            onChange={search}
-            onKeyDown={handleKey}
-            onClick={enableSearchInput}
-            placeholder={"Поиск по сайту"}
-            className={isFocus ? " focused" : null}
-          />
+      <SearchContainer
+        className={isFocus ? " focused" : null}
+        isFocus={isFocus}
+        ref={searchWrapperRef}
+      >
+        <SearchIcon/>
+        <SearchInput
+          value={query}
+          type={"search"}
+          onChange={search}
+          onKeyDown={handleKey}
+          onClick={enableSearchInput}
+          placeholder={"Поиск по сайту"}
+        />
 
-          {results.length > 0 &&
-          <ResultsContainer isFocus={isFocus}>
-            <ResultsList ref={resultListRef}>
-              {results.map((item, index) => (
-                <ResultItem
-                  onMouseOver={() => setSelected(index)}
-                  onFocus={() => setSelected(index)}
-                  key={index}
-                  ref={ref => {
-                    if (ref) {
-                      resultRefs[index] = ref
-                    }
-                  }}
-                  selected={index === selected}
-                >
-                  <ResultLink to={item.slug}>
-                    {item.categories &&
-                    <small>{item.categories.join(", ")}</small>
-                    }
-                    <ResultTitle dangerouslySetInnerHTML={{ __html: item.heading }}/>
-                    <div dangerouslySetInnerHTML={{ __html: item.excerpt }}/>
-                  </ResultLink>
-                </ResultItem>
-              ))}
-            </ResultsList>
-          </ResultsContainer>
-          }
-        </SearchWrapper>
+        {results.length > 0 &&
+        <ResultsContainer isFocus={isFocus}>
+          <ResultsList ref={resultListRef}>
+            {results.map((item, index) => (
+              <ResultItem
+                onMouseOver={() => setSelected(index)}
+                onFocus={() => setSelected(index)}
+                key={index}
+                ref={ref => {
+                  if (ref) {
+                    resultRefs[index] = ref
+                  }
+                }}
+                selected={index === selected}
+              >
+                <ResultLink to={item.slug}>
+                  {item.categories &&
+                  <small>{item.categories.join(", ")}</small>
+                  }
+                  <ResultTitle dangerouslySetInnerHTML={{ __html: item.heading }}/>
+                  <div dangerouslySetInnerHTML={{ __html: item.excerpt }}/>
+                </ResultLink>
+              </ResultItem>
+            ))}
+          </ResultsList>
+        </ResultsContainer>
+        }
       </SearchContainer>
-    </SearchContainer>
+    </>
   )
 }
 
-export const SearchContainer = styled.div`
-  position: relative;
-  z-index: 50;
+export const SearchOverlay = styled.div(({ isFocus }) => [
+  tw`fixed top-0 left-0 opacity-0 h-0 bg-black bg-opacity-50 w-full z-30 transition-opacity duration-300`,
+  isFocus && tw`opacity-100 h-full`
+])
+
+const SearchContainer = styled.div(({ isFocus }) => [
+  tw`lg:order-2 flex bg-white bg-opacity-25 p-2 rounded-sm transition-all duration-300 text-gray-400 z-50 absolute`,
+  isFocus && tw`bg-white text-gray-800`,
+  css`right: .5rem;`,
+  isFocus && css`left: .5rem;`
+])
+
+const SearchInput = tw.input`
+  bg-transparent border-none w-full outline-none pl-2 placeholder-gray-400 focus:placeholder-black
 `
 
-export const SearchInput = styled.input`
-  background: transparent;
-  border: 0;
-  width: 100%;
-  outline: 0;
-  padding-left: 8px;
-  outline-offset: -2px;
+export const SearchIcon = tw(FaSearch)`
+  self-center w-4 mt-px
+`
 
-  &::placeholder {
-    color: hsla(0,0%,100%,.6);
-  }
-
-  &.focused {
-    &::placeholder {
-      color: #000;
+const ResultsList = styled.ul([
+  tw`overflow-hidden overflow-y-auto whitespace-normal list-none m-0 p-0 max-h-screen-1/2`,
+  css`
+    em {
+      ${tw`not-italic bg-yellow-700 bg-opacity-50`}
     }
-  }
+  `
+])
+
+const ResultItem = styled.li(({ selected }) => [
+  tw`leading-normal border-solid border-b border-gray-200 hover:bg-gray-200`,
+  selected && tw`bg-gray-200`
+])
+
+const ResultLink = tw(SmartLink)`
+  block p-4 text-gray-800 hover:text-gray-800
 `
 
-export const ResultsList = styled.ul`
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  max-height: 50vh;
-  overflow: hidden;
-  overflow-y: auto;
-  white-space: normal!important;
-
-  em {
-    font-style: normal;
-    background-color: rgba(226,164,0,.4);
-  }
+const ResultTitle = tw.div`
+  text-base font-bold my-1
 `
 
-export const ResultItem = styled.li`
-  line-height: 1.4em;
-  border-bottom: 1px solid ${props => props.theme.siteColors.lightGrey};
-
-  ${props => props.selected && `
-    background-color: ${props => props.theme.siteColors.lightGrey};
-  `};
-`
-
-export const ResultLink = styled(SmartLink)`
-  display: block;
-  padding: 15px;
-  color: #000;
-`
-
-export const ResultTitle = styled.div`
-  font-size: 14px;
-  font-weight: 700;
-  margin: 3px 0 7px;
-`
-
-export const ResultsContainer = styled.div`
-  display: ${props => props.isFocus ? "block" : "none"};
-  position: absolute;
-  background-color: #fff;
-  width: 100%;
-  margin: -8px;
-  top: 35px;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  color: #000;
-  padding-top: 10px;
-`
-
-export const SearchOverlay = styled.div`
-  opacity: 0;
-  height: 0;
-  background-color: rgba(0,0,0,.2);
-  width: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 25;
-  transition: opacity .25s;
-
-  &.focused {
-    opacity: 1;
-    height: 100%;
-  }
-`
-
-export const SearchWrapper = styled.div`
-  display: flex;
-  background-color: hsla(0,0%,100%,.2);
-  padding: 8px;
-  border-radius: 3px;
-  transition: all .25s;
-  width: 180px;
-  color: hsla(0,0%,100%,.6);
-
-  svg {
-    align-self: center;
-    width: 16px;
-    min-width: 16px;
-  }
-
-  &.focused {
-    width: 400px;
-    background-color: #fff;
-    color: #000;
-
-    @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
-      width: 75vw;
-    }
-  }
-
-  @media (max-width: ${props => props.theme.siteBreakpoints.lg}) {
-      width: 75vw;
-  }
-`
+export const ResultsContainer = styled.div(({ isFocus }) => [
+  tw`hidden absolute bg-white w-full -ml-2 text-gray-800 pt-3`,
+  `top: 35px;`,
+  isFocus && tw`block`
+])

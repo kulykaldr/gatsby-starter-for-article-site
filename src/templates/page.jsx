@@ -1,9 +1,8 @@
 import React from "react"
-import styled from "styled-components"
+import { styled, theme } from "twin.macro"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import useSiteMetadata from "../hooks/use-site-metadata"
-import Theme from "../styles/theme"
 import RenderMdx from "../components/render-mdx"
 import Heading from "../components/ui/heading"
 import Breadcrumb from "../components/breadcrumb";
@@ -46,11 +45,11 @@ const StyledPage = styled.div`
   z-index: 10;
   max-width: 100%;
 
-  @media (max-width: ${Theme.breakpoints.md}) {
+  @media (max-width: ${theme`screens.md`}) {
     margin: 1.5em 0 1.5em 0;
   }
 
-  @media (max-width: ${Theme.breakpoints.sm}) {
+  @media (max-width: ${theme`screens.sm`}) {
     padding: 0 20px 20px 20px;
   }
 `

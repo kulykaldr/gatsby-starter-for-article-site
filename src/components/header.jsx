@@ -1,7 +1,7 @@
 import React from "react"
 import TopMenu from "./topMenu"
 import Branding from "./branding"
-import styled from "styled-components"
+import tw from "twin.macro"
 
 const Header = ({ title, subtitle }) => {
   return (
@@ -14,15 +14,6 @@ const Header = ({ title, subtitle }) => {
 
 export default Header
 
-const HeaderContainer = styled.header`
-  position: relative;
-  z-index: 20;
-  width: ${props => props.theme.siteComponents.containerWidth};
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100%;
-
-  @media (max-width: ${props => props.theme.siteBreakpoints.xl}) {
-    padding: 0 20px;
-  }
+const HeaderContainer = tw.header`
+  container relative z-20 mx-auto
 `

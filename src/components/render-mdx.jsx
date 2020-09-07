@@ -1,7 +1,7 @@
 import React from "react"
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRenderer } from "gatsby-plugin-mdx"
-import styled from "styled-components"
+import tw, { styled } from "twin.macro"
 import Spoiler from "./ui/spoiler"
 import Attention from "./ui/attention"
 import Heading from "./ui/heading"
@@ -35,15 +35,11 @@ export default RenderMdx
 
 export const StyledContent = styled.div`
   p {
-    font-size: 16px;
-    margin-bottom: 20px;
-    word-wrap: break-word;
+    ${tw`text-base mb-3`};
   }
 
   ol, ul {
-    margin: 1.7em 0 1.8em 1em;
-    padding: 0;
-    list-style: none;
+    ${tw`my-4 ml-4 list-none`};
   }
 
   ol {
@@ -51,51 +47,37 @@ export const StyledContent = styled.div`
   }
 
   li {
-    list-style: none;
-    padding-left: 40px;
-    margin: .7em 0;
+    ${tw`pl-10 my-2`};
   }
 
   ul li {
     &:before {
       content: '';
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      background-color: ${props => props.theme.siteColors.primaryColor};
-      margin: 0 22px 0 -30px;
+      ${tw`inline-block w-2 h-2 bg-primary mr-6 -ml-8`};
     }
   }
 
   ol li {
-    border-color: ${props => props.theme.siteColors.primaryColor};
+    ${tw`border-primary`};
 
     &:before {
       content: counter(point);
       counter-increment: point 1;
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      margin: 0 13px 0 -40px;
-      text-align: center;
-      border: 2px solid ${props => props.theme.siteColors.primaryColor};
-      border-radius: 50%;
+      ${tw`inline-flex w-6 h-6 text-center border-2 border-primary rounded-full
+        justify-center items-center mr-6 -ml-12`};
     }
   }
 
   pre {
-    margin: 30px 0;
+    ${tw`my-8`};
   }
 
   code[class*="language-text"] {
-    padding: 5px;
+    ${tw`p-2`};
   }
 
   p > img {
-    max-width: 100%;
-    border-radius: 0.3em;
-    display: block;
-    margin: 30px auto;
+    ${tw`block max-w-full rounded m-8 mx-auto`};
   }
 
   hr {

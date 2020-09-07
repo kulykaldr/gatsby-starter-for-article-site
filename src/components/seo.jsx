@@ -1,7 +1,7 @@
 import React from "react"
-import {Helmet} from "react-helmet"
+import { Helmet } from "react-helmet"
 import url from "url"
-import {useLocation} from "@reach/router"
+import { useLocation } from "@reach/router"
 import useSiteMetadata from "../hooks/use-site-metadata"
 import useLogo from "../hooks/use-logo"
 
@@ -15,7 +15,7 @@ const SEO = ({
                image,
                categories = ''
              }) => {
-  const {pathname} = useLocation()
+  const { pathname } = useLocation()
   const metadata = useSiteMetadata()
   const logo = useLogo()
   const siteTitle = title ? title : metadata.siteTitle
@@ -26,7 +26,7 @@ const SEO = ({
 
   return (
     <Helmet
-      htmlAttributes={{siteLanguage: metadata.siteLanguage}}
+      htmlAttributes={{ siteLanguage: metadata.siteLanguage }}
       title={siteTitle}
       meta={[
         {
@@ -138,7 +138,7 @@ const SEO = ({
               "isPartOf": {"@id": "${metadata.siteUrl}/#website"},
               ${image ? `"primaryImageOfPage": {"@id": "${metadata.siteUrl}/#primaryimage"},` : ``}
               ${type === "CollectionPage" || type === "Article"
-                ? `"breadcrumb": {"@id": "${metadata.siteUrl}${pathname}/#breadcrumb"},` : ``}
+        ? `"breadcrumb": {"@id": "${metadata.siteUrl}${pathname}/#breadcrumb"},` : ``}
               "about": {"@id": "${metadata.siteUrl}/#personid"},
               ${publishedAt ? `"datePublished": "${publishedAt}",` : ``}
               ${updatedAt ? `"dateModified": "${updatedAt}",` : ``}
